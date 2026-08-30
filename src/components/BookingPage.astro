@@ -1,0 +1,1403 @@
+---
+import { useCopy, routePath, type Locale } from '../i18n/utils';
+import { SITE } from '../site.config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useCopy(locale);
+const b = t.booking;
+
+/**
+ * The admin's booking API. Unlike the blog (fetched at build time) and the
+ * contact form (a runtime POST only), booking needs a runtime **GET** as well:
+ * availability changes every time somebody books, so it cannot be baked into
+ * the static build.
+ *
+ * Two endpoints are expected under this base — see docs/BOOKING-API.md:
+ *   GET  {base}/availability?from=&to=&service=
+ *   POST {base}/bookings
+ *
+ * Public by necessity, so the endpoint must do its own abuse protection.
+ */
+const endpoint = import.meta.env.PUBLIC_BOOKING_API_URL ?? '';
+
+if (!endpoint) {
+  console.warn(
+    '[booking] PUBLIC_BOOKING_API_URL is not set — the calendar will run in ' +
+      'demo mode with generated availability, clearly labelled on the page. ' +
+      'Set it before deploying (see docs/BOOKING-API.md).',
+  );
+}
+
+---
+
+<section class="booking section">
+  <div class="inner">
+    <header class="head" data-reveal>
+      <span class="eyebrow">{b.eyebrow}</span>
+      <h1 class="title">{b.title}</h1>
+      <p class="lede">{b.lede}</p>
+    </header>
+
+    {
+      !endpoint && (
+        <div class="demo" role="status">
+          <strong>{b.demoTitle}</strong>
+          <span>{b.demoBody}</span>
+        </div>
+      )
+    }
+
+    <div
+      class="layout"
+      data-booking
+      data-endpoint={endpoint}
+      data-locale={locale}
+    >
+      <div class="flow" data-flow>
+        {/* Service — a compact bar, not a numbered step: the calendar is the
+            point of this page, so everything else stays out of its way. */}
+        <div class="services-bar">
+          <span class="services-label" id="svc-label">{b.serviceLabel}</span>
+          <div class="services" role="radiogroup" aria-labelledby="svc-label">
+            {
+              b.services.map((service, i) => (
+                <button
+                  type="button"
+                  role="radio"
+                  class:list={['chip', { on: i === 0 }]}
+                  aria-checked={i === 0 ? 'true' : 'false'}
+                  tabindex={i === 0 ? 0 : -1}
+                  data-service={service}
+                >
+                  {service}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="stage">
+          {/* The calendar itself — the largest thing on the page. */}
+          <div class="cal">
+            <div class="cal-bar">
+              <button type="button" class="nav" data-prev aria-label={b.prevMonth}>
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M15 4.5 7.5 12l7.5 7.5" />
+                </svg>
+              </button>
+              <h2 class="cal-month" data-month aria-live="polite"></h2>
+              <button type="button" class="nav" data-next aria-label={b.nextMonth}>
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M9 4.5 16.5 12 9 19.5" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="weekdays" aria-hidden="true">
+              {b.weekdays.map((day) => <span>{day}</span>)}
+            </div>
+
+            <div class="grid" role="grid" aria-label={b.calendarLabel} data-grid></div>
+
+            <p class="cal-msg" data-cal-msg hidden></p>
+          </div>
+
+          {/* Times and the running summary sit beside it. */}
+          <aside class="rail">
+            <section class="rail-block" aria-labelledby="times-title">
+              <h2 class="rail-title" id="times-title">{b.slotsLabel}</h2>
+              <p class="hint" data-slots-hint>{b.pickDayFirst}</p>
+              <div class="slots" role="radiogroup" aria-label={b.slotsLabel} data-slots></div>
+            </section>
+
+            <div class="summary-card">
+              <h2 class="summary-title">{b.summaryTitle}</h2>
+              <dl class="summary-list">
+                <div><dt>{b.step1}</dt><dd data-sum-service>—</dd></div>
+                <div><dt>{b.step2}</dt><dd data-sum-date>—</dd></div>
+                <div><dt>{b.step3}</dt><dd data-sum-time>—</dd></div>
+              </dl>
+              <p class="summary-empty" data-sum-empty>{b.summaryEmpty}</p>
+            </div>
+          </aside>
+        </div>
+
+        {/* Revealed only once a service, day and time are all chosen, so the
+            calendar owns the screen until there is something to confirm. */}
+        <section class="details" data-details hidden aria-labelledby="details-title">
+          <h2 class="details-title" id="details-title">{b.step4}</h2>
+
+          <form class="form" data-form novalidate>
+            <div class="pot" aria-hidden="true">
+              <label>Fax<input type="text" name="fax" tabindex="-1" autocomplete="off" /></label>
+            </div>
+            <input type="hidden" name="renderedAt" value="" data-rendered-at />
+
+            <div class="fields">
+              <p class="field">
+                <label for="bk-name">
+                  {b.form.name} <span class="req">({b.form.required})</span>
+                </label>
+                <input id="bk-name" name="name" type="text" required autocomplete="name" />
+                <span class="error" data-error-for="name" hidden></span>
+              </p>
+
+              <p class="field">
+                <label for="bk-phone">
+                  {b.form.phone} <span class="req">({b.form.required})</span>
+                </label>
+                <input
+                  id="bk-phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  inputmode="tel"
+                  autocomplete="tel"
+                />
+                <span class="help">{b.form.phoneHelp}</span>
+                <span class="error" data-error-for="phone" hidden></span>
+              </p>
+
+              <p class="field">
+                <label for="bk-email">{b.form.email}</label>
+                <input id="bk-email" name="email" type="email" autocomplete="email" />
+                <span class="error" data-error-for="email" hidden></span>
+              </p>
+
+              <p class="field">
+                <label for="bk-age">{b.form.childAge}</label>
+                <input
+                  id="bk-age"
+                  name="childAge"
+                  type="text"
+                  placeholder={b.form.childAgePlaceholder}
+                />
+              </p>
+
+              <p class="field field-wide">
+                <label for="bk-notes">{b.form.notes}</label>
+                <textarea id="bk-notes" name="notes" rows="3" placeholder={b.form.notesPlaceholder}
+                ></textarea>
+              </p>
+            </div>
+
+            <label class="consent">
+              <input type="checkbox" name="consent" value="yes" required />
+              <span>{b.form.consent}</span>
+            </label>
+            <span class="error" data-error-for="consent" hidden></span>
+
+            <div class="actions">
+              <button class="btn btn-dark" type="submit" data-submit disabled>
+                {b.form.submit}
+              </button>
+              <a class="call" href={SITE.phone.href}>{SITE.phone.display}</a>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      {/* Result */}
+      <div class="result" data-result hidden role="status" aria-live="polite">
+        <div class="result-mark" aria-hidden="true">★</div>
+        <h2 data-result-title></h2>
+        <p data-result-body></p>
+        <p class="reference" data-reference hidden>
+          <span>{b.referenceLabel}</span><strong data-reference-value></strong>
+        </p>
+        <a class="btn btn-dark" href={routePath('home', locale)} data-result-home>
+          {t.notFound.home}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script
+  is:inline
+  define:vars={{
+    STR: {
+      loading: b.loading,
+      loadError: b.loadError,
+      retry: b.retry,
+      unavailable: b.unavailable,
+      today: b.today,
+      selected: b.selected,
+      noSlots: b.noSlots,
+      monthEmpty: b.monthEmpty,
+      pickDayFirst: b.pickDayFirst,
+      sending: b.form.sending,
+      submit: b.form.submit,
+      successTitle: b.successTitle,
+      successBody: b.successBody,
+      errorTitle: b.errorTitle,
+      errorBody: b.errorBody,
+      takenTitle: b.takenTitle,
+      takenBody: b.takenBody,
+      notConfigured: b.notConfigured,
+      weekdaysFull: b.weekdaysFull,
+      months: b.months,
+    },
+  }}
+>
+  (() => {
+    const root = document.querySelector('[data-booking]');
+    if (!root) return;
+
+    const endpoint = root.dataset.endpoint || '';
+    const locale = root.dataset.locale || 'sq';
+    const DEMO = !endpoint;
+
+    const $ = (sel) => root.querySelector(sel);
+    const grid = $('[data-grid]');
+    const monthLabel = $('[data-month]');
+    const calMsg = $('[data-cal-msg]');
+    const slotsBox = $('[data-slots]');
+    const slotsHint = $('[data-slots-hint]');
+    const form = $('[data-form]');
+    const submitBtn = $('[data-submit]');
+    const result = $('[data-result]');
+
+    // ── State ────────────────────────────────────────────────
+    const state = {
+      service: root.querySelector('[data-service]')?.dataset.service || '',
+      month: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+      date: null, // 'YYYY-MM-DD'
+      time: null, // 'HH:MM'
+      availability: new Map(), // dateKey -> string[]
+      loading: false,
+      // On first load, skip forward past fully-booked months rather than
+      // showing an empty grid. Zeroed as soon as the visitor navigates by
+      // hand, so their own choice of month is never overridden.
+      autoSkip: 3,
+    };
+
+    /** Local calendar key. NOT toISOString(), which shifts the day in UTC+N. */
+    const keyOf = (d) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
+        d.getDate(),
+      ).padStart(2, '0')}`;
+
+    const parseKey = (key) => {
+      const [y, m, d] = key.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    };
+
+    const todayKey = keyOf(new Date());
+
+    /*
+     * Month and weekday names come from the copy files, not Intl: a browser
+     * without Albanian locale data silently falls back to English month names,
+     * which is exactly what happened. The weekday letters were already
+     * hardcoded this way; the months now match.
+     */
+    const fmtTime = (hhmm) => {
+      const [h, m] = hhmm.split(':').map(Number);
+      const mm = String(m).padStart(2, '0');
+      if (locale === 'sq') return `${String(h).padStart(2, '0')}:${mm}`;
+      const h12 = h % 12 === 0 ? 12 : h % 12;
+      return `${h12}:${mm} ${h < 12 ? 'am' : 'pm'}`;
+    };
+
+    /** `E hënë, 14 shtator` / `Monday, 14 September`. */
+    const fmtLong = (key) => {
+      const d = parseKey(key);
+      // Albanian writes months lower case in running text, capitalised only
+      // as a heading.
+      const monthName = STR.months[d.getMonth()];
+      const month = locale === 'sq' ? monthName.toLowerCase() : monthName;
+      const weekday = STR.weekdaysFull[(d.getDay() + 6) % 7];
+      return `${weekday}, ${d.getDate()} ${month}`;
+    };
+
+    const fmtMonth = (d) => `${STR.months[d.getMonth()]} ${d.getFullYear()}`;
+
+    // ── Availability ─────────────────────────────────────────
+
+    /** Demo generator: weekdays only, a fixed slot pattern, some days full. */
+    const demoAvailability = (from, to) => {
+      const out = new Map();
+      const cursor = new Date(from);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      while (cursor <= to) {
+        const day = cursor.getDay();
+        const key = keyOf(cursor);
+        // Weekdays plus Saturday morning; nothing in the past.
+        if (cursor >= today && day !== 0) {
+          const seed = cursor.getDate();
+          if (seed < 12 || seed > 16) {
+            const slots =
+              day === 6
+                ? ['09:00', '09:45', '10:30', '11:15']
+                : ['09:00', '09:45', '10:30', '11:15', '14:00', '14:45', '15:30', '16:15'];
+            out.set(key, slots.filter((_, i) => (seed + i) % 5 !== 0));
+          }
+        }
+        cursor.setDate(cursor.getDate() + 1);
+      }
+      return out;
+    };
+
+    /**
+     * True when the month on screen has no bookable day.
+     *
+     * Only counts dates that actually fall inside the displayed month and are
+     * not in the past — an API that returns days outside the requested range
+     * (or stale past dates) must not make an empty month look populated.
+     */
+    function monthIsEmpty() {
+      const prefix = `${state.month.getFullYear()}-${String(state.month.getMonth() + 1).padStart(2, '0')}-`;
+      for (const [key, slots] of state.availability) {
+        if (!key.startsWith(prefix)) continue;
+        if (key < todayKey) continue;
+        if (slots && slots.length > 0) return false;
+      }
+      return true;
+    }
+
+    /**
+     * If the month that just loaded is completely full, move on to the next
+     * one instead of presenting an empty grid. Returns true when it has taken
+     * over and re-issued the load.
+     */
+    async function skipEmptyMonth() {
+      if (!monthIsEmpty() || state.autoSkip <= 0) {
+        // Nothing free and no skips left: say so rather than showing a blank.
+        if (monthIsEmpty()) {
+          calMsg.hidden = false;
+          calMsg.classList.remove('is-error');
+          calMsg.textContent = STR.monthEmpty;
+        }
+        return false;
+      }
+      state.autoSkip -= 1;
+      state.month = new Date(state.month.getFullYear(), state.month.getMonth() + 1, 1);
+      await loadMonth();
+      return true;
+    }
+
+    async function loadMonth() {
+      const from = new Date(state.month.getFullYear(), state.month.getMonth(), 1);
+      const to = new Date(state.month.getFullYear(), state.month.getMonth() + 1, 0);
+
+      state.loading = true;
+      calMsg.hidden = false;
+      calMsg.textContent = STR.loading;
+      calMsg.classList.remove('is-error');
+      renderGrid();
+
+      if (DEMO) {
+        state.availability = demoAvailability(from, to);
+        state.loading = false;
+        calMsg.hidden = true;
+        if (await skipEmptyMonth()) return;
+        renderGrid();
+        return;
+      }
+
+      try {
+        const url = new URL(endpoint.replace(/\/+$/, '') + '/availability');
+        url.searchParams.set('from', keyOf(from));
+        url.searchParams.set('to', keyOf(to));
+        url.searchParams.set('service', state.service);
+        url.searchParams.set('locale', locale);
+
+        const res = await fetch(url, {
+          headers: { Accept: 'application/json' },
+          signal: AbortSignal.timeout(12000),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        state.availability = new Map(
+          (data.days || []).map((d) => [d.date, Array.isArray(d.slots) ? d.slots : []]),
+        );
+        calMsg.hidden = true;
+        state.loading = false;
+        if (await skipEmptyMonth()) return;
+      } catch (err) {
+        console.error('[booking] availability failed:', err);
+        state.availability = new Map();
+        calMsg.hidden = false;
+        calMsg.classList.add('is-error');
+        calMsg.innerHTML = '';
+        calMsg.append(STR.loadError + ' ');
+        const again = document.createElement('button');
+        again.type = 'button';
+        again.className = 'retry';
+        again.textContent = STR.retry;
+        again.addEventListener('click', loadMonth);
+        calMsg.append(again);
+      } finally {
+        state.loading = false;
+        renderGrid();
+      }
+    }
+
+    // ── Calendar grid ────────────────────────────────────────
+
+    function renderGrid() {
+      monthLabel.textContent = fmtMonth(state.month);
+      grid.innerHTML = '';
+
+      const year = state.month.getFullYear();
+      const month = state.month.getMonth();
+      const first = new Date(year, month, 1);
+      // Monday-first: JS getDay() has Sunday as 0.
+      const offset = (first.getDay() + 6) % 7;
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < offset; i++) {
+        const blank = document.createElement('span');
+        blank.className = 'day blank';
+        blank.setAttribute('role', 'presentation');
+        grid.append(blank);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const key = keyOf(date);
+        const slots = state.availability.get(key) || [];
+        const isPast = key < todayKey;
+        const isToday = key === todayKey;
+        const free = slots.length > 0 && !isPast;
+
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'day';
+        cell.dataset.date = key;
+        cell.textContent = String(day);
+        cell.setAttribute('role', 'gridcell');
+
+        const parts = [`${day} ${fmtLong(key)}`];
+        if (isToday) {
+          cell.classList.add('is-today');
+          parts.push(STR.today);
+        }
+        if (free) {
+          cell.classList.add('has-slots');
+          parts.push(`${slots.length}`);
+        } else {
+          cell.disabled = true;
+          cell.classList.add('is-empty');
+          parts.push(STR.unavailable);
+        }
+        if (key === state.date) {
+          cell.classList.add('on');
+          cell.setAttribute('aria-current', 'date');
+          parts.push(STR.selected);
+        }
+        cell.setAttribute('aria-label', parts.join(', '));
+        cell.tabIndex = key === state.date ? 0 : -1;
+
+        grid.append(cell);
+      }
+
+      // Make sure something in the grid is always focusable.
+      if (!grid.querySelector('[tabindex="0"]')) {
+        const firstFree = grid.querySelector('.day.has-slots');
+        if (firstFree) firstFree.tabIndex = 0;
+      }
+    }
+
+    function selectDate(key) {
+      // renderGrid() rebuilds every cell, which destroys the focused element.
+      // If the choice came from the keyboard, put focus back on the newly
+      // rendered cell so the visitor does not get dumped onto <body>.
+      const hadFocus = grid.contains(document.activeElement);
+
+      state.date = key;
+      state.time = null;
+      renderGrid();
+      renderSlots();
+      renderSummary();
+
+      if (hadFocus) {
+        grid.querySelector(`.day[data-date="${key}"]`)?.focus();
+      }
+    }
+
+    grid.addEventListener('click', (e) => {
+      const cell = e.target.closest('.day[data-date]');
+      if (cell && !cell.disabled) selectDate(cell.dataset.date);
+    });
+
+    // Arrow-key navigation across the grid, as a date picker should have.
+    grid.addEventListener('keydown', (e) => {
+      const cell = e.target.closest('.day[data-date]');
+      if (!cell) return;
+      const step = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 7, ArrowUp: -7 }[e.key];
+      if (step === undefined && e.key !== 'Home' && e.key !== 'End') return;
+      e.preventDefault();
+
+      const cells = [...grid.querySelectorAll('.day[data-date]')];
+      const i = cells.indexOf(cell);
+      let next;
+      if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = cells.length - 1;
+      else next = Math.min(cells.length - 1, Math.max(0, i + step));
+
+      const target = cells[next];
+      if (target) {
+        cells.forEach((c) => (c.tabIndex = -1));
+        target.tabIndex = 0;
+        target.focus();
+      }
+    });
+
+    $('[data-prev]').addEventListener('click', () => {
+      state.autoSkip = 0; // the visitor is steering now
+      state.month = new Date(state.month.getFullYear(), state.month.getMonth() - 1, 1);
+      loadMonth();
+    });
+    $('[data-next]').addEventListener('click', () => {
+      state.autoSkip = 0;
+      state.month = new Date(state.month.getFullYear(), state.month.getMonth() + 1, 1);
+      loadMonth();
+    });
+
+    // ── Time slots ───────────────────────────────────────────
+
+    function renderSlots() {
+      slotsBox.innerHTML = '';
+      if (!state.date) {
+        slotsHint.hidden = false;
+        slotsHint.textContent = STR.pickDayFirst;
+        return;
+      }
+      const slots = state.availability.get(state.date) || [];
+      if (slots.length === 0) {
+        slotsHint.hidden = false;
+        slotsHint.textContent = STR.noSlots;
+        return;
+      }
+      slotsHint.hidden = true;
+
+      for (const slot of slots) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'slot';
+        btn.setAttribute('role', 'radio');
+        btn.setAttribute('aria-checked', String(slot === state.time));
+        btn.dataset.time = slot;
+        btn.textContent = fmtTime(slot);
+        if (slot === state.time) btn.classList.add('on');
+        btn.addEventListener('click', () => {
+          state.time = slot;
+          renderSlots();
+          renderSummary();
+        });
+        slotsBox.append(btn);
+      }
+    }
+
+    // ── Service chips ────────────────────────────────────────
+
+    const chips = [...root.querySelectorAll('[data-service]')];
+    chips.forEach((chip, i) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => {
+          c.classList.toggle('on', c === chip);
+          c.setAttribute('aria-checked', String(c === chip));
+          c.tabIndex = c === chip ? 0 : -1;
+        });
+        state.service = chip.dataset.service;
+        renderSummary();
+        // Availability can differ per service, so reload the month.
+        loadMonth();
+      });
+      chip.addEventListener('keydown', (e) => {
+        const dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!dir) return;
+        e.preventDefault();
+        const next = chips[(i + dir + chips.length) % chips.length];
+        next.click();
+        next.focus();
+      });
+    });
+
+    // ── Summary ──────────────────────────────────────────────
+
+    let detailsShown = false;
+
+    function renderSummary() {
+      $('[data-sum-service]').textContent = state.service || '—';
+      $('[data-sum-date]').textContent = state.date ? fmtLong(state.date) : '—';
+      $('[data-sum-time]').textContent = state.time ? fmtTime(state.time) : '—';
+      const complete = Boolean(state.service && state.date && state.time);
+      $('[data-sum-empty]').hidden = complete;
+      submitBtn.disabled = !complete;
+
+      // Keep the calendar the whole page until there is something to confirm,
+      // then reveal the form and bring it into view the first time only.
+      const details = $('[data-details]');
+      details.hidden = !complete;
+      if (complete && !detailsShown) {
+        detailsShown = true;
+        details.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+      if (!complete) detailsShown = false;
+    }
+
+    // ── Submission ───────────────────────────────────────────
+
+    const stamp = $('[data-rendered-at]');
+    if (stamp) stamp.value = String(Date.now());
+
+    const showError = (name, message) => {
+      const node = root.querySelector(`[data-error-for="${name}"]`);
+      if (!node) return;
+      node.textContent = message;
+      node.hidden = !message;
+    };
+
+    const validate = () => {
+      let firstBad = null;
+      for (const field of form.querySelectorAll('input[name], textarea[name]')) {
+        if (field.type === 'hidden' || field.name === 'fax') continue;
+        const ok = field.checkValidity();
+        showError(field.name, ok ? '' : field.validationMessage);
+        field.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        if (!ok && !firstBad) firstBad = field;
+      }
+      if (firstBad) firstBad.focus();
+      return !firstBad;
+    };
+
+    const finish = (kind, reference) => {
+      const titles = { ok: STR.successTitle, error: STR.errorTitle, taken: STR.takenTitle };
+      const bodies = { ok: STR.successBody, error: STR.errorBody, taken: STR.takenBody };
+      $('[data-result-title]').textContent = titles[kind];
+      $('[data-result-body]').textContent = bodies[kind];
+      const refBox = $('[data-reference]');
+      if (kind === 'ok' && reference) {
+        $('[data-reference-value]').textContent = reference;
+        refBox.hidden = false;
+      } else {
+        refBox.hidden = true;
+      }
+      result.classList.toggle('is-error', kind !== 'ok');
+      $('[data-result-home]').hidden = kind !== 'ok';
+      result.hidden = false;
+      if (kind === 'ok') {
+        root.querySelector('[data-flow]').hidden = true;
+      }
+      result.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+
+      if (DEMO) {
+        console.warn('[booking] PUBLIC_BOOKING_API_URL is not set — nothing was sent.');
+        $('[data-result-title]').textContent = STR.errorTitle;
+        $('[data-result-body]').textContent = STR.notConfigured;
+        result.classList.add('is-error');
+        $('[data-reference]').hidden = true;
+        $('[data-result-home]').hidden = true;
+        result.hidden = false;
+        result.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = STR.sending;
+
+      try {
+        const payload = Object.fromEntries(new FormData(form).entries());
+        payload.service = state.service;
+        payload.date = state.date;
+        payload.time = state.time;
+        payload.locale = locale;
+
+        const res = await fetch(endpoint.replace(/\/+$/, '') + '/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.status === 409) {
+          // Somebody took the slot first. Reload and let them pick again.
+          finish('taken');
+          state.time = null;
+          await loadMonth();
+          renderSlots();
+          renderSummary();
+          submitBtn.disabled = false;
+          submitBtn.textContent = STR.submit;
+          return;
+        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const data = await res.json().catch(() => ({}));
+        finish('ok', data.reference);
+      } catch (err) {
+        console.error('[booking] submit failed:', err);
+        finish('error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = STR.submit;
+      }
+    });
+
+    form.addEventListener('input', (e) => {
+      const field = e.target;
+      if (field.name && field.checkValidity()) {
+        showError(field.name, '');
+        field.setAttribute('aria-invalid', 'false');
+      }
+    });
+
+    // ── Go ───────────────────────────────────────────────────
+    renderSummary();
+    renderSlots();
+    loadMonth();
+  })();
+</script>
+
+<style>
+  /* The page exists to show a calendar, so the heading block stays small and
+     the calendar starts as close to the top as possible. */
+  .booking {
+    padding-top: clamp(24px, 3vw, 40px);
+  }
+
+  .head {
+    max-width: 60ch;
+    margin-bottom: clamp(18px, 2.4vw, 26px);
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-size: clamp(30px, 3.4vw, 44px);
+    line-height: 1.06;
+    color: var(--ink);
+    margin-top: 10px;
+    max-width: 18ch;
+  }
+
+  .lede {
+    margin-top: 12px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 56ch;
+  }
+
+  .demo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    align-items: baseline;
+    margin-bottom: clamp(16px, 2.4vw, 24px);
+    padding: 14px 18px;
+    border-radius: var(--r-fact);
+    background: rgba(229, 143, 111, 0.2);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.16);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .demo strong {
+    font-weight: 700;
+  }
+
+  /* ── Service bar ───────────────────────────────────────── */
+
+  .services-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    margin-bottom: clamp(16px, 2.2vw, 22px);
+  }
+
+  .services-label {
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--eyebrow);
+  }
+
+  .services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .chip {
+    padding: 9px 15px;
+    min-height: 40px;
+    border-radius: var(--r-pill);
+    background: rgba(59, 47, 28, 0.05);
+    border: var(--border-w) solid transparent;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 13px;
+    transition:
+      background 0.16s ease,
+      transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .chip:hover {
+    background: rgba(59, 47, 28, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .chip.on {
+    background: var(--gold);
+    border-color: rgba(59, 47, 28, 0.2);
+    box-shadow: 0 3px 0 rgba(59, 47, 28, 0.2);
+  }
+
+  /* ── Stage: calendar dominant, rail beside it ──────────── */
+
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+    gap: clamp(18px, 2.6vw, 34px);
+    align-items: start;
+  }
+
+  .cal {
+    padding: clamp(18px, 2.4vw, 30px);
+    border-radius: var(--r-toy);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+  }
+
+  .cal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .cal-month {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.15;
+    color: var(--ink);
+  }
+
+  .nav {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(59, 47, 28, 0.06);
+    color: var(--ink);
+    font-size: 26px;
+    line-height: 1;
+    transition:
+      background 0.16s ease,
+      transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nav:hover {
+    background: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  /* An SVG chevron rather than a text glyph, so it is genuinely centred
+     instead of sitting wherever the font places ‹ in its em box. */
+  .nav svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .weekdays,
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: clamp(5px, 0.6vw, 9px);
+  }
+
+  .weekdays span {
+    text-align: center;
+    padding-bottom: 10px;
+    font-weight: 700;
+    font-size: clamp(11px, 1vw, 13px);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(59, 47, 28, 0.45);
+  }
+
+  /* Big cells: this is the thing the page is for. */
+  .grid :global(.day) {
+    aspect-ratio: 1 / 0.84;
+    min-height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: clamp(12px, 1.4vw, 18px);
+    background: transparent;
+    border: var(--border-w) solid transparent;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-size: clamp(15px, 1.7vw, 22px);
+    transition:
+      background 0.14s ease,
+      transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .grid :global(.day.blank) {
+    pointer-events: none;
+  }
+
+  .grid :global(.day.has-slots) {
+    background: rgba(240, 176, 31, 0.16);
+    position: relative;
+  }
+
+  .grid :global(.day.has-slots)::after {
+    content: '';
+    position: absolute;
+    bottom: clamp(6px, 0.8vw, 10px);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--eyebrow);
+  }
+
+  .grid :global(.day.has-slots):hover {
+    background: rgba(240, 176, 31, 0.34);
+    transform: translateY(-3px);
+  }
+
+  .grid :global(.day.is-empty) {
+    color: rgba(59, 47, 28, 0.26);
+    cursor: not-allowed;
+  }
+
+  .grid :global(.day.is-today) {
+    border-color: rgba(59, 47, 28, 0.32);
+  }
+
+  .grid :global(.day.on) {
+    background: var(--gold);
+    border-color: rgba(59, 47, 28, 0.24);
+    box-shadow: 0 4px 0 rgba(59, 47, 28, 0.2);
+  }
+
+  .grid :global(.day.on)::after {
+    background: var(--deep);
+  }
+
+  .cal-msg {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .cal-msg.is-error {
+    color: #a33b16;
+  }
+
+  .cal-msg :global(.retry) {
+    padding: 5px 12px;
+    border-radius: var(--r-pill);
+    background: rgba(59, 47, 28, 0.08);
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--ink);
+  }
+
+  /* ── Rail ──────────────────────────────────────────────── */
+
+  .rail {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 2vw, 20px);
+    position: sticky;
+    top: 92px;
+  }
+
+  .rail-block {
+    padding: clamp(16px, 2.2vw, 22px);
+    border-radius: var(--r-card);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+  }
+
+  .rail-title {
+    font-size: 17px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .hint {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .slots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .slots :global(.slot) {
+    padding: 12px 8px;
+    min-height: 48px;
+    border-radius: 14px;
+    background: var(--paper);
+    border: var(--border-w) solid var(--line-strong);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 15px;
+    transition:
+      background 0.14s ease,
+      transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .slots :global(.slot):hover {
+    background: rgba(240, 176, 31, 0.24);
+    transform: translateY(-2px);
+  }
+
+  .slots :global(.slot.on) {
+    background: var(--gold);
+    border-color: rgba(59, 47, 28, 0.2);
+    box-shadow: 0 4px 0 rgba(59, 47, 28, 0.2);
+  }
+
+  .summary-card {
+    padding: clamp(16px, 2.2vw, 22px);
+    border-radius: var(--r-card);
+    background: var(--deep);
+    color: var(--paper);
+  }
+
+  .summary-title {
+    font-size: 17px;
+    line-height: 1.2;
+    color: var(--paper);
+  }
+
+  .summary-list {
+    margin: 14px 0 0;
+  }
+
+  .summary-list > div + div {
+    margin-top: 11px;
+    padding-top: 11px;
+    border-top: 1px solid rgba(255, 248, 232, 0.14);
+  }
+
+  .summary-list dt {
+    font-weight: 700;
+    font-size: 10.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .summary-list dd {
+    margin: 5px 0 0;
+    font-size: 14.5px;
+    line-height: 1.45;
+    color: rgba(255, 248, 232, 0.9);
+  }
+
+  .summary-empty {
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: rgba(255, 248, 232, 0.55);
+  }
+
+  /* ── Details, revealed once a slot is chosen ───────────── */
+
+  .details {
+    margin-top: clamp(24px, 3.5vw, 40px);
+    padding: clamp(20px, 3vw, 34px);
+    border-radius: var(--r-toy);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .details:not([hidden]) {
+      animation: rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    }
+  }
+
+  .details-title {
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+  }
+
+  .field-wide {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  .req {
+    font-weight: 600;
+    color: rgba(59, 47, 28, 0.45);
+  }
+
+  input[type='text'],
+  input[type='tel'],
+  input[type='email'],
+  textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: var(--border-w) solid var(--line-strong);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    transition:
+      border-color 0.16s ease,
+      box-shadow 0.16s ease;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(240, 176, 31, 0.35);
+  }
+
+  input[aria-invalid='true'],
+  textarea[aria-invalid='true'] {
+    border-color: var(--coral);
+  }
+
+  .help {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .error {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #a33b16;
+  }
+
+  .pot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 18px;
+    font-weight: 600;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .consent input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    accent-color: var(--deep);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  button[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .call {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* ── Result ────────────────────────────────────────────── */
+
+  .result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    padding: clamp(30px, 4.5vw, 56px) 20px;
+    border-radius: var(--r-toy);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+  }
+
+  .result-mark {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--deep);
+    font-size: 30px;
+  }
+
+  .result.is-error .result-mark {
+    background: var(--coral);
+    color: var(--on-coral);
+  }
+
+  .result h2 {
+    font-size: clamp(23px, 2.6vw, 30px);
+    color: var(--ink);
+  }
+
+  .result p {
+    max-width: 46ch;
+    font-size: 15.5px;
+    line-height: 1.66;
+    color: var(--muted);
+  }
+
+  .reference {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 22px;
+    border-radius: var(--r-fact);
+    background: rgba(59, 47, 28, 0.06);
+  }
+
+  .reference span {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .reference strong {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .result:not([hidden]) .result-mark {
+      animation: pop-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip:hover,
+    .nav:hover,
+    .slots :global(.slot):hover,
+    .grid :global(.day.has-slots):hover {
+      transform: none;
+    }
+  }
+
+  /* The rail drops under the calendar before the calendar gets cramped. */
+  @media (max-width: 1080px) {
+    .stage {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .rail {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .rail-block,
+    .summary-card {
+      flex: 1 1 300px;
+    }
+    .slots {
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .fields {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+    .cal {
+      padding: 14px;
+    }
+    .nav {
+      width: 44px;
+      height: 44px;
+    }
+  }
+</style>
+

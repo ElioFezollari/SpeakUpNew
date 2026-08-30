@@ -1,0 +1,13 @@
+---
+// Albanian thank-you page, served at `/kontakt/faleminderit/`.
+// Where the admin endpoint redirects a no-JavaScript submission.
+import Base from '../../layouts/Base.astro';
+import ThanksPage from '../../components/ThanksPage.astro';
+import { useCopy } from '../../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+---
+
+<Base title={t.thanks.title} description={t.thanks.body} robots="noindex">
+  <ThanksPage locale="sq" />
+</Base>

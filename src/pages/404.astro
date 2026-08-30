@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { useCopy, localePath } from '../i18n/utils';
+
+const { locale, t } = useCopy(Astro.currentLocale);
+---
+
+<Base title={t.notFound.title} robots="noindex">
+  <section class="nf section">
+    <div class="inner">
+      <h1>{t.notFound.title}</h1>
+      <p>{t.notFound.body}</p>
+      <a class="btn btn-dark" href={localePath(locale, '/')}>{t.notFound.home}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-top: clamp(60px, 9vw, 120px);
+    padding-bottom: clamp(60px, 9vw, 120px);
+  }
+
+  h1 {
+    font-size: clamp(34px, 4.4vw, 54px);
+    line-height: 1.05;
+    max-width: 16ch;
+  }
+
+  p {
+    margin-top: 16px;
+    max-width: 46ch;
+    font-size: 16.5px;
+    line-height: 1.68;
+    color: var(--muted);
+  }
+
+  .btn {
+    margin-top: 28px;
+  }
+</style>

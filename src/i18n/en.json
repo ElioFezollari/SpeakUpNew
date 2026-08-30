@@ -1,0 +1,701 @@
+{
+  "meta": {
+    "title": "Speak Up Clinic — Neurodevelopment clinic in Tirana",
+    "description": "A neurodevelopment and speech therapy clinic in Tirana. Detailed assessment and therapy for children, adults and older people. Six years of experience, more than 500 cases treated.",
+    "localeTag": "en",
+    "ogLocale": "en_GB"
+  },
+  "nav": {
+    "items": [
+      {
+        "label": "Services",
+        "href": "#services"
+      },
+      {
+        "label": "Therapies",
+        "href": "#therapies"
+      },
+      {
+        "label": "About us",
+        "route": "about"
+      },
+      {
+        "label": "The clinic",
+        "route": "clinic"
+      },
+      {
+        "label": "Blog",
+        "route": "blog"
+      },
+      {
+        "label": "Contact",
+        "route": "contact"
+      }
+    ],
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "languageLabel": "Choose language",
+    "switchToOther": "Switch to Albanian"
+  },
+  "book": "Book",
+  "pill": "Neurodevelopment clinic · Tirana",
+  "h1a": "Welcome to",
+  "h1word": "Speak Up",
+  "h1b": "Clinic",
+  "hero_p": "Dedicated to helping you towards a better future. Assessment, therapy and support for children, adults and older people.",
+  "cta1": "Book a consultation",
+  "cta2": "Our services",
+  "trust": [
+    "6 years of experience",
+    "500+ cases treated",
+    "Qualified staff"
+  ],
+  "sticker1": "Rrr!",
+  "sticker2": "Well done!",
+  "sticker3": "One more time",
+  "eyebrow_toy": "Try it now",
+  "toy_h2": "Sound of the week",
+  "toy_p": "Pick a sound and get this week's word with the tip we give parents. These are the same drills we use in the room.",
+  "toy_tip": "Tip for home",
+  "toy_pickLabel": "Pick a sound",
+  "sounds": [
+    {
+      "letter": "R",
+      "word": "rrota (wheel)",
+      "spell": "r-r-ro-ta",
+      "tip": "Tongue tip behind the upper teeth, let the air buzz. Start with a car's “brr”, not the whole word.",
+      "age": "usually ages 5–6"
+    },
+    {
+      "letter": "S",
+      "word": "sytë (eyes)",
+      "spell": "s-y-të",
+      "tip": "Teeth together, lips in a smile, a thin snake-like stream of air. If the tongue pokes out, use a straw.",
+      "age": "usually ages 4–5"
+    },
+    {
+      "letter": "SH",
+      "word": "shishe (bottle)",
+      "spell": "sh-i-she",
+      "tip": "Lips rounded like a kiss, tongue up. Say “shsh” together, as if hushing a baby.",
+      "age": "usually ages 4–5"
+    },
+    {
+      "letter": "L",
+      "word": "lule (flower)",
+      "spell": "l-u-le",
+      "tip": "Tongue tip touches the ridge behind the teeth and stays there. Stretch it: “llll-ule”.",
+      "age": "usually ages 3–4"
+    },
+    {
+      "letter": "K",
+      "word": "kalë (horse)",
+      "spell": "k-a-lë",
+      "tip": "This one is born at the back of the throat. Try it with the head tilted back a little, like a small cough.",
+      "age": "usually ages 3–4"
+    }
+  ],
+  "eyebrow_what": "For children",
+  "what_h2": "What we do in the room",
+  "what_p": "No worksheets. It all happens through games, a mirror, and toys the child picks out.",
+  "cards": [
+    {
+      "title": "Games with sounds",
+      "desc": "We hide cards, roll dice, build towers — and every move asks for one accurate sound."
+    },
+    {
+      "title": "The big mirror",
+      "desc": "The child watches their own tongue and lips and sees why the sound isn't coming. That's half the work."
+    },
+    {
+      "title": "One small home task",
+      "desc": "You leave with a single game for the week. Ten minutes a day, no more."
+    }
+  ],
+  "eyebrow_chart": "Rewards",
+  "chart_h2": "The star chart",
+  "chart_p": "Every session earns a star. Ten stars make a certificate with your child's name — and a photo on the clinic wall, if the parent is happy with that.",
+  "chart_sr": "6 of 10 stars collected",
+  "eyebrow_room": "The clinic",
+  "room_h2": "A space patients want to come back to",
+  "room_photo_alt": "The Speak Up playroom, with a large window and toys on open shelves",
+  "roomList": [
+    "A big window, no hospital lighting",
+    "Toys cleaned after every session",
+    "The parent sits inside, not in the corridor",
+    "45-minute sessions, with a break if needed"
+  ],
+  "room_link": "See the whole clinic",
+  "eyebrow_parents": "For parents",
+  "parents_h2": "The serious part, briefly",
+  "facts": [
+    {
+      "k": "First assessment",
+      "v": "4,500 Lek",
+      "note": "60 minutes, written report within three days"
+    },
+    {
+      "k": "Session",
+      "v": "3,500 Lek",
+      "note": "45 minutes · pack of 8 sessions: 24,000 Lek"
+    },
+    {
+      "k": "Waiting list",
+      "v": "about 2 weeks",
+      "note": "Free cancellation up to 24 hours before"
+    },
+    {
+      "k": "Licence",
+      "v": "No. 4821",
+      "note": "Albanian Order of Health Professionals · MSc SLT, UT"
+    }
+  ],
+  "cta_h2": "Let us start with a consultation",
+  "cta_p": "Call us or leave your number — we reply within one working day.",
+  "cta_btn": "Book a consultation",
+  "foot_hours": "Mon–Fri 9 am–7 pm · Sat 9 am–1 pm",
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Tips and news",
+    "description": "Writing from our therapists for parents: how to practise sounds at home, what to expect from therapy, and when it is worth asking for help.",
+    "readMore": "Read more",
+    "readingTime": "min read",
+    "backToList": "All posts",
+    "publishedOn": "Published",
+    "updatedOn": "Updated",
+    "by": "by",
+    "empty": "No posts yet. Check back soon.",
+    "relatedTitle": "Read next",
+    "tagsLabel": "Tags"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This page does not exist, or it has moved.",
+    "home": "Back to the home page"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Write to us, or just call",
+    "lede": "We reply within one working day. If you only want to ask something before booking, that is completely fine — most parents start that way.",
+    "detailsTitle": "Details",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "addressLabel": "Address",
+    "hoursLabel": "Opening hours",
+    "directions": "Open in maps",
+    "mapNote": "The entrance is from the street, first floor. There is a lift.",
+    "formTitle": "Leave a message",
+    "formLede": "Fill in as much as you know. Nothing here is a trap — if you are not sure of the exact age, or what to write, leave it blank.",
+    "form": {
+      "name": "Your name",
+      "namePlaceholder": "What should we call you",
+      "phone": "Phone",
+      "phonePlaceholder": "069 ...",
+      "phoneHelp": "The fastest way for us to get back to you.",
+      "email": "Email (optional)",
+      "childAge": "Child's age (optional)",
+      "childAgePlaceholder": "e.g. 4 years",
+      "topic": "What is it about?",
+      "topicOptions": [
+        "I would like to book an assessment",
+        "I have a question",
+        "Something else"
+      ],
+      "message": "Message",
+      "messagePlaceholder": "Briefly, what you have noticed in your child, or what you would like to ask.",
+      "consent": "I agree that Speak Up may use these details only to reply to me.",
+      "submit": "Send message",
+      "sending": "Sending…",
+      "required": "required",
+      "errorTitle": "The message did not send",
+      "errorBody": "Please try again, or call us — we answer straight away.",
+      "successTitle": "Thank you! We have your message.",
+      "successBody": "We will reply within one working day. If you need us sooner, please call.",
+      "noJsNote": "If the form will not send, email us directly or call."
+    }
+  },
+  "thanks": {
+    "title": "Thank you!",
+    "body": "We have your message and will reply within one working day. If you need us sooner, please call.",
+    "back": "Back to the home page"
+  },
+  "footer": {
+    "tagline": "A speech and language therapy clinic for children and adults in Tirana. Assessment, therapy, and practical advice for parents.",
+    "exploreTitle": "Site",
+    "contactTitle": "Contact",
+    "hoursTitle": "Opening hours",
+    "followTitle": "Follow us",
+    "followOn": "Speak Up on",
+    "licenceLabel": "Licence",
+    "rights": "All rights reserved.",
+    "backToTop": "Back to top"
+  },
+  "clinic": {
+    "eyebrow": "The clinic",
+    "title": "Have a look before you come",
+    "lede": "Most children settle faster when they already know where they are going. Show them these photos before the first session — and tell them the parent stays in the room the whole time.",
+    "galleryTitle": "The space",
+    "photos": [
+      {
+        "name": "room",
+        "caption": "Office",
+        "alt": "The street entrance to the Speak Up clinic",
+        "note": "Entrance from the street, first floor. There is a lift."
+      },
+      {
+        "name": "room2",
+        "caption": "The waiting area",
+        "alt": "The waiting area with armchairs and children's books",
+        "note": "Books and toys for the wait, and water for parents."
+      },
+      {
+        "name": "therapy-room",
+        "caption": "The therapy room",
+        "alt": "The therapy room with a large window and a low table",
+        "note": "A big window, no hospital lighting."
+      },
+      {
+        "name": "mirror-corner",
+        "caption": "The mirror",
+        "alt": "The mirror corner where a child can watch their own tongue and lips",
+        "note": "Where the child watches their own tongue and lips."
+      },
+      {
+        "name": "toy-shelves",
+        "caption": "The toy shelves",
+        "alt": "Open shelves with toys arranged in rows",
+        "note": "The child picks. Cleaned after every session."
+      },
+      {
+        "name": "parent-seat",
+        "caption": "Where the parent sits",
+        "alt": "The parent's chair inside the therapy room",
+        "note": "Inside the room, not in the corridor."
+      }
+    ],
+    "practicalTitle": "Worth knowing before you come",
+    "practical": [
+      {
+        "k": "Address",
+        "v": "Rr. Myslym Shyri 24",
+        "note": "First floor, lift available"
+      },
+      {
+        "k": "Parking",
+        "v": "On the street",
+        "note": "There is usually space opposite the entrance"
+      },
+      {
+        "k": "Prams",
+        "v": "Yes",
+        "note": "The lift takes a pushchair"
+      },
+      {
+        "k": "Siblings",
+        "v": "Welcome",
+        "note": "They wait in the lounge with an adult"
+      }
+    ],
+    "ctaTitle": "Want to see it in person?",
+    "ctaBody": "Book an assessment, or call us if you would rather just ask something first.",
+    "photoNote": "These placeholders will be replaced with real photographs of the clinic."
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "What you will find with us",
+    "pickLabel": "Choose a service",
+    "children": {
+      "title": "Services for children",
+      "tabs": [
+        {
+          "tab": "Therapy",
+          "heading": "At Speak Up Clinic you will find every kind of intervention therapy",
+          "body": "We are always looking to give the very best to every child. Our pathologists specialise in:",
+          "list": [
+            "expressive and receptive language",
+            "speech sound disorders / dyslalia",
+            "stammering",
+            "speech delay",
+            "apraxia of speech",
+            "learning disorders",
+            "autism spectrum disorder"
+          ]
+        },
+        {
+          "tab": "Assessment",
+          "heading": "A detailed assessment and plan for every patient",
+          "body": "We offer a detailed one-week assessment for every client who comes to Speak Up Clinic. It is carried out by a range of specialists, and the results are gathered and worked up into an individual report.",
+          "list": []
+        },
+        {
+          "tab": "For parents",
+          "heading": "Support for the parent or carer",
+          "body": "Support for parents begins with a child-centred care plan aimed at your child's own challenges and goals. Our therapists can help your family to:",
+          "list": [
+            "learn strategies that strengthen your child's communication and social development",
+            "develop a neurodiversity-affirming perspective",
+            "feel more confident using specialist advice to respond in different urgent situations"
+          ]
+        }
+      ],
+      "photos": [
+        "children-1",
+        "children-2",
+        "children-3"
+      ]
+    },
+    "adults": {
+      "title": "Services for adults",
+      "tabs": [
+        {
+          "tab": "Assessment",
+          "heading": "A detailed assessment and plan for every patient",
+          "body": "We offer a detailed one-week assessment for every client who comes to Speak Up Clinic. It is carried out by a range of specialists, and the results are gathered and worked up into an individual report.",
+          "list": []
+        },
+        {
+          "tab": "Conditions",
+          "heading": "Our pathologists treat",
+          "body": "There are many reasons why you might have difficulty with speech or language. Some begin in childhood. Others follow an illness or an injury. Speech and language pathologists can help.",
+          "list": [
+            "Apraxia",
+            "Aphasia",
+            "Dysarthria",
+            "Stammering",
+            "Voice disorders",
+            "Dementia",
+            "Right hemisphere disorder",
+            "Traumatic brain injury"
+          ]
+        },
+        {
+          "tab": "Never too late",
+          "heading": "It is never too late to get the help you need",
+          "body": "Speech therapy can help people of any age. If you are wondering whether it is too late to improve your communication through speech therapy — it is not. With our support and your family's, we can reach results you will be happy with.",
+          "list": []
+        }
+      ],
+      "photos": [
+        "adults-1",
+        "adults-2",
+        "adults-3"
+      ]
+    },
+    "allAges": "The Neurodevelopment Clinic treats people of every age — paediatric, adult and geriatric — who need support with their communication.",
+    "more": "Learn more about our services"
+  },
+  "voice": {
+    "eyebrow": "Why us",
+    "title": "Everyone deserves a voice",
+    "lede": "Which is why we are here to offer:",
+    "items": [
+      "A detailed assessment by specialist speech and language pathologists.",
+      "Intervention therapy for every age and every diagnosis.",
+      "Detailed reporting on how the intervention is going, and a programme specific to each client at the clinic."
+    ]
+  },
+  "therapies": {
+    "eyebrow": "Therapies",
+    "title": "What we offer",
+    "lede": "At Speak Up Clinic you will find the main intervention therapies used worldwide. We work continuously to offer the best possible service to as many patients as we can.",
+    "items": [
+      {
+        "name": "Speech and language therapy",
+        "points": [
+          "Helps anyone with difficulties in speech, language or communication, at any age and with any diagnosis."
+        ]
+      },
+      {
+        "name": "Developmental therapy",
+        "points": [
+          "Used in cases of intellectual disability.",
+          "Helps build the skills and competencies behind a person's independence."
+        ]
+      },
+      {
+        "name": "Oro-myo-facial therapy",
+        "points": [
+          "Used where the muscles of the face and mouth have been affected."
+        ]
+      },
+      {
+        "name": "Chewing and swallowing therapy",
+        "points": [
+          "Training the muscles to work together, for patients who have difficulty with feeding."
+        ]
+      },
+      {
+        "name": "ABA therapy",
+        "points": [
+          "The most widely used approach in autism spectrum disorder.",
+          "Staff qualified in ABA and in the other therapies combined with it for this diagnosis."
+        ]
+      },
+      {
+        "name": "Behavioural therapy",
+        "points": [
+          "Helps teach and strengthen positive behaviours, and reduce unwanted or difficult ones."
+        ]
+      }
+    ]
+  },
+  "portfolio": {
+    "eyebrow": "Our work",
+    "title": "Our portfolio",
+    "lede": "Moments from day-to-day work at the clinic.",
+    "photos": [
+      "portfolio-1",
+      "portfolio-2",
+      "portfolio-3",
+      "portfolio-4"
+    ],
+    "alt": "A photograph from work at Speak Up Clinic"
+  },
+  "testimonials": {
+    "eyebrow": "Reviews",
+    "title": "What Speak Up Clinic families say",
+    "role": "Parent",
+    "items": [
+      {
+        "name": "Denisa Canaj",
+        "quote": "My son has made visible progress since we started therapy. The staff are very patient and explain everything step by step."
+      },
+      {
+        "name": "Bledi Dukaj",
+        "quote": "The first assessment was thorough and the report helped us understand exactly where we were. I recommend them without hesitation."
+      },
+      {
+        "name": "Aurora Beqiri",
+        "quote": "The therapists are professional and very warm with the children. My daughter looks forward to going every week."
+      },
+      {
+        "name": "Mira Musaj",
+        "quote": "They gave us concrete exercises for home and showed us how to do them. That changed a great deal for us."
+      },
+      {
+        "name": "Elona Demiri",
+        "quote": "Thank you to everyone at Speak Up for their work and dedication. The results speak for themselves."
+      }
+    ]
+  },
+  "team": {
+    "eyebrow": "The team",
+    "title": "The specialists at Speak Up Clinic",
+    "lede": "Meet our staff.",
+    "members": [
+      {
+        "name": "Griselda Çela",
+        "role": "Speech therapist / ABA therapist",
+        "credential": "PhD Cand. MSc.",
+        "photo": "team-griselda",
+        "alt": "Griselda Çela, speech and ABA therapist",
+        "summary": "Co-founder of the “Speak Up” Neurodevelopment Clinic."
+      },
+      {
+        "name": "Dea Fezollari",
+        "role": "Speech therapist / ABA therapist",
+        "credential": "",
+        "photo": "team-dea",
+        "alt": "Dea Fezollari, speech and ABA therapist",
+        "summary": ""
+      }
+    ],
+    "more": "Read more about the team"
+  },
+  "about": {
+    "eyebrow": "About us",
+    "title": "Our work began in August 2019",
+    "intro": [
+      "The Speak Up Neurodevelopment Clinic has been working since August 2019. In the months that followed, more than 500 cases have been treated, and many consultations and assessments carried out with paediatric, adult and geriatric patients.",
+      "At Speak Up Clinic it is our aim to help our patients meet their communication goals, by offering comprehensive assessments and treatment across every diagnosis.",
+      "Qualified staff, trained both in Albania and abroad in speech and language therapy and neurodevelopmental disorders, contribute at this clinic to reach the best possible potential for every patient.",
+      "We also believe in empowering parents and carers through collaboration and training — letting families take ownership of the results of therapy."
+    ],
+    "journeyTitle": "Our journey",
+    "journeyLede": "With six years of experience behind us, Speak Up Clinic has treated more than 500 cases across a wide range of diagnoses. Our mission remains to help our clients meet their communication goals, through comprehensive assessment and committed treatment.",
+    "stats": [
+      {
+        "v": "6",
+        "k": "years of experience"
+      },
+      {
+        "v": "500+",
+        "k": "cases treated"
+      },
+      {
+        "v": "∞",
+        "k": "range of diagnoses"
+      },
+      {
+        "v": "★",
+        "k": "results families are happy with"
+      },
+      {
+        "v": "✓",
+        "k": "qualified staff"
+      }
+    ],
+    "moreTitle": "More about us",
+    "more": [
+      "The clinical specialists working at Speak Up Clinic diagnose and treat every kind of communication difficulty — including speech delay, stammering, articulation, expressive language, receptive language, social communication and accent modification — at every age from paediatric to adult.",
+      "Every patient who comes to our clinic receives a specific assessment and a detailed intervention plan, which the therapists follow continuously, working carefully through every goal in the programme.",
+      "The type of therapy a patient needs is determined by the detailed one-week assessment at our centre. After ongoing testing, the intervention plan is set, along with the combination of therapies each case requires.",
+      "Our ABA therapists deliver this therapy for every child diagnosed with autism spectrum disorder."
+    ],
+    "staffTitle": "Our staff",
+    "staffLede": "Meet the team.",
+    "staff": [
+      {
+        "name": "Griselda Çela",
+        "credential": "PhD Cand. MSc.",
+        "role": "Speech and language therapist",
+        "photo": "team-griselda",
+        "alt": "Griselda Çela, speech and language therapist",
+        "summary": "Co-founder of the “Speak Up” Neurodevelopment Clinic.",
+        "groups": [
+          {
+            "title": "Education",
+            "items": [
+              "BA in Speech and Language Therapy",
+              "MSc in Speech and Language Therapy",
+              "PhD Candidate, LMU Muenchen University",
+              "Certified to practise ABA therapy"
+            ]
+          },
+          {
+            "title": "Trained at",
+            "items": [
+              "Fundamentals of Neuroscience — Harvard Medical School",
+              "Clinical Competence in Audiology — American Speech-Language-Hearing Association",
+              "Safe Swallowing Dysphagia Management — Safe Swallowing Education"
+            ]
+          },
+          {
+            "title": "Professional activity",
+            "items": [
+              "Lecturer on the training course “Stimulating children aged 1–5”, “Speak Up” Neurodevelopment Clinic.",
+              "Member of the multidisciplinary team assessing and diagnosing language and neurodevelopmental difficulties.",
+              "Part of the multidisciplinary staff at “Speak Up” Clinic and “Neuron” Clinic."
+            ]
+          },
+          {
+            "title": "Experience across diagnoses",
+            "items": [
+              "Speech delay",
+              "Stammering",
+              "Autism spectrum disorder",
+              "Down syndrome",
+              "ADHD",
+              "Phonological delay",
+              "Learning difficulties",
+              "Behavioural disorders",
+              "Developmental language disorder"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Dea Fezollari",
+        "credential": "",
+        "role": "Speech therapist / ABA therapist",
+        "photo": "team-dea",
+        "alt": "Dea Fezollari, speech and ABA therapist",
+        "summary": "",
+        "groups": []
+      }
+    ]
+  },
+  "booking": {
+    "eyebrow": "Booking",
+    "title": "Book a consultation",
+    "lede": "Choose the service, the day and the time. We confirm by phone within one working day.",
+    "demoTitle": "Demonstration calendar",
+    "demoBody": "The times below are examples, not real availability. The booking system is not connected yet.",
+    "step1": "Service",
+    "step2": "Day",
+    "step3": "Time",
+    "step4": "Your details",
+    "serviceLabel": "Which service?",
+    "services": [
+      "First assessment",
+      "Speech and language therapy",
+      "ABA therapy",
+      "Developmental therapy",
+      "Oro-myo-facial therapy",
+      "Chewing and swallowing therapy",
+      "Behavioural therapy",
+      "Consultation / question"
+    ],
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "calendarLabel": "Choose a day",
+    "weekdays": [
+      "M",
+      "T",
+      "W",
+      "T",
+      "F",
+      "S",
+      "S"
+    ],
+    "weekdaysFull": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "today": "Today",
+    "selected": "Selected",
+    "unavailable": "No times",
+    "loading": "Loading times…",
+    "loadError": "We could not load the times. Please try again.",
+    "retry": "Try again",
+    "pickDayFirst": "Choose a day to see the available times.",
+    "slotsLabel": "Available times",
+    "noSlots": "There are no free times on this day. Please try another.",
+    "monthEmpty": "No free times this month. Try the next one.",
+    "summaryTitle": "Your booking",
+    "summaryEmpty": "Nothing chosen yet.",
+    "changeDay": "Change",
+    "form": {
+      "name": "Your name",
+      "phone": "Phone",
+      "phoneHelp": "We will call this number to confirm.",
+      "email": "Email (optional)",
+      "childAge": "Child's age (optional)",
+      "childAgePlaceholder": "e.g. 4 years",
+      "notes": "Notes (optional)",
+      "notesPlaceholder": "What you have noticed, or what you would like to ask.",
+      "consent": "I agree that Speak Up may use these details to make and confirm this booking.",
+      "required": "required",
+      "submit": "Confirm booking",
+      "sending": "Sending…"
+    },
+    "successTitle": "Your booking is in!",
+    "successBody": "We will contact you to confirm within one working day.",
+    "referenceLabel": "Booking reference",
+    "errorTitle": "The booking did not go through",
+    "errorBody": "Please try again, or call us and we will sort it out together.",
+    "takenTitle": "That time has just been taken",
+    "takenBody": "Someone booked it just before you. Please pick another — the list has been refreshed.",
+    "notConfigured": "The booking system is not connected yet. Please call us to book."
+  }
+}

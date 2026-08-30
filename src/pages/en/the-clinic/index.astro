@@ -1,0 +1,12 @@
+---
+// English clinic tour, served at `/en/the-clinic/`.
+import Base from '../../../layouts/Base.astro';
+import ClinicPage from '../../../components/ClinicPage.astro';
+import { useCopy } from '../../../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+---
+
+<Base title={t.clinic.title} description={t.clinic.lede}>
+  <ClinicPage locale="en" />
+</Base>

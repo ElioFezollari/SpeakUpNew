@@ -1,0 +1,40 @@
+---
+// English blog posts, served at `/en/blog/<slug>/`.
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import BlogPost from '../../../components/BlogPost.astro';
+import { routePath, localePath } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const all = await getCollection('blog');
+  const posts = all.filter((post: any) => post.data.locale === 'en');
+  // See the Albanian route for why: point at a translated twin when one exists,
+  // otherwise at the Albanian blog index rather than a URL that 404s.
+  const albanianSlugs = new Set(
+    all.filter((post: any) => post.data.locale === 'sq').map((post: any) => post.data.slug),
+  );
+
+  return posts.map((post: any) => ({
+    params: { slug: post.data.slug },
+    props: {
+      post,
+      altPath: albanianSlugs.has(post.data.slug)
+        ? localePath('sq', `/blog/${post.data.slug}/`)
+        : routePath('blog', 'sq'),
+    },
+  }));
+}
+
+const { post, altPath } = Astro.props;
+const { data } = post;
+---
+
+<Base
+  title={data.seoTitle ?? data.title}
+  description={data.seoDescription ?? data.description}
+  ogImage={data.coverImage?.url}
+  ogType="article"
+  altPath={altPath}
+>
+  <BlogPost post={post} locale="en" />
+</Base>

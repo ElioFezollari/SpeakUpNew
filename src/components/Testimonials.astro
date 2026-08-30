@@ -1,0 +1,161 @@
+---
+import { useCopy } from '../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+const tm = t.testimonials;
+
+// PLACEHOLDER: the five names are the client's real ones. The wording of each
+// review has not been supplied and must be replaced with what the parents
+// actually wrote before this goes live. See README.
+const TINTS = ['sky', 'mint', 'coral'] as const;
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('');
+---
+
+<section class="section">
+  <div class="inner">
+    <div class="head" data-reveal>
+      <span class="eyebrow">{tm.eyebrow}</span>
+      <h2 class="h2">{tm.title}</h2>
+    </div>
+
+    <ul class="quotes" data-reveal-stagger>
+      {
+        tm.items.map((item, i) => (
+          <li class={`quote tint-${TINTS[i % TINTS.length]}`}>
+            <blockquote>
+              <p>{item.quote}</p>
+            </blockquote>
+            <figcaption class="who">
+              {/* Initials rather than a photograph: the clinic's families
+                  should not have their faces on the site without consent. */}
+              <span class="avatar" aria-hidden="true">
+                {initials(item.name)}
+              </span>
+              <span class="who-text">
+                <strong>{item.name}</strong>
+                <span>{tm.role}</span>
+              </span>
+            </figcaption>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .head {
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+  }
+
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-cards);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .quote {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    padding: clamp(20px, 2.6vw, 28px);
+    border-radius: var(--r-card);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+    position: relative;
+  }
+
+  /* An oversized quote mark in the card's tint. */
+  .quote::before {
+    content: '“';
+    position: absolute;
+    top: 6px;
+    right: 18px;
+    font-family: var(--font-display);
+    font-size: 64px;
+    line-height: 1;
+    color: color-mix(in srgb, var(--tint) 45%, transparent);
+    pointer-events: none;
+  }
+
+  .tint-sky {
+    --tint: var(--sky);
+  }
+  .tint-mint {
+    --tint: var(--mint);
+  }
+  .tint-coral {
+    --tint: var(--coral);
+  }
+
+  blockquote {
+    margin: 0;
+  }
+
+  blockquote p {
+    font-size: 15.5px;
+    line-height: 1.68;
+    color: var(--ink);
+  }
+
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--tint) 55%, transparent);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .who-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.35;
+  }
+
+  .who-text strong {
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+
+  .who-text span {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 980px) {
+    .quotes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .quotes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,471 @@
+---
+import Logo from './Logo.astro';
+import SocialIcon from './SocialIcon.astro';
+import { useCopy, localePath, routePath, type RouteKey } from '../i18n/utils';
+import { SITE, SOCIALS } from '../site.config';
+
+const { locale, t } = useCopy(Astro.currentLocale);
+
+const home = localePath(locale, '/');
+
+// Same source as the header nav, resolved to absolute paths — footer links are
+// followed from any page, so in-page anchors need the home page prefix.
+const navLinks = t.nav.items.map((item) =>
+  'route' in item
+    ? { label: item.label, href: routePath(item.route as RouteKey, locale) }
+    : { label: item.label, href: `${home}${item.href}` },
+);
+
+const mapQuery = encodeURIComponent(`${SITE.address.street}, ${SITE.address.city}, Albania`);
+const mapHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+
+// Only render profiles that actually have a URL — see site.config.ts.
+const socials = SOCIALS.filter((social) => social.url.length > 0);
+
+// Generated at build time rather than hardcoded, so it cannot go stale.
+const year = new Date().getFullYear();
+
+// PLACEHOLDER: mirrors facts[3] on the home page — the client must confirm the
+// real licence number before launch.
+const licence = t.facts[3];
+---
+
+<footer class="site-footer">
+  {/* A small mascot peeking over the panel's rounded edge — the same
+      two-bubble face as the hero, at the scale of a sticker. */}
+  <div class="peek" aria-hidden="true">
+    <span class="peek-eyes">
+      <span class="peek-eye anim-blink"></span><span class="peek-eye anim-blink"></span>
+    </span>
+    <span class="peek-mouth"></span>
+  </div>
+
+  <div class="inner">
+    <div class="cols">
+      <div class="col brand-col">
+        <div class="brand">
+          {/* The logo's dark bubble and near-black outline both disappear on
+              this brown ground, so it sits on a paper-coloured tile. */}
+          <span class="logo-tile"><Logo width={30} /></span>
+          <span class="wordmark">Speak&nbsp;Up</span>
+        </div>
+        <p class="tagline">{t.footer.tagline}</p>
+
+        {
+          socials.length > 0 && (
+            <>
+              <h2 class="col-title follow-title">{t.footer.followTitle}</h2>
+              <ul class="socials">
+                {socials.map((social) => (
+                  <li>
+                    <a
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${t.footer.followOn} ${social.label}`}
+                    >
+                      <SocialIcon name={social.key} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )
+        }
+      </div>
+
+      <nav class="col" aria-labelledby="foot-explore">
+        <h2 class="col-title" id="foot-explore">{t.footer.exploreTitle}</h2>
+        <ul class="links">
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="col">
+        <h2 class="col-title">{t.footer.contactTitle}</h2>
+        <ul class="links">
+          <li><a href={SITE.phone.href}>{SITE.phone.display}</a></li>
+          <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          <li>
+            <a href={mapHref} target="_blank" rel="noopener noreferrer">
+              {SITE.address.street}<br />{SITE.address.city}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <h2 class="col-title">{t.footer.hoursTitle}</h2>
+        {/* The hours string is one line with a middle dot between the two
+            ranges; split so each sits on its own line here. */}
+        <ul class="plain">
+          {t.foot_hours.split('·').map((part) => <li>{part.trim()}</li>)}
+        </ul>
+
+        <h2 class="col-title spaced">{t.footer.licenceLabel}</h2>
+        <p class="licence">
+          {licence.v}<br />
+          <span class="licence-note">{licence.note}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="bottom">
+      <p class="copy">
+        © {year} {SITE.legalName} · {t.footer.rights}
+      </p>
+      <a class="top-link" href="#main">
+        <span>{t.footer.backToTop}</span>
+        <span class="arrow" aria-hidden="true">↑</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* A rounded panel rising out of the page, matching the star-chart idiom,
+     rather than a flat rectangle bolted to the bottom. */
+  .site-footer {
+    position: relative;
+    margin-top: clamp(56px, 7vw, 104px);
+    background: var(--deep);
+    background-image: radial-gradient(rgba(255, 248, 232, 0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
+    border-radius: clamp(28px, 4vw, 44px) clamp(28px, 4vw, 44px) 0 0;
+    color: rgba(255, 248, 232, 0.66);
+    font-size: 15px;
+    line-height: 1.62;
+  }
+
+  /* ── Peeking mascot ────────────────────────────────────── */
+
+  /*
+   * Deliberately NOT `--r-bubble`: that shape has a pointed tail at the
+   * bottom-left, which works at the hero's 230-400px where there is a mouth
+   * and a second bubble behind it, but at this size reads as a lopsided blob
+   * with a corner poking out. This is the organic oval the CTA mini-bubble
+   * uses, which is already proven small.
+   */
+  .peek {
+    position: absolute;
+    top: clamp(-36px, -3.2vw, -28px);
+    right: clamp(20px, 9vw, 140px);
+    width: clamp(58px, 6.4vw, 76px);
+    aspect-ratio: 1 / 0.92;
+    border-radius: 52% 48% 46% 54% / 54% 52% 48% 46%;
+    background: var(--gold);
+    box-shadow:
+      inset 0 -6px 0 rgba(59, 47, 28, 0.08),
+      0 7px 0 rgba(59, 47, 28, 0.14);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(5px, 0.6vw, 7px);
+  }
+
+  .peek-eyes {
+    display: flex;
+    gap: clamp(12px, 1.4vw, 16px);
+  }
+
+  .peek-eye {
+    width: clamp(7px, 0.8vw, 9px);
+    height: clamp(10px, 1.15vw, 13px);
+    border-radius: 50%;
+    background: var(--deep);
+  }
+
+  /* Without a mouth, two dots on a blob do not read as a face at this size. */
+  .peek-mouth {
+    width: clamp(17px, 1.9vw, 23px);
+    height: clamp(9px, 1vw, 12px);
+    border-radius: 0 0 999px 999px;
+    background: var(--deep);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .peek {
+      animation: floaty 5.4s ease-in-out infinite;
+    }
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+    gap: clamp(24px, 4vw, 56px);
+    padding-top: clamp(40px, 5vw, 64px);
+    padding-bottom: clamp(28px, 4vw, 44px);
+  }
+
+  .col {
+    min-width: 0;
+  }
+
+  /* ── Brand ─────────────────────────────────────────────── */
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+
+  /* Tilted and sitting on its own shadow, like the hero stickers. */
+  .logo-tile {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    background: var(--paper);
+    rotate: -4deg;
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.22);
+    transition: rotate 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .brand:hover .logo-tile {
+    rotate: 4deg;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--paper);
+    white-space: nowrap;
+  }
+
+  .tagline {
+    margin-top: 18px;
+    max-width: 38ch;
+    font-size: 15px;
+    line-height: 1.68;
+    color: rgba(255, 248, 232, 0.64);
+  }
+
+  /* ── Column headings and links ─────────────────────────── */
+
+  .col-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 11.5px;
+    line-height: 1.4;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 14px;
+  }
+
+  .col-title.spaced {
+    margin-top: 26px;
+  }
+
+  .follow-title {
+    margin-top: 26px;
+  }
+
+  .links,
+  .plain,
+  .socials {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .links li + li,
+  .plain li + li {
+    margin-top: 2px;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    /* 40px keeps these comfortably tappable without stretching the column. */
+    min-height: 40px;
+    color: rgba(255, 248, 232, 0.8);
+    text-decoration: none;
+    transition:
+      color 0.14s ease,
+      transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* A gold dot slides out on hover instead of an underline — the same dot
+     used for the room list bullets. */
+  .links a::before {
+    content: '';
+    width: 0;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    transition:
+      width 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+      margin-right 0.22s ease;
+  }
+
+  .links a:hover {
+    color: var(--gold);
+  }
+
+  .links a:hover::before {
+    width: 7px;
+  }
+
+  .plain li {
+    padding: 4px 0;
+    color: rgba(255, 248, 232, 0.75);
+  }
+
+  .licence {
+    color: rgba(255, 248, 232, 0.78);
+  }
+
+  .licence-note {
+    color: rgba(255, 248, 232, 0.48);
+    font-size: 13px;
+  }
+
+  /* ── Social icons ──────────────────────────────────────── */
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Tactile, like every other button on the site: sitting on a hard shadow
+     that compresses when pressed. */
+  .socials a {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255, 248, 232, 0.1);
+    color: rgba(255, 248, 232, 0.85);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.22);
+    transition:
+      background 0.16s ease,
+      color 0.16s ease,
+      box-shadow 0.2s ease,
+      transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .socials a:hover {
+    background: var(--gold);
+    color: var(--deep);
+    transform: translateY(-3px);
+    box-shadow: 0 7px 0 rgba(0, 0, 0, 0.24);
+  }
+
+  .socials a:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.22);
+    transition-duration: 0.06s;
+  }
+
+  /* ── Bottom bar ────────────────────────────────────────── */
+
+  /* A dotted gold rule instead of a hairline — softer, and it echoes the
+     page's dot texture. */
+  .rule {
+    height: 3px;
+    background-image: radial-gradient(rgba(240, 176, 31, 0.55) 1.5px, transparent 1.5px);
+    background-size: 12px 3px;
+    background-repeat: repeat-x;
+  }
+
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0 26px;
+    font-size: 13px;
+  }
+
+  .copy {
+    color: rgba(255, 248, 232, 0.52);
+  }
+
+  /* A proper pill button, like the rest of the site's controls. */
+  .top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 248, 232, 0.1);
+    color: rgba(255, 248, 232, 0.85);
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.22);
+    transition:
+      background 0.16s ease,
+      color 0.16s ease,
+      transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .top-link:hover {
+    background: var(--gold);
+    color: var(--deep);
+    transform: translateY(-3px);
+  }
+
+  .top-link:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.22);
+    transition-duration: 0.06s;
+  }
+
+  .arrow {
+    transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .top-link:hover .arrow {
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .socials a:hover,
+    .top-link:hover,
+    .top-link:hover .arrow {
+      transform: none;
+    }
+    .brand:hover .logo-tile {
+      rotate: -4deg;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .brand-col {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .cols {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+    }
+    /* Tucked in tighter so it clears the brand column below it. */
+    .peek {
+      right: 18px;
+      width: 46px;
+    }
+  }
+</style>

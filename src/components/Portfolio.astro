@@ -1,0 +1,66 @@
+---
+import PhotoSlot from './PhotoSlot.astro';
+import { useCopy } from '../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+const p = t.portfolio;
+
+// PLACEHOLDER: the client is sending photographs from the clinic. Each slot
+// names the file it expects; see src/assets/photos/README.md.
+---
+
+<section class="section">
+  <div class="inner">
+    <div class="head" data-reveal>
+      <span class="eyebrow">{p.eyebrow}</span>
+      <h2 class="h2">{p.title}</h2>
+      <p class="lede">{p.lede}</p>
+    </div>
+
+    <div class="grid" data-reveal-stagger>
+      {
+        p.photos.map((name, i) => (
+          <PhotoSlot
+            name={name}
+            alt={p.alt}
+            ratio={i === 0 ? '4 / 5' : '1 / 1'}
+            class={i === 0 ? 'tall' : undefined}
+            sizes="(max-width: 700px) 50vw, 25vw"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .head {
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+  }
+
+  .head .lede {
+    margin-top: 12px;
+    max-width: 54ch;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap-cards);
+    align-items: start;
+  }
+
+  /* The first frame runs taller, so the row is not a flat strip of squares. */
+  .grid :global(.tall) {
+    grid-row: span 2;
+  }
+
+  @media (max-width: 700px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .grid :global(.tall) {
+      grid-row: auto;
+    }
+  }
+</style>

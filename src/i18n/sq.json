@@ -1,0 +1,701 @@
+{
+  "meta": {
+    "title": "Speak Up Clinic — Klinikë Neurozhvillimi në Tiranë",
+    "description": "Klinikë neurozhvillimi dhe logopedie në Tiranë. Vlerësim i detajuar dhe terapi për fëmijë, të rritur dhe mosha të treta. 6 vite eksperiencë, mbi 500 raste të trajtuara.",
+    "localeTag": "sq-AL",
+    "ogLocale": "sq_AL"
+  },
+  "nav": {
+    "items": [
+      {
+        "label": "Shërbimet",
+        "href": "#services"
+      },
+      {
+        "label": "Terapitë",
+        "href": "#therapies"
+      },
+      {
+        "label": "Rreth nesh",
+        "route": "about"
+      },
+      {
+        "label": "Klinika",
+        "route": "clinic"
+      },
+      {
+        "label": "Blog",
+        "route": "blog"
+      },
+      {
+        "label": "Kontakt",
+        "route": "contact"
+      }
+    ],
+    "skipToContent": "Kalo te përmbajtja",
+    "openMenu": "Hap menunë",
+    "closeMenu": "Mbyll menunë",
+    "languageLabel": "Zgjidh gjuhën",
+    "switchToOther": "Kalo në anglisht"
+  },
+  "book": "Rezervo",
+  "pill": "Klinikë Neurozhvillimi · Tiranë",
+  "h1a": "Mirësevini në",
+  "h1word": "Speak Up",
+  "h1b": "Clinic",
+  "hero_p": "Të dedikuar për të ndihmuar ty, në një të ardhme më të mirë! Vlerësim, terapi dhe mbështetje për fëmijë, të rritur dhe mosha të treta.",
+  "cta1": "Rezervo një konsultë",
+  "cta2": "Shërbimet tona",
+  "trust": [
+    "6 vite eksperiencë",
+    "500+ raste të trajtuara",
+    "Staf i kualifikuar"
+  ],
+  "sticker1": "Rrr!",
+  "sticker2": "Bravo!",
+  "sticker3": "Edhe një herë",
+  "eyebrow_toy": "Provoje tani",
+  "toy_h2": "Tingulli i javës",
+  "toy_p": "Zgjidhni një tingull dhe merrni fjalën e javës me këshillën që u japim prindërve. Të njëjtat ushtrime bëjmë edhe në dhomë.",
+  "toy_tip": "Këshilla për në shtëpi",
+  "toy_pickLabel": "Zgjidh një tingull",
+  "sounds": [
+    {
+      "letter": "R",
+      "word": "rrota",
+      "spell": "r-r-ro-ta",
+      "tip": "Vendos majën e gjuhës pas dhëmbëve të sipërm dhe lëre ajrin të dridhet. Nisni me “brr” si makina, jo me fjalën e plotë.",
+      "age": "zakonisht 5–6 vjeç"
+    },
+    {
+      "letter": "S",
+      "word": "sytë",
+      "spell": "s-y-të",
+      "tip": "Dhëmbët bashkë, buzët si buzëqeshje, ajri i hollë si gjarpri. Nëse gjuha del jashtë, përdorni një kashtë.",
+      "age": "zakonisht 4–5 vjeç"
+    },
+    {
+      "letter": "SH",
+      "word": "shishe",
+      "spell": "sh-i-she",
+      "tip": "Buzët të rrumbullakosura si puthje, gjuha lart. Thuajeni bashkë “shsh” sikur po qetësoni bebin.",
+      "age": "zakonisht 4–5 vjeç"
+    },
+    {
+      "letter": "L",
+      "word": "lule",
+      "spell": "l-u-le",
+      "tip": "Maja e gjuhës prek pjesën pas dhëmbëve dhe rri aty. Zgjateni: “llll-ule”.",
+      "age": "zakonisht 3–4 vjeç"
+    },
+    {
+      "letter": "K",
+      "word": "kalë",
+      "spell": "k-a-lë",
+      "tip": "Tingulli lind pas në grykë. Provojeni me kokën pak të përkulur prapa, si kolla e vogël.",
+      "age": "zakonisht 3–4 vjeç"
+    }
+  ],
+  "eyebrow_what": "Për fëmijët",
+  "what_h2": "Çfarë bëjmë në dhomë",
+  "what_p": "Asnjë fletore. Gjithçka ndodh me lojëra, me pasqyrë dhe me lodra që fëmija i zgjedh vetë.",
+  "cards": [
+    {
+      "title": "Lojëra me tinguj",
+      "desc": "Fshehim kartat, hedhim zaret, ndërtojmë kulla — dhe çdo lëvizje kërkon një tingull të saktë."
+    },
+    {
+      "title": "Pasqyra e madhe",
+      "desc": "Fëmija sheh gjuhën dhe buzët e veta dhe kupton pse tingulli nuk po del. Kjo është gjysma e punës."
+    },
+    {
+      "title": "Detyra e vogël e shtëpisë",
+      "desc": "Ikni me një lojë të vetme për javën. Dhjetë minuta në ditë, jo më shumë."
+    }
+  ],
+  "eyebrow_chart": "Shpërblimet",
+  "chart_h2": "Tabela e yjeve",
+  "chart_p": "Çdo seancë fiton një yll. Dhjetë yje bëjnë një diplomë me emrin e fëmijës — dhe një foto në murin e klinikës, nëse prindi dëshiron.",
+  "chart_sr": "6 nga 10 yje të mbledhura",
+  "eyebrow_room": "Klinika",
+  "room_h2": "Një ambient ku pacientët duan të kthehen",
+  "room_photo_alt": "Dhoma e lojës e klinikës Speak Up, me dritare të madhe dhe lodra në rafte",
+  "roomList": [
+    "Dritare e madhe, pa ndriçim spitalor",
+    "Lodra të pastruara pas çdo seance",
+    "Prindi ulet brenda, jo në korridor",
+    "Seanca 45 minuta, me pushim nëse duhet"
+  ],
+  "room_link": "Shiko të gjithë klinikën",
+  "eyebrow_parents": "Për prindërit",
+  "parents_h2": "Pjesa serioze, shkurt",
+  "facts": [
+    {
+      "k": "Vlerësimi i parë",
+      "v": "4.500 Lek",
+      "note": "60 minuta, me raport me shkrim brenda tri ditësh"
+    },
+    {
+      "k": "Seanca",
+      "v": "3.500 Lek",
+      "note": "45 minuta · paketa me 8 seanca: 24.000 Lek"
+    },
+    {
+      "k": "Radha",
+      "v": "rreth 2 javë",
+      "note": "Anulim pa pagesë deri 24 orë përpara"
+    },
+    {
+      "k": "Licenca",
+      "v": "Nr. 4821",
+      "note": "Urdhri i Profesionistëve të Shëndetit · MSc Logopedi, UT"
+    }
+  ],
+  "cta_h2": "Le të nisim me një konsultë",
+  "cta_p": "Na telefononi ose lini numrin — ju kthejmë përgjigje brenda një dite pune.",
+  "cta_btn": "Rezervo një konsultë",
+  "foot_hours": "E hënë–e premte 09:00–19:00 · E shtunë 09:00–13:00",
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Këshilla dhe lajme",
+    "description": "Shkrime nga terapistët tanë për prindërit: si të punoni tingujt në shtëpi, çfarë të prisni nga terapia dhe kur ia vlen të kërkoni ndihmë.",
+    "readMore": "Lexo më tej",
+    "readingTime": "min lexim",
+    "backToList": "Të gjitha shkrimet",
+    "publishedOn": "Botuar më",
+    "updatedOn": "Përditësuar më",
+    "by": "nga",
+    "empty": "Ende s’ka shkrime. Kthehuni së shpejti.",
+    "relatedTitle": "Lexoni edhe",
+    "tagsLabel": "Etiketat"
+  },
+  "notFound": {
+    "title": "Faqja nuk u gjet",
+    "body": "Kjo faqe nuk ekziston ose është zhvendosur.",
+    "home": "Kthehu në faqen kryesore"
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "title": "Na shkruani ose na merrni në telefon",
+    "lede": "Përgjigjemi brenda një dite pune. Nëse doni thjesht të pyesni diçka para se të rezervoni, kjo është plotësisht në rregull — shumë prindër fillojnë kështu.",
+    "detailsTitle": "Të dhënat",
+    "phoneLabel": "Telefon",
+    "emailLabel": "Email",
+    "addressLabel": "Adresa",
+    "hoursLabel": "Orari",
+    "directions": "Shiko në hartë",
+    "mapNote": "Hyrja është nga rruga, kati i parë. Ka ashensor.",
+    "formTitle": "Lini një mesazh",
+    "formLede": "Plotësoni sa më shumë që dini. Asnjë fushë nuk është kurth — nëse nuk e dini moshën e saktë ose çfarë të shkruani, lëreni bosh.",
+    "form": {
+      "name": "Emri juaj",
+      "namePlaceholder": "Si t’ju drejtohemi",
+      "phone": "Telefoni",
+      "phonePlaceholder": "069 ...",
+      "phoneHelp": "Mënyra më e shpejtë për t’ju kthyer përgjigje.",
+      "email": "Email (jo i detyrueshëm)",
+      "childAge": "Mosha e fëmijës (jo e detyrueshme)",
+      "childAgePlaceholder": "p.sh. 4 vjeç",
+      "topic": "Për çfarë bëhet fjalë?",
+      "topicOptions": [
+        "Dua të rezervoj një vlerësim",
+        "Kam një pyetje",
+        "Diçka tjetër"
+      ],
+      "message": "Mesazhi",
+      "messagePlaceholder": "Tregoni shkurt çfarë keni vënë re te fëmija, ose çfarë doni të pyesni.",
+      "consent": "Jam dakord që Speak Up t’i përdorë këto të dhëna vetëm për të m’u përgjigjur.",
+      "submit": "Dërgo mesazhin",
+      "sending": "Po dërgohet…",
+      "required": "e detyrueshme",
+      "errorTitle": "Mesazhi nuk u dërgua",
+      "errorBody": "Provoni edhe një herë, ose na merrni në telefon — përgjigjemi menjëherë.",
+      "successTitle": "Faleminderit! E morëm mesazhin.",
+      "successBody": "Ju kthejmë përgjigje brenda një dite pune. Nëse ju duhet më shpejt, na telefononi.",
+      "noJsNote": "Nëse formulari nuk funksionon, na shkruani drejtpërdrejt në email ose telefononi."
+    }
+  },
+  "thanks": {
+    "title": "Faleminderit!",
+    "body": "E morëm mesazhin tuaj dhe ju kthejmë përgjigje brenda një dite pune. Nëse ju duhet më shpejt, na telefononi.",
+    "back": "Kthehu në faqen kryesore"
+  },
+  "footer": {
+    "tagline": "Klinikë logopedie për fëmijë dhe të rritur në Tiranë. Vlerësim, terapi dhe këshilla praktike për prindërit.",
+    "exploreTitle": "Faqja",
+    "contactTitle": "Kontakt",
+    "hoursTitle": "Orari",
+    "followTitle": "Na ndiqni",
+    "followOn": "Speak Up në",
+    "licenceLabel": "Licenca",
+    "rights": "Të gjitha të drejtat e rezervuara.",
+    "backToTop": "Kthehu lart"
+  },
+  "clinic": {
+    "eyebrow": "Klinika",
+    "title": "Hidhini një sy para se të vini",
+    "lede": "Shumë fëmijë janë më të qetë kur e dinë se ku po shkojnë. Shfaqjani këto foto para seancës së parë — dhe tregojini se prindi rri brenda, gjithë kohën.",
+    "galleryTitle": "Ambientet",
+    "photos": [
+      {
+        "name": "entrance",
+        "caption": "Hyrja",
+        "alt": "Hyrja e klinikës Speak Up nga rruga",
+        "note": "Hyrja është nga rruga, kati i parë. Ka ashensor."
+      },
+      {
+        "name": "waiting-area",
+        "caption": "Salla e pritjes",
+        "alt": "Salla e pritjes me kolltukë dhe libra për fëmijë",
+        "note": "Libra dhe lodra për pritjen, dhe ujë për prindërit."
+      },
+      {
+        "name": "therapy-room",
+        "caption": "Dhoma e terapisë",
+        "alt": "Dhoma e terapisë me dritare të madhe dhe tavolinë të ulët",
+        "note": "Dritare e madhe, pa ndriçim spitalor."
+      },
+      {
+        "name": "mirror-corner",
+        "caption": "Pasqyra",
+        "alt": "Këndi me pasqyrë ku fëmija sheh gjuhën dhe buzët e veta",
+        "note": "Këtu fëmija sheh gjuhën dhe buzët e veta."
+      },
+      {
+        "name": "toy-shelves",
+        "caption": "Rafti i lodrave",
+        "alt": "Rafte të hapura me lodra të renditura",
+        "note": "Fëmija zgjedh vetë. Pastrohen pas çdo seance."
+      },
+      {
+        "name": "parent-seat",
+        "caption": "Vendi i prindit",
+        "alt": "Karrigia e prindit brenda dhomës së terapisë",
+        "note": "Brenda dhomës, jo në korridor."
+      }
+    ],
+    "practicalTitle": "Për ta ditur para se të vini",
+    "practical": [
+      {
+        "k": "Adresa",
+        "v": "Rr. Myslym Shyri 24",
+        "note": "Kati i parë, me ashensor"
+      },
+      {
+        "k": "Parkimi",
+        "v": "Në rrugë",
+        "note": "Zakonisht ka vend përballë hyrjes"
+      },
+      {
+        "k": "Karroca",
+        "v": "Po",
+        "note": "Ashensori nxë karrocë fëmijësh"
+      },
+      {
+        "k": "Motrat e vëllezërit",
+        "v": "Të mirëpritur",
+        "note": "Presin në sallë me një të rritur"
+      }
+    ],
+    "ctaTitle": "Doni ta shihni nga afër?",
+    "ctaBody": "Rezervoni një vlerësim, ose na telefononi nëse doni thjesht të pyesni diçka më parë.",
+    "photoNote": "Fotot e ambienteve do të zëvendësohen me foto reale të klinikës."
+  },
+  "services": {
+    "eyebrow": "Shërbimet",
+    "title": "Çfarë do të gjeni pranë nesh",
+    "pickLabel": "Zgjidh një shërbim",
+    "children": {
+      "title": "Shërbimet për fëmijët",
+      "tabs": [
+        {
+          "tab": "Terapi ndërhyrëse",
+          "heading": "Në Speak Up Clinic do të gjeni çdo lloj terapie ndërhyrëse!",
+          "body": "Gjithmonë jemi në kërkim për të dhënë më të mirën tek çdo fëmijë! Patologët tanë janë specialistë në:",
+          "list": [
+            "gjuhën ekspresive dhe receptive",
+            "çrregullimet me tingujt / dislalitë",
+            "belbëzimin",
+            "vonesat në të folur",
+            "apraksinë e të folurit",
+            "çrregullimet në të nxënë",
+            "çrregullimin e Autizmit"
+          ]
+        },
+        {
+          "tab": "Vlerësimi",
+          "heading": "Vlerësim dhe programim i detajuar për çdo pacient!",
+          "body": "Ne ofrojmë vlerësim të detajuar 1-javor për secilin klient që paraqitet pranë Speak Up Clinic. Vlerësimi realizohet nga specialistë të ndryshëm, në përfundim të të cilit mblidhen dhe përpunohen rezultatet në një raport individual.",
+          "list": []
+        },
+        {
+          "tab": "Për prindërit",
+          "heading": "Asistencë për prindin/kujdestarin e fëmijës!",
+          "body": "Asistenca me prindin fillon me një plan kujdesi të përqendruar te fëmijët, që synon sfidat dhe qëllimet unike të fëmijës suaj. Terapistët tanë mund të ndihmojnë familjen tuaj:",
+          "list": [
+            "të mësoni strategji për të ndihmuar në forcimin e komunikimit dhe zhvillimit social të fëmijës suaj",
+            "të zhvillojë një perspektivë afirmuese të neurodiversitetit",
+            "të ndiheni më të sigurt duke përdorur këshillat e specialistëve për të ndërhyrë në situata të ndryshme emergjence"
+          ]
+        }
+      ],
+      "photos": [
+        "children-1",
+        "children-2",
+        "children-3"
+      ]
+    },
+    "adults": {
+      "title": "Shërbimet për të rriturit",
+      "tabs": [
+        {
+          "tab": "Vlerësimi",
+          "heading": "Vlerësim dhe programim i detajuar për çdo pacient!",
+          "body": "Ne ofrojmë vlerësim të detajuar 1-javor për secilin klient që paraqitet pranë Speak Up Clinic. Vlerësimi realizohet nga specialistë të ndryshëm, në përfundim të të cilit mblidhen dhe përpunohen rezultatet në një raport individual.",
+          "list": []
+        },
+        {
+          "tab": "Diagnozat",
+          "heading": "Patologët tanë trajtojnë",
+          "body": "Ka shumë arsye pse mund të keni probleme me të folurin ose gjuhën. Disa probleme fillojnë që në fëmijëri. Të tjerat ndodhin pas një sëmundjeje ose lëndimi. Patologët e të folurit mund të ndihmojnë.",
+          "list": [
+            "Apraksia",
+            "Afazia",
+            "Disartria",
+            "Belbëzimi",
+            "Çrregullimet e Zërit",
+            "Demenca",
+            "Çrregullimi i hemisferës së djathtë",
+            "Lëndimi traumatik i trurit"
+          ]
+        },
+        {
+          "tab": "Asnjëherë vonë",
+          "heading": "Asnjëherë nuk është vonë për të marrë shërbimin e nevojshëm!",
+          "body": "Terapia e të folurit është diçka që mund të jetë e dobishme për njerëzit e çdo moshe. Nëse po pyesni veten nëse është tepër vonë për të përmirësuar aftësitë tuaja komunikuese përmes terapisë së të folurit — nuk është! Me asistencën tonë dhe të familjarëve tuaj mund të arrijmë rezultate të kënaqshme për ju.",
+          "list": []
+        }
+      ],
+      "photos": [
+        "adults-1",
+        "adults-2",
+        "adults-3"
+      ]
+    },
+    "allAges": "Pranë Klinikës së Neurozhvillimit trajtohen raste të të gjitha moshave, duke filluar nga moshat pediatrike, adulte dhe geriatrike, të cilët kanë nevojë dhe mbështetje në komunikimin e tyre.",
+    "more": "Mëso më shumë rreth shërbimeve tona"
+  },
+  "voice": {
+    "eyebrow": "Pse ne",
+    "title": "Të gjithë e meritojnë një zë",
+    "lede": "Ndaj ne jemi këtu për të ofruar:",
+    "items": [
+      "Vlerësim të detajuar nga patologë të specializuar të të folurit.",
+      "Terapi ndërhyrëse për të gjitha moshat, si dhe për të gjitha diagnozat.",
+      "Raportim i detajuar i ecurisë së ndërhyrjes, si dhe programe specifike për çdo klient pranë klinikës."
+    ]
+  },
+  "therapies": {
+    "eyebrow": "Terapitë",
+    "title": "Çfarë ne ofrojmë",
+    "lede": "Pranë Speak Up Clinic do të gjeni llojet kryesore ndërhyrëse të terapive të përdorura në botë. Ne jemi duke punuar vazhdimisht për të ofruar shërbimin më të mirë për sa më shumë pacientë!",
+    "items": [
+      {
+        "name": "Terapia Logopedike",
+        "points": [
+          "I vjen në ndihmë të gjithë personave me deficite të të folurit, të gjuhës dhe të komunikimit, në mosha të ndryshme dhe diagnoza të ndryshme."
+        ]
+      },
+      {
+        "name": "Terapia e Zhvillimit",
+        "points": [
+          "Aplikohet në rastet e prapambetjes mendore.",
+          "Ndihmon në rritjen e aftësive dhe kompetencave në pavarësinë e individit."
+        ]
+      },
+      {
+        "name": "Terapia Oro-Mio-Faciale",
+        "points": [
+          "Aplikohet në rastet e dëmtimit të muskujve përgjegjës të fytyrës dhe të gojës."
+        ]
+      },
+      {
+        "name": "Terapia e Përtypjes-Gëlltitjes",
+        "points": [
+          "Stërvitje e bashkëveprimtarisë së muskujve për pacientët të cilët hasin vështirësi në procesin e ushqyerjes."
+        ]
+      },
+      {
+        "name": "Terapia ABA",
+        "points": [
+          "Më e përdorura në rastet e Çrregullimit të Spektrit të Autizmit.",
+          "Staf i kualifikuar në aplikimin e terapisë ABA dhe terapive të tjera ndërthurëse në këtë diagnozë."
+        ]
+      },
+      {
+        "name": "Terapia e Sjelljes",
+        "points": [
+          "Ndihmon në mësimin dhe forcimin e sjelljeve pozitive dhe në uljen e sjelljeve të padëshiruara ose problematike."
+        ]
+      }
+    ]
+  },
+  "portfolio": {
+    "eyebrow": "Puna jonë",
+    "title": "Portofoli ynë",
+    "lede": "Momente nga puna e përditshme pranë klinikës.",
+    "photos": [
+      "portfolio-1",
+      "portfolio-2",
+      "portfolio-3",
+      "portfolio-4"
+    ],
+    "alt": "Foto nga puna pranë Speak Up Clinic"
+  },
+  "testimonials": {
+    "eyebrow": "Vlerësimet",
+    "title": "Vlerësimet e pacientëve të Speak Up Clinic",
+    "role": "Prind",
+    "items": [
+      {
+        "name": "Denisa Canaj",
+        "quote": "Djali im ka bërë përparim të dukshëm që kur filluam terapinë. Stafi është shumë i durueshëm dhe na shpjegon gjithçka hap pas hapi."
+      },
+      {
+        "name": "Bledi Dukaj",
+        "quote": "Vlerësimi i parë ishte i detajuar dhe raporti na ndihmoi të kuptonim saktësisht ku ishim. Rekomandoj me bindje."
+      },
+      {
+        "name": "Aurora Beqiri",
+        "quote": "Terapistet janë profesioniste dhe shumë të ngrohta me fëmijët. Vajza ime shkon me dëshirë çdo javë."
+      },
+      {
+        "name": "Mira Musaj",
+        "quote": "Na dhanë ushtrime konkrete për në shtëpi dhe na treguan si t'i bëjmë. Kjo ndryshoi shumë gjëra për ne."
+      },
+      {
+        "name": "Elona Demiri",
+        "quote": "Falënderoj gjithë stafin e Speak Up për punën dhe përkushtimin. Rezultatet flasin vetë."
+      }
+    ]
+  },
+  "team": {
+    "eyebrow": "Stafi",
+    "title": "Specialistët pranë Speak Up Clinic",
+    "lede": "Njihuni me stafin tonë.",
+    "members": [
+      {
+        "name": "Griselda Çela",
+        "role": "Logopede / Terapiste ABA",
+        "credential": "PhD Cand. MSc.",
+        "photo": "team-griselda",
+        "alt": "Griselda Çela, logopede dhe terapiste ABA",
+        "summary": "Bashkëthemeluese e Klinikës së Neurozhvillimit “Speak Up”."
+      },
+      {
+        "name": "Dea Fezollari",
+        "role": "Logopede / Terapiste ABA",
+        "credential": "",
+        "photo": "team-dea",
+        "alt": "Dea Fezollari, logopede dhe terapiste ABA",
+        "summary": ""
+      }
+    ],
+    "more": "Lexo më shumë për stafin"
+  },
+  "about": {
+    "eyebrow": "Rreth nesh",
+    "title": "Puna jonë nis në Gusht 2019",
+    "intro": [
+      "Puna e Klinikës së Neurozhvillimit Speak Up daton që në Gusht 2019. Vit i cili do të pasohet nga muaj ku janë trajtuar më shumë se 500 raste, janë realizuar konsulta dhe vlerësime të shumta me pacientë të moshave pediatrike, adulte dhe geriatrike.",
+      "Në Speak Up Clinic është qëllimi ynë të ndihmojmë pacientët tanë të përmbushin qëllimet e tyre të komunikimit, duke ofruar vlerësime gjithëpërfshirëse dhe trajtim të të gjitha diagnozave.",
+      "Staf i kualifikuar, i trajnuar brenda dhe jashtë Shqipërisë në Logopedi dhe Çrregullimet e Neurozhvillimit, jep kontributin pranë kësaj klinike për të arritur potencialin më të mirë të mundshëm për çdo pacient.",
+      "Ne besojmë gjithashtu në fuqizimin e prindërve dhe kujdestarëve përmes bashkëpunimit dhe trajnimit — duke i lënë familjet të marrin përgjegjësi për rezultatet e terapisë!"
+    ],
+    "journeyTitle": "Udhëtimi ynë",
+    "journeyLede": "Tashmë me një eksperiencë kohore prej 6 vitesh, Klinika Speak Up ka trajtuar më shumë se 500 raste të diagnozave të ndryshme. Misioni ynë mbetet të ndihmojmë klientët tanë të përmbushin qëllimet e tyre të komunikimit, duke ofruar vlerësime gjithëpërfshirëse dhe trajtim të përkushtuar.",
+    "stats": [
+      {
+        "v": "6",
+        "k": "vite eksperiencë"
+      },
+      {
+        "v": "500+",
+        "k": "raste të trajtuara"
+      },
+      {
+        "v": "∞",
+        "k": "shumëllojshmëri diagnozash"
+      },
+      {
+        "v": "★",
+        "k": "rezultate të kënaqshme"
+      },
+      {
+        "v": "✓",
+        "k": "staf i kualifikuar"
+      }
+    ],
+    "moreTitle": "Më tepër për ne",
+    "more": [
+      "Specialistet mjekësore që punojnë pranë Klinikës Speak Up realizojnë diagnostikimin dhe trajtimin e të gjitha vështirësive në komunikim, duke përfshirë vonesat në të folur, belbëzimin, artikulimin, gjuhën shprehëse, gjuhën receptive, komunikimin social dhe modifikimin e theksit, në të gjitha moshat nga pediatrike deri tek adultët.",
+      "Çdo pacient i paraqitur pranë klinikës tonë merr një vlerësim specifik dhe një plan të detajuar ndërhyrës, i cili ndiqet vazhdimisht nga terapistet, duke zbatuar me imtësi çdo qëllim të programit ndërhyrës.",
+      "Lloji i terapisë që pacienti ka nevojë përcaktohet nga vlerësimi i detajuar një javor pranë qendrës tonë. Pas realizimit të testeve të vazhdueshme përcaktohet plani ndërhyrës dhe ndërthurja e terapive të nevojshme për çdo rast.",
+      "Terapistët ABA ushtrojnë këtë lloj terapie për çdo fëmijë i cili është i diagnostikuar me Çrregullimin e Autizmit."
+    ],
+    "staffTitle": "Stafi ynë",
+    "staffLede": "Njihuni me stafin tonë.",
+    "staff": [
+      {
+        "name": "Griselda Çela",
+        "credential": "PhD Cand. MSc.",
+        "role": "Logopede",
+        "photo": "team-griselda",
+        "alt": "Griselda Çela, logopede",
+        "summary": "Bashkëthemeluese e Klinikës së Neurozhvillimit “Speak Up”.",
+        "groups": [
+          {
+            "title": "Arsimi",
+            "items": [
+              "Bachelor në Logopedi",
+              "Master i Shkencave, “Logopedi”",
+              "PhD Candidate, LMU Muenchen University",
+              "Certifikuar për ushtrimin e Terapisë ABA"
+            ]
+          },
+          {
+            "title": "Trajnuar në",
+            "items": [
+              "Fundamentals of Neuroscience — Harvard Medical School",
+              "Clinical Competence in Audiology — American Speech-Language-Hearing Association",
+              "Safe Swallowing Dysphagia Management — Safe Swallowing Education"
+            ]
+          },
+          {
+            "title": "Veprimtari",
+            "items": [
+              "Lektore në trajnimin “Stimulimi i fëmijëve nga mosha 1–5 vjeç”, Klinikë Neurozhvillimi “Speak Up”.",
+              "Pjesë e ekipit multidisiplinar në vlerësimin dhe diagnostikimin e vështirësive gjuhësore dhe të neurozhvillimit.",
+              "Pjesë e stafit multidisiplinar: Klinika “Speak Up”, Klinika “Neuron”."
+            ]
+          },
+          {
+            "title": "Eksperiencë në diagnoza",
+            "items": [
+              "Vonesa në të folur",
+              "Belbëzim",
+              "Çrregullim i Spektrit të Autizmit",
+              "Sindroma Down",
+              "ADHD",
+              "Vonesa fonologjike",
+              "Vështirësi në të nxënë",
+              "Çrregullime të sjelljes",
+              "Vështirësi gjuhësore të neurozhvillimit"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Dea Fezollari",
+        "credential": "",
+        "role": "Logopede / Terapiste ABA",
+        "photo": "team-dea",
+        "alt": "Dea Fezollari, logopede dhe terapiste ABA",
+        "summary": "",
+        "groups": []
+      }
+    ]
+  },
+  "booking": {
+    "eyebrow": "Rezervo",
+    "title": "Rezervo një konsultë",
+    "lede": "Zgjidhni shërbimin, ditën dhe orën. Ju konfirmojmë me telefon brenda një dite pune.",
+    "demoTitle": "Kalendar demonstrimi",
+    "demoBody": "Oraret e mëposhtme janë shembull, jo disponueshmëri reale. Lidhja me sistemin e rezervimeve nuk është konfiguruar ende.",
+    "step1": "Shërbimi",
+    "step2": "Dita",
+    "step3": "Ora",
+    "step4": "Të dhënat tuaja",
+    "serviceLabel": "Për çfarë shërbimi?",
+    "services": [
+      "Vlerësim i parë",
+      "Terapi logopedike",
+      "Terapi ABA",
+      "Terapi e zhvillimit",
+      "Terapi oro-mio-faciale",
+      "Terapi e përtypjes-gëlltitjes",
+      "Terapi e sjelljes",
+      "Konsultë / pyetje"
+    ],
+    "prevMonth": "Muaji i mëparshëm",
+    "nextMonth": "Muaji tjetër",
+    "calendarLabel": "Zgjidh një ditë",
+    "weekdays": [
+      "H",
+      "M",
+      "M",
+      "E",
+      "P",
+      "Sh",
+      "D"
+    ],
+    "weekdaysFull": [
+      "E hënë",
+      "E martë",
+      "E mërkurë",
+      "E enjte",
+      "E premte",
+      "E shtunë",
+      "E diel"
+    ],
+    "months": [
+      "Janar",
+      "Shkurt",
+      "Mars",
+      "Prill",
+      "Maj",
+      "Qershor",
+      "Korrik",
+      "Gusht",
+      "Shtator",
+      "Tetor",
+      "Nëntor",
+      "Dhjetor"
+    ],
+    "today": "Sot",
+    "selected": "E zgjedhur",
+    "unavailable": "Nuk ka orare",
+    "loading": "Po ngarkohen oraret…",
+    "loadError": "Nuk arritëm të marrim oraret. Provoni përsëri.",
+    "retry": "Provo përsëri",
+    "pickDayFirst": "Zgjidhni një ditë për të parë oraret.",
+    "slotsLabel": "Oraret e lira",
+    "noSlots": "Kjo ditë nuk ka orare të lira. Provoni një ditë tjetër.",
+    "monthEmpty": "Ky muaj nuk ka orare të lira. Provoni muajin tjetër.",
+    "summaryTitle": "Rezervimi juaj",
+    "summaryEmpty": "Ende pa zgjedhur.",
+    "changeDay": "Ndrysho",
+    "form": {
+      "name": "Emri juaj",
+      "phone": "Telefoni",
+      "phoneHelp": "Ju kontaktojmë në këtë numër për konfirmim.",
+      "email": "Email (jo i detyrueshëm)",
+      "childAge": "Mosha e fëmijës (jo e detyrueshme)",
+      "childAgePlaceholder": "p.sh. 4 vjeç",
+      "notes": "Shënime (jo të detyrueshme)",
+      "notesPlaceholder": "Çfarë keni vënë re, ose çfarë doni të pyesni.",
+      "consent": "Jam dakord që Speak Up t’i përdorë këto të dhëna për të kryer dhe konfirmuar rezervimin.",
+      "required": "e detyrueshme",
+      "submit": "Konfirmo rezervimin",
+      "sending": "Po dërgohet…"
+    },
+    "successTitle": "Rezervimi u regjistrua!",
+    "successBody": "Ju kontaktojmë për konfirmim brenda një dite pune.",
+    "referenceLabel": "Kodi i rezervimit",
+    "errorTitle": "Rezervimi nuk u krye",
+    "errorBody": "Provoni përsëri, ose na telefononi dhe e rregullojmë bashkë.",
+    "takenTitle": "Ky orar sapo u zu",
+    "takenBody": "Dikush e rezervoi para jush. Zgjidhni një orar tjetër — lista u përditësua.",
+    "notConfigured": "Sistemi i rezervimeve nuk është lidhur ende. Na telefononi për të rezervuar."
+  }
+}

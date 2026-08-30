@@ -1,0 +1,280 @@
+---
+import { render } from 'astro:content';
+import { useCopy, formatDate, isoDate, localePath, type Locale } from '../i18n/utils';
+
+interface Props {
+  post: any;
+  locale: Locale;
+}
+
+const { post, locale } = Astro.props;
+const { t } = useCopy(locale);
+const { data } = post;
+
+const { Content } = await render(post);
+const backHref = localePath(locale, '/blog/');
+---
+
+<article class="post section">
+  <div class="inner">
+    <a class="back" href={backHref}>← {t.blog.backToList}</a>
+
+    <header class="head">
+      <div class="meta">
+        <time datetime={isoDate(data.publishedAt)}>
+          {t.blog.publishedOn} {formatDate(data.publishedAt, locale)}
+        </time>
+        <span aria-hidden="true">·</span>
+        <span>{data.readingMinutes} {t.blog.readingTime}</span>
+      </div>
+
+      <h1>{data.title}</h1>
+
+      {data.description && <p class="standfirst">{data.description}</p>}
+
+      {
+        data.author && (
+          <p class="author">
+            {t.blog.by} <strong>{data.author.name}</strong>
+            {data.author.role && <span class="role">, {data.author.role}</span>}
+          </p>
+        )
+      }
+    </header>
+
+    {
+      data.coverImage && (
+        <figure class="cover">
+          <img
+            src={data.coverImage.url}
+            alt={data.coverImage.alt}
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+      )
+    }
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      data.tags.length > 0 && (
+        <ul class="tags" aria-label={t.blog.tagsLabel}>
+          {data.tags.map((tag: string) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      data.updatedAt && (
+        <p class="updated">
+          {t.blog.updatedOn}{' '}
+          <time datetime={isoDate(data.updatedAt)}>{formatDate(data.updatedAt, locale)}</time>
+        </p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .post {
+    padding-bottom: clamp(40px, 5vw, 64px);
+  }
+
+  .inner {
+    max-width: 760px;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 700;
+    font-size: 13.5px;
+    text-decoration: none;
+  }
+
+  .back:hover {
+    text-decoration: underline;
+  }
+
+  .head {
+    margin-top: 8px;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: rgba(59, 47, 28, 0.5);
+  }
+
+  h1 {
+    font-size: clamp(32px, 4.2vw, 50px);
+    line-height: 1.06;
+    color: var(--ink);
+    margin-top: 14px;
+  }
+
+  .standfirst {
+    margin-top: 16px;
+    font-size: 18px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
+  .author {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .author strong {
+    color: var(--ink);
+  }
+
+  .role {
+    color: var(--muted);
+  }
+
+  .cover {
+    margin: clamp(24px, 4vw, 40px) 0 0;
+    border-radius: var(--r-photo);
+    overflow: hidden;
+    box-shadow: var(--shadow-press);
+  }
+
+  .cover img {
+    width: 100%;
+    display: block;
+  }
+
+  /* ── Article body ───────────────────────────────────────
+     Styles target rendered Markdown, so they must be :global. */
+
+  .prose {
+    margin-top: clamp(28px, 4vw, 40px);
+    font-size: 17px;
+    line-height: 1.72;
+    color: var(--ink);
+  }
+
+  .prose :global(> * + *) {
+    margin-top: 1.15em;
+  }
+
+  .prose :global(h2) {
+    font-size: clamp(24px, 2.6vw, 31px);
+    line-height: 1.15;
+    margin-top: 1.7em;
+  }
+
+  .prose :global(h3) {
+    font-size: 21px;
+    line-height: 1.2;
+    margin-top: 1.5em;
+  }
+
+  .prose :global(a) {
+    color: var(--eyebrow);
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(strong) {
+    font-weight: 700;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.3em;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 0.5em;
+  }
+
+  .prose :global(li::marker) {
+    color: var(--gold);
+  }
+
+  .prose :global(blockquote) {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 4px 0 4px 20px;
+    border-left: 4px solid var(--gold);
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .prose :global(img) {
+    border-radius: var(--r-art);
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: var(--border-w) solid var(--line);
+    margin: 2em 0;
+  }
+
+  .prose :global(code) {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(59, 47, 28, 0.07);
+    font-size: 0.9em;
+  }
+
+  .prose :global(pre) {
+    padding: 18px;
+    border-radius: var(--r-art);
+    overflow-x: auto;
+  }
+
+  .prose :global(pre code) {
+    padding: 0;
+    background: none;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: clamp(28px, 4vw, 40px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tags li {
+    padding: 6px 13px;
+    border-radius: var(--r-pill);
+    background: rgba(59, 47, 28, 0.07);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .updated {
+    margin-top: 20px;
+    font-size: 12.5px;
+    color: rgba(59, 47, 28, 0.5);
+  }
+</style>

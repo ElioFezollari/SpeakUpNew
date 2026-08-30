@@ -1,0 +1,49 @@
+name: Scheduled rebuild
+
+# Rebuilds the App Platform site on a schedule so that posts with a future
+# `publishedAt` go live on time, even if nothing pushes to the repo.
+#
+# Required repository secrets:
+#   DO_API_TOKEN  — DigitalOcean API token with write scope
+#   DO_APP_ID     — the App Platform app id (`doctl apps list`)
+
+on:
+  schedule:
+    # 06:00 and 18:00 UTC daily. Tighten if you schedule posts to the hour.
+    - cron: '0 6,18 * * *'
+  workflow_dispatch:
+  # Lets the admin site trigger a rebuild with a repository_dispatch call.
+  repository_dispatch:
+    types: [publish-blog]
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger App Platform deployment
+        env:
+          DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
+          DO_APP_ID: ${{ secrets.DO_APP_ID }}
+        run: |
+          if [ -z "$DO_API_TOKEN" ] || [ -z "$DO_APP_ID" ]; then
+            echo "::error::DO_API_TOKEN and DO_APP_ID must both be set as repository secrets."
+            exit 1
+          fi
+
+          response=$(curl --silent --show-error --write-out '\n%{http_code}' \
+            --request POST \
+            --header "Authorization: Bearer $DO_API_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data '{"force_build": true}' \
+            "https://api.digitalocean.com/v2/apps/$DO_APP_ID/deployments")
+
+          status=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          if [ "$status" -ge 300 ]; then
+            echo "::error::DigitalOcean returned $status"
+            echo "$body"
+            exit 1
+          fi
+
+          echo "Deployment created."

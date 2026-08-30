@@ -1,0 +1,158 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  /**
+   * Basename of the file in `src/assets/photos/`, without extension.
+   * `name="waiting-area"` picks up `waiting-area.jpg`, `.png`, `.webp` or
+   * `.avif` — whichever is there.
+   */
+  name: string;
+  alt: string;
+  /** CSS aspect-ratio for the frame. */
+  ratio?: string;
+  sizes?: string;
+  /** Above-the-fold slots should load eagerly. */
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  name,
+  alt,
+  ratio = '4 / 3',
+  sizes = '(max-width: 900px) 100vw, 45vw',
+  priority = false,
+  class: className,
+} = Astro.props;
+
+/**
+ * Every supplied photograph lives in one folder. Dropping a correctly named
+ * file in there is the only step needed — the placeholder disappears and the
+ * image is optimised through `astro:assets` automatically.
+ *
+ * The glob is eager and evaluated at build time, so this costs nothing at
+ * runtime and an absent file can never break the build.
+ */
+const files = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/photos/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+
+const byName = new Map<string, ImageMetadata>();
+for (const [path, mod] of Object.entries(files)) {
+  const base = path.split('/').pop()?.replace(/\.[^.]+$/, '');
+  if (base) byName.set(base, mod.default);
+}
+
+const photo = byName.get(name);
+
+// Deterministic tint per slot, so a gallery of placeholders reads as a set of
+// distinct frames rather than a wall of identical grey boxes.
+const TINTS = ['sky', 'mint', 'coral'] as const;
+const hash = [...name].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+const tint = TINTS[hash % TINTS.length];
+---
+
+<figure class:list={['slot', `tint-${tint}`, className]} style={`--ratio:${ratio}`}>
+  {
+    photo ? (
+      <Image
+        src={photo}
+        alt={alt}
+        widths={[480, 720, 1080, 1440]}
+        sizes={sizes}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+    ) : (
+      /* PLACEHOLDER — no photograph supplied for this slot yet. */
+      <div class="ph">
+        <span class="ph-blob" aria-hidden="true" />
+        <span class="ph-text">
+          <strong>{alt}</strong>
+          <code>src/assets/photos/{name}.jpg</code>
+        </span>
+      </div>
+    )
+  }
+  <slot />
+</figure>
+
+<style>
+  .slot {
+    margin: 0;
+    position: relative;
+    border-radius: var(--r-photo);
+    overflow: hidden;
+    background: var(--card);
+    box-shadow: var(--shadow-press);
+  }
+
+  .slot :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio);
+    object-fit: cover;
+  }
+
+  .tint-sky {
+    --tint: var(--sky);
+  }
+  .tint-mint {
+    --tint: var(--mint);
+  }
+  .tint-coral {
+    --tint: var(--coral);
+  }
+
+  .ph {
+    aspect-ratio: var(--ratio);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 22px;
+    text-align: center;
+    background: color-mix(in srgb, var(--tint) 16%, var(--card));
+    border: var(--border-w) dashed rgba(59, 47, 28, 0.28);
+    border-radius: var(--r-photo);
+  }
+
+  .ph-blob {
+    width: 58px;
+    height: 52px;
+    border-radius: 52% 48% 44% 56% / 56% 50% 50% 44%;
+    background: color-mix(in srgb, var(--tint) 70%, transparent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ph-blob {
+      animation: morph 9s ease-in-out infinite;
+    }
+  }
+
+  .ph-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 34ch;
+  }
+
+  .ph-text strong {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .ph-text code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: rgba(59, 47, 28, 0.45);
+    word-break: break-all;
+  }
+</style>

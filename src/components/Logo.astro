@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.avif';
+
+interface Props {
+  /** Rendered width in CSS pixels. Height follows the mark's aspect ratio. */
+  width?: number;
+  /**
+   * Set only when the logo is the sole thing identifying the brand. In the
+   * header it sits beside the "Speak Up" wordmark, which already names the
+   * link, so it stays decorative and this is left empty.
+   */
+  alt?: string;
+}
+
+const { width = 38, alt = '' } = Astro.props;
+---
+
+{/*
+  The client's two-bubble mark. The source is the supplied AVIF, trimmed of its
+  asymmetric transparent padding (507px left vs 374px right) so that spacing is
+  controlled here rather than baked into the file.
+
+  Run through `astro:assets`, which emits a correctly sized image plus a 2x
+  variant — the master is 4158x2944, which would otherwise cost every visitor a
+  12-megapixel decode for a 38px mark.
+*/}
+<Image
+  src={logo}
+  alt={alt}
+  width={width}
+  densities={[1, 2]}
+  loading="eager"
+  class="logo-mark"
+/>
+
+<style>
+  .logo-mark {
+    display: block;
+    height: auto;
+  }
+</style>

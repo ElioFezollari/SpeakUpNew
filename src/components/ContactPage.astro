@@ -1,0 +1,222 @@
+---
+import ContactForm from './ContactForm.astro';
+import { useCopy, type Locale } from '../i18n/utils';
+import { SITE } from '../site.config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useCopy(locale);
+const c = t.contact;
+
+const mapQuery = encodeURIComponent(
+  `${SITE.address.street}, ${SITE.address.city}, Albania`,
+);
+const mapHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+
+const details = [
+  { label: c.phoneLabel, value: SITE.phone.display, href: SITE.phone.href },
+  { label: c.emailLabel, value: SITE.email, href: `mailto:${SITE.email}` },
+  {
+    label: c.addressLabel,
+    value: `${SITE.address.street}, ${SITE.address.city}`,
+    href: mapHref,
+    external: true,
+  },
+  { label: c.hoursLabel, value: t.foot_hours },
+];
+---
+
+<section class="contact section">
+  <div class="inner">
+    <header class="head" data-reveal>
+      <span class="eyebrow">{c.eyebrow}</span>
+      <h1 class="title">{c.title}</h1>
+      <p class="lede">{c.lede}</p>
+    </header>
+
+    <div class="layout">
+      <aside class="details" data-reveal>
+        <h2 class="details-title">{c.detailsTitle}</h2>
+
+        <dl class="detail-list" data-reveal-stagger>
+          {
+            details.map((detail) => (
+              <div class="detail">
+                <dt>{detail.label}</dt>
+                <dd>
+                  {detail.href ? (
+                    <a
+                      href={detail.href}
+                      target={detail.external ? '_blank' : undefined}
+                      rel={detail.external ? 'noopener noreferrer' : undefined}
+                    >
+                      {detail.value}
+                    </a>
+                  ) : (
+                    detail.value
+                  )}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <a class="map-link" href={mapHref} target="_blank" rel="noopener noreferrer">
+          <span class="pin" aria-hidden="true"></span>
+          {c.directions}
+        </a>
+
+        <p class="map-note">{c.mapNote}</p>
+      </aside>
+
+      <div class="form-col">
+        <ContactForm locale={locale} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .head {
+    max-width: 62ch;
+    margin-bottom: clamp(28px, 4vw, 44px);
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-size: clamp(34px, 4.4vw, 54px);
+    line-height: 1.05;
+    color: var(--ink);
+    margin-top: 13px;
+    max-width: 18ch;
+  }
+
+  .lede {
+    margin-top: 16px;
+    font-size: 16.5px;
+    line-height: 1.68;
+    color: var(--muted);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: var(--gap-split);
+    align-items: start;
+  }
+
+  .details {
+    padding: clamp(22px, 3vw, 30px);
+    border-radius: var(--r-card);
+    background: var(--deep);
+    color: var(--paper);
+    position: sticky;
+    top: 92px;
+  }
+
+  .details-title {
+    font-size: 20px;
+    line-height: 1.15;
+    color: var(--paper);
+  }
+
+  .detail-list {
+    margin: 20px 0 0;
+  }
+
+  .detail + .detail {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 248, 232, 0.14);
+  }
+
+  dt {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  dd {
+    margin: 7px 0 0;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: rgba(255, 248, 232, 0.88);
+  }
+
+  dd a {
+    color: var(--paper);
+    text-decoration: none;
+    /* Keeps the tap target at 44px without changing the visual size. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+  }
+
+  dd a:hover {
+    color: var(--gold);
+    text-decoration: underline;
+  }
+
+  .map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 24px;
+    padding: 12px 18px;
+    min-height: 44px;
+    border-radius: var(--r-pill);
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 13.5px;
+    text-decoration: none;
+    box-shadow: var(--shadow-btn-gold);
+    transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .map-link:hover {
+    color: var(--ink);
+    transform: translateY(-2px);
+  }
+
+  .pin {
+    width: 10px;
+    height: 10px;
+    border-radius: 50% 50% 50% 0;
+    rotate: -45deg;
+    background: var(--deep);
+  }
+
+  .map-note {
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255, 248, 232, 0.6);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .map-link:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .details {
+      position: static;
+    }
+    /* Form first on small screens — the details sit right under it. */
+    .form-col {
+      order: -1;
+    }
+  }
+</style>

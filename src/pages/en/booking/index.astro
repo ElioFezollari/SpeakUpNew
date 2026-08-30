@@ -1,0 +1,12 @@
+---
+// English booking page, served at `/en/booking/`.
+import Base from '../../../layouts/Base.astro';
+import BookingPage from '../../../components/BookingPage.astro';
+import { useCopy } from '../../../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+---
+
+<Base title={t.booking.title} description={t.booking.lede}>
+  <BookingPage locale="en" />
+</Base>

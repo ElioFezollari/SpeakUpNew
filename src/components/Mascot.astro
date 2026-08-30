@@ -1,0 +1,316 @@
+---
+import { useCopy } from '../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+---
+
+<!-- Built from the logo mark, not an illustration. Wholly decorative:
+     it carries no information, so it stays hidden from assistive tech even
+     though it responds to the pointer. -->
+<div class="mascot-wrap" aria-hidden="true">
+  <div class="bubbles">
+    {
+      /* Slow-drifting background bubbles, purely for atmosphere. */
+      [1, 2, 3, 4, 5].map((n) => <span class={`drop drop-${n}`} />)
+    }
+  </div>
+
+  <div class="mascot anim-float" data-mascot>
+    <div class="bubble-back"></div>
+    <div class="bubble-front">
+      <div class="eyes">
+        <span class="eye anim-blink" data-eye></span>
+        <span class="eye anim-blink" data-eye></span>
+      </div>
+      <div class="mouth" data-mouth></div>
+    </div>
+  </div>
+
+  <div class="ground-shadow"></div>
+
+  <div class="sticker sticker-1">{t.sticker1}</div>
+  <div class="sticker sticker-2">{t.sticker2}</div>
+  <div class="sticker sticker-3">{t.sticker3}</div>
+</div>
+
+<script>
+  const wrap = document.querySelector<HTMLElement>('.mascot-wrap');
+  const mascot = wrap?.querySelector<HTMLElement>('[data-mascot]');
+
+  if (wrap && mascot && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const eyes = [...wrap.querySelectorAll<HTMLElement>('[data-eye]')];
+    const mouth = wrap.querySelector<HTMLElement>('[data-mouth]');
+
+    // The eyes track the pointer, but only a few pixels — enough to feel
+    // alive, not enough to look unsettling.
+    const MAX_SHIFT = 4;
+    let frame = 0;
+
+    const track = (event: PointerEvent) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const box = mascot.getBoundingClientRect();
+        const cx = box.left + box.width / 2;
+        const cy = box.top + box.height / 2;
+        // Normalise to -1..1 over roughly one mascot-width in each direction.
+        const dx = Math.max(-1, Math.min(1, (event.clientX - cx) / (box.width || 1)));
+        const dy = Math.max(-1, Math.min(1, (event.clientY - cy) / (box.height || 1)));
+        for (const eye of eyes) {
+          eye.style.setProperty('--look-x', `${(dx * MAX_SHIFT).toFixed(2)}px`);
+          eye.style.setProperty('--look-y', `${(dy * MAX_SHIFT).toFixed(2)}px`);
+        }
+      });
+    };
+
+    window.addEventListener('pointermove', track, { passive: true });
+
+    // Tap or click the mascot and it hops and grins.
+    mascot.addEventListener('click', () => {
+      if (mascot.classList.contains('is-hopping')) return;
+      mascot.classList.add('is-hopping');
+      mouth?.classList.add('is-grinning');
+      window.setTimeout(() => {
+        mascot.classList.remove('is-hopping');
+        mouth?.classList.remove('is-grinning');
+      }, 900);
+    });
+  }
+</script>
+
+<style>
+  .mascot-wrap {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: clamp(280px, 30vw, 470px);
+  }
+
+  .mascot {
+    position: relative;
+    /* Upper bound raised so the mascot keeps pace with the wider container
+       on large screens rather than floating in empty space. */
+    width: clamp(230px, 25vw, 400px);
+    aspect-ratio: 1 / 0.92;
+    cursor: pointer;
+  }
+
+  /* Hop on tap. This overrides `.anim-float` for its duration, then float
+     resumes on its own. */
+  @media (prefers-reduced-motion: no-preference) {
+    .mascot.is-hopping {
+      animation: bounce-up 0.9s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+  }
+
+  .bubble-back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 74%;
+    aspect-ratio: 1 / 0.86;
+    border-radius: var(--r-bubble);
+    background: var(--deep);
+  }
+
+  .bubble-front {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 80%;
+    aspect-ratio: 1 / 0.86;
+    border-radius: var(--r-bubble);
+    background: var(--gold);
+    box-shadow: var(--shadow-mascot);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 1.7vw, 18px);
+    padding-bottom: 6%;
+  }
+
+  .eyes {
+    display: flex;
+    gap: clamp(24px, 3.2vw, 42px);
+  }
+
+  .eye {
+    width: clamp(13px, 1.5vw, 18px);
+    height: clamp(19px, 2.2vw, 26px);
+    border-radius: 50%;
+    background: var(--deep);
+    /* `translate` composes with the blink animation's `transform: scaleY()`,
+       so the eyes can follow the pointer while still blinking. */
+    translate: var(--look-x, 0) var(--look-y, 0);
+    transition: translate 0.2s ease-out;
+  }
+
+  .mouth {
+    width: clamp(40px, 5vw, 60px);
+    height: clamp(22px, 2.8vw, 33px);
+    border-radius: 0 0 999px 999px;
+    background: var(--deep);
+    transition:
+      height 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+      width 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* A wider, deeper smile while the mascot is mid-hop. */
+  .mouth.is-grinning {
+    width: clamp(50px, 6.2vw, 74px);
+    height: clamp(28px, 3.6vw, 42px);
+  }
+
+  .ground-shadow {
+    position: absolute;
+    bottom: -4%;
+    right: 6%;
+    width: clamp(140px, 16vw, 200px);
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(59, 47, 28, 0.1);
+    filter: blur(3px);
+  }
+
+  .sticker {
+    position: absolute;
+    padding: 9px 15px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.3;
+    box-shadow: var(--shadow-sticker);
+    /* --r holds the resting rotation; the `wobbly` keyframes tilt around it. */
+    rotate: var(--r);
+  }
+
+  .sticker-1 {
+    top: 6%;
+    left: 2%;
+    --r: -8deg;
+    font-size: 15px;
+    border-radius: 999px 999px 999px 6px;
+    background: var(--sky);
+    color: var(--on-sky);
+  }
+
+  .sticker-2 {
+    bottom: 14%;
+    left: -2%;
+    --r: 6deg;
+    font-size: 15px;
+    border-radius: 999px 999px 6px 999px;
+    background: var(--mint);
+    color: var(--on-mint);
+  }
+
+  .sticker-3 {
+    top: 16%;
+    right: -1%;
+    --r: 9deg;
+    font-size: 14px;
+    border-radius: 999px 999px 999px 6px;
+    background: var(--coral);
+    color: var(--on-coral);
+  }
+
+  /* Each sticker bobs and tilts on its own clock, with the two durations
+     deliberately out of step so no two ever line up. */
+  @media (prefers-reduced-motion: no-preference) {
+    .sticker-1 {
+      animation:
+        floaty 5s ease-in-out infinite,
+        wobbly 3.4s ease-in-out infinite;
+    }
+    .sticker-2 {
+      animation:
+        floaty 6.4s ease-in-out 0.6s infinite,
+        wobbly 4.1s ease-in-out 0.2s infinite;
+    }
+    .sticker-3 {
+      animation:
+        floaty 7s ease-in-out 0.3s infinite,
+        wobbly 3.8s ease-in-out 0.9s infinite;
+    }
+  }
+
+  /* ── Decorative background bubbles ─────────────────────── */
+
+  .bubbles {
+    position: absolute;
+    inset: -6%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .drop {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+
+  .drop-1 {
+    top: 4%;
+    right: 16%;
+    width: 16px;
+    height: 16px;
+    background: var(--sky);
+  }
+  .drop-2 {
+    bottom: 18%;
+    right: 4%;
+    width: 26px;
+    height: 26px;
+    background: color-mix(in srgb, var(--mint) 70%, transparent);
+  }
+  .drop-3 {
+    top: 38%;
+    left: 6%;
+    width: 11px;
+    height: 11px;
+    background: var(--coral);
+  }
+  .drop-4 {
+    bottom: 6%;
+    left: 24%;
+    width: 19px;
+    height: 19px;
+    background: color-mix(in srgb, var(--gold) 75%, transparent);
+  }
+  .drop-5 {
+    top: 20%;
+    right: 32%;
+    width: 9px;
+    height: 9px;
+    background: var(--sky);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .drop-1 {
+      animation: drift 11s ease-in-out infinite;
+    }
+    .drop-2 {
+      animation: drift 14s ease-in-out 1.2s infinite reverse;
+    }
+    .drop-3 {
+      animation: drift 9.5s ease-in-out 0.4s infinite;
+    }
+    .drop-4 {
+      animation: drift 12.5s ease-in-out 2s infinite reverse;
+    }
+    .drop-5 {
+      animation: drift 10.5s ease-in-out 0.8s infinite;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .mascot-wrap {
+      min-height: clamp(240px, 60vw, 320px);
+    }
+    /* The drifting bubbles crowd the mascot on small screens. */
+    .drop-2,
+    .drop-5 {
+      display: none;
+    }
+  }
+</style>

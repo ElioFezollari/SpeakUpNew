@@ -1,0 +1,97 @@
+---
+import { useCopy } from '../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+
+// PLACEHOLDER DATA: all four values (prices, waiting time, licence number)
+// were supplied for layout only and must be confirmed by the client before
+// launch. See the "Before launch" checklist in README.md.
+---
+
+<section id="parents" class="parents">
+  <div class="inner">
+    <div class="parents-head" data-reveal>
+      <span class="eyebrow">{t.eyebrow_parents}</span>
+      <h2 class="h2">{t.parents_h2}</h2>
+    </div>
+
+    <dl class="facts" data-reveal-stagger>
+      {
+        t.facts.map((fact) => (
+          <div class="cell">
+            <dt class="k">{fact.k}</dt>
+            <dd class="v">{fact.v}</dd>
+            <dd class="note">{fact.note}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .parents {
+    margin-top: clamp(44px, 5.5vw, 72px);
+    padding-top: clamp(40px, 5vw, 64px);
+    padding-bottom: clamp(40px, 5vw, 64px);
+    background: var(--card);
+    border-top: var(--border-w) solid var(--line);
+    border-bottom: var(--border-w) solid var(--line);
+  }
+
+  .parents-head {
+    margin-bottom: 26px;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(12px, 2vw, 18px);
+    margin: 0;
+  }
+
+  .cell {
+    padding: 20px;
+    border-radius: var(--r-fact);
+    background: var(--paper);
+    border: var(--border-w) solid var(--line);
+  }
+
+  .k {
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: rgba(59, 47, 28, 0.45);
+  }
+
+  .v {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-size: 24px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 9px 0 0;
+  }
+
+  .note {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 8px 0 0;
+  }
+
+  @media (max-width: 900px) {
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .facts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

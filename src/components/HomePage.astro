@@ -1,0 +1,25 @@
+---
+import Hero from './Hero.astro';
+import Services from './Services.astro';
+import Voice from './Voice.astro';
+import Therapies from './Therapies.astro';
+import Portfolio from './Portfolio.astro';
+import Testimonials from './Testimonials.astro';
+import Team from './Team.astro';
+import Room from './Room.astro';
+import Cta from './Cta.astro';
+
+// The home page is identical in both languages — only the copy differs, and
+// that comes from Astro.currentLocale inside each component. Both routes
+// (`/` and `/en/`) render this one component.
+---
+
+<Hero />
+<Services />
+<Voice />
+<Therapies />
+<Portfolio />
+<Testimonials />
+<Team />
+<Room />
+<Cta />

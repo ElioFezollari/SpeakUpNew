@@ -1,0 +1,148 @@
+---
+import { useCopy } from '../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+const th = t.therapies;
+
+// Cycles the three brand tints across the six cards.
+const TINTS = ['sky', 'mint', 'coral'] as const;
+---
+
+<section id="therapies" class="section">
+  <div class="inner">
+    <div class="sec-head" data-reveal>
+      <div>
+        <span class="eyebrow">{th.eyebrow}</span>
+        <h2 class="h2">{th.title}</h2>
+      </div>
+      <p class="lede">{th.lede}</p>
+    </div>
+
+    <ul class="cards" data-reveal-stagger>
+      {
+        th.items.map((item, i) => (
+          <li class={`card tint-${TINTS[i % TINTS.length]}`}>
+            <div class="badge" aria-hidden="true">
+              <span class="blob" style={`--blob-delay:${(i * 1.1).toFixed(1)}s`} />
+            </div>
+            <h3>{item.name}</h3>
+            <ul class="points">
+              {item.points.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-cards);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(20px, 2.6vw, 28px);
+    border-radius: var(--r-card);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+    transition:
+      transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.24s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 0 rgba(59, 47, 28, 0.07);
+  }
+
+  .tint-sky {
+    --tint: var(--sky);
+  }
+  .tint-mint {
+    --tint: var(--mint);
+  }
+  .tint-coral {
+    --tint: var(--coral);
+  }
+
+  .badge {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--r-art);
+    background: color-mix(in srgb, var(--tint) 20%, transparent);
+  }
+
+  .blob {
+    width: 28px;
+    height: 26px;
+    border-radius: 52% 48% 44% 56% / 56% 50% 50% 44%;
+    background: var(--tint);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .blob {
+      animation: morph 9s ease-in-out infinite;
+      animation-delay: var(--blob-delay, 0s);
+    }
+    .card:hover .blob {
+      transform: scale(1.15) rotate(8deg);
+    }
+  }
+
+  h3 {
+    font-size: 20px;
+    line-height: 1.18;
+    color: var(--ink);
+    margin-top: 16px;
+  }
+
+  .points {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .points li {
+    font-size: 14.5px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
+  .points li::marker {
+    color: var(--gold);
+  }
+
+  @media (max-width: 980px) {
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover {
+      transform: none;
+    }
+  }
+</style>

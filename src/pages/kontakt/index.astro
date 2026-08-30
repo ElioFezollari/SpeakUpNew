@@ -1,0 +1,12 @@
+---
+// Albanian contact page, served at `/kontakt/`.
+import Base from '../../layouts/Base.astro';
+import ContactPage from '../../components/ContactPage.astro';
+import { useCopy } from '../../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+---
+
+<Base title={t.contact.title} description={t.contact.lede}>
+  <ContactPage locale="sq" />
+</Base>

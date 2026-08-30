@@ -1,0 +1,56 @@
+{
+  "_comment": "Sample payload in the exact shape the admin API must return (see docs/ADMIN-API.md). Used only when BLOG_API_URL is unset or unreachable in dev. Not used in production builds.",
+  "posts": [
+    {
+      "id": "demo-1",
+      "slug": "dhjete-minuta-ne-dite",
+      "locale": "sq",
+      "title": "Dhjetë minuta në ditë: si të ushtroni në shtëpi pa lodhur fëmijën",
+      "excerpt": "Terapia funksionon kur vazhdon edhe jashtë dhomës. Ja si të ktheni ushtrimin në lojë të shkurtër që fëmija e kërkon vetë.",
+      "bodyFormat": "markdown",
+      "body": "Prindërit na pyesin gjithmonë të njëjtën gjë: **sa duhet të ushtrojmë në shtëpi?**\n\nPërgjigja është më e vogël nga sa mendoni. Dhjetë minuta në ditë, çdo ditë, bëjnë më shumë sesa një orë e vetme në fundjavë.\n\n## Pse funksionon pak, por shpesh\n\nTruri i fëmijës mëson lëvizjet e gojës njësoj si mëson të hedhë topin — me përsëritje të shkurtra dhe të shpeshta. Një seancë e gjatë e lodh fëmijën dhe e kthen ushtrimin në detyrë.\n\n## Tri rregulla që i themi çdo prindi\n\n1. **Ndaloni para se ai të mërzitet.** Nëse fëmija kërkon edhe pak, keni gjetur kohën e duhur.\n2. **Një tingull në javë.** Mos i përzieni. Terapistja ju jep tingullin, ju e ndiqni atë.\n3. **Lavdëroni përpjekjen, jo saktësinë.** \"Provove bukur\" vlen më shumë se \"jo, gabim\".\n\n## Ku ta futni në ditë\n\nMomentet më të mira janë ato që tashmë ekzistojnë: rrugës për në kopsht, në banjë, ose kur vishni këpucët. Nuk ju duhet tavolinë dhe karrige.\n\nNëse një ditë e humbisni, s'ka gjë. Vazhdoni nesër.",
+      "author": { "name": "Elira Hoxha", "role": "Logopede" },
+      "tags": ["në shtëpi", "prindërit"],
+      "status": "published",
+      "publishedAt": "2026-08-12T08:00:00Z"
+    },
+    {
+      "id": "demo-2",
+      "slug": "kur-te-kerkoni-ndihme",
+      "locale": "sq",
+      "title": "Kur ia vlen të kërkoni një vlerësim",
+      "excerpt": "Jo çdo vonesë është problem, por disa shenja nuk duhen pritur. Një listë e shkurtër sipas moshës.",
+      "bodyFormat": "markdown",
+      "body": "\"Do t'i kalojë vetë\" është këshilla më e zakonshme që marrin prindërit — dhe shpesh është e vërtetë. Por jo gjithmonë.\n\n## Shenjat sipas moshës\n\n**Në 2 vjeç** — nuk thotë rreth 50 fjalë, ose nuk bashkon dy fjalë (\"ujë mami\", \"do top\").\n\n**Në 3 vjeç** — të huajt e kuptojnë me vështirësi më pak se gjysmën e asaj që thotë.\n\n**Në 4 vjeç** — fjalitë mbeten shumë të shkurtra, ose shumë tinguj dalin gabim njëherësh.\n\n**Në çdo moshë** — fëmija pushon së foluri pasi kishte nisur, belbëzon me tension në fytyrë, ose shmang bisedën me fëmijë të tjerë.\n\n## Çfarë ndodh në vlerësim\n\nVlerësimi i parë zgjat 60 minuta dhe duket si lojë. Ne shohim si fëmija kupton, si flet dhe si i përdor fjalët për të kërkuar diçka. Ju rrini në dhomë.\n\nBrenda tri ditësh merrni një raport me shkrim: çfarë pamë, çfarë propozojmë, dhe nëse terapia është apo jo e nevojshme. Nëse nuk është, jua themi hapur.",
+      "author": { "name": "Elira Hoxha", "role": "Logopede" },
+      "tags": ["vlerësimi", "prindërit"],
+      "status": "published",
+      "publishedAt": "2026-07-28T08:00:00Z"
+    },
+    {
+      "id": "demo-3",
+      "slug": "ten-minutes-a-day",
+      "locale": "en",
+      "title": "Ten minutes a day: practising at home without tiring your child",
+      "excerpt": "Therapy works when it continues outside the room. Here is how to turn practice into a short game your child asks for.",
+      "bodyFormat": "markdown",
+      "body": "Parents always ask us the same thing: **how much should we practise at home?**\n\nThe answer is smaller than you would think. Ten minutes a day, every day, does more than a single hour at the weekend.\n\n## Why little and often works\n\nA child's brain learns mouth movements the same way it learns to throw a ball — through short, frequent repetition. One long session tires the child and turns practice into a chore.\n\n## Three rules we give every parent\n\n1. **Stop before they get bored.** If your child asks for one more go, you found the right length.\n2. **One sound a week.** Do not mix them. The therapist gives you the sound; you stay on it.\n3. **Praise the effort, not the accuracy.** \"Good try\" is worth more than \"no, wrong\".\n\n## Where to fit it in\n\nThe best moments are ones that already exist: on the way to nursery, in the bath, or while putting shoes on. You do not need a table and a chair.\n\nIf you miss a day, that is fine. Carry on tomorrow.",
+      "author": { "name": "Elira Hoxha", "role": "Speech & language therapist" },
+      "tags": ["at home", "parents"],
+      "status": "published",
+      "publishedAt": "2026-08-12T08:00:00Z"
+    },
+    {
+      "id": "demo-4",
+      "slug": "draft-example-never-shown",
+      "locale": "sq",
+      "title": "Ky shkrim është draft dhe nuk duhet të shfaqet",
+      "excerpt": "Nëse e shihni këtë në sit, filtri i drafteve nuk po punon.",
+      "bodyFormat": "markdown",
+      "body": "Draft.",
+      "status": "draft",
+      "publishedAt": "2026-08-20T08:00:00Z"
+    }
+  ],
+  "pagination": { "page": 1, "perPage": 100, "total": 4, "totalPages": 1 }
+}

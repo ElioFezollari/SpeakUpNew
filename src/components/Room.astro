@@ -1,0 +1,114 @@
+---
+import PhotoSlot from './PhotoSlot.astro';
+import { useCopy, routePath } from '../i18n/utils';
+
+const { locale, t } = useCopy(Astro.currentLocale);
+
+// PLACEHOLDER: no photography supplied yet. Drop `room.jpg` into
+// src/assets/photos/ and it replaces the placeholder automatically —
+// see that folder's README for the full list of expected filenames.
+---
+
+<section id="room" class="section">
+  <div class="inner">
+    <div class="room-grid">
+      <div data-reveal>
+        <PhotoSlot
+          name="room"
+          alt={t.room_photo_alt}
+          ratio="4 / 3"
+          sizes="(max-width: 900px) 100vw, 55vw"
+        />
+      </div>
+
+      <div class="room-text" data-reveal>
+        <span class="eyebrow">{t.eyebrow_room}</span>
+        <h2 class="h2">{t.room_h2}</h2>
+        <ul class="room-list" data-reveal-stagger>
+          {
+            t.roomList.map((item, i) => (
+              <li>
+                <span
+                  class="dot"
+                  style={`--dot-delay:${(i * 0.4).toFixed(1)}s`}
+                  aria-hidden="true"
+                />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <a class="more" href={routePath('clinic', locale)}>{t.room_link} →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .room-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: var(--gap-split);
+    align-items: center;
+  }
+
+  .room-text {
+    min-width: 0;
+  }
+
+  .room-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .room-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 15.5px;
+    line-height: 1.62;
+    color: var(--ink);
+  }
+
+  .dot {
+    flex: none;
+    width: 11px;
+    height: 11px;
+    margin-top: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 14px;
+    font-weight: 700;
+    font-size: 14.5px;
+    text-decoration: none;
+  }
+
+  .more:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Each bullet dot gives a slow, offset pulse. */
+    .dot {
+      animation: twinkle 3.6s ease-in-out infinite;
+      animation-delay: var(--dot-delay, 0s);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .room-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

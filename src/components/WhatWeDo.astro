@@ -1,0 +1,155 @@
+---
+import { useCopy } from '../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+
+// PLACEHOLDER: the three blobs stand in for real photography or spot
+// illustration. See README — this needs to be raised with the client.
+const TINTS = ['sky', 'mint', 'coral'] as const;
+---
+
+<section id="what" class="section">
+  <div class="inner">
+    <div class="sec-head" data-reveal>
+      <div>
+        <span class="eyebrow">{t.eyebrow_what}</span>
+        <h2 class="h2">{t.what_h2}</h2>
+      </div>
+      <p class="lede">{t.what_p}</p>
+    </div>
+
+    <ul class="cards" data-reveal-stagger>
+      {
+        t.cards.map((card, i) => (
+          <li class={`card tint-${TINTS[i]}`}>
+            <div class="badge">{i + 1}</div>
+            <div class="art">
+              <div class="blob" style={`--blob-delay:${(i * 1.3).toFixed(1)}s`} />
+            </div>
+            <h3>{card.title}</h3>
+            <p>{card.desc}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-cards);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    position: relative;
+    padding: clamp(20px, 2.6vw, 26px);
+    border-radius: var(--r-card);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+    transition:
+      transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.24s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 0 rgba(59, 47, 28, 0.07);
+  }
+
+  .tint-sky {
+    --tint: var(--sky);
+  }
+  .tint-mint {
+    --tint: var(--mint);
+  }
+  .tint-coral {
+    --tint: var(--coral);
+  }
+
+  .badge {
+    position: absolute;
+    top: -13px;
+    left: 22px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--tint);
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1;
+    border: 2px solid var(--card);
+    transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .card:hover .badge {
+    transform: scale(1.14) rotate(-8deg);
+  }
+
+  .art {
+    height: 104px;
+    border-radius: var(--r-art);
+    /* The tint at ~18% opacity, per the handoff's `<tint>2E`. */
+    background: color-mix(in srgb, var(--tint) 18%, transparent);
+    display: grid;
+    place-items: center;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .blob {
+    width: 72px;
+    height: 66px;
+    border-radius: 52% 48% 44% 56% / 56% 50% 50% 44%;
+    background: var(--tint);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* The blobs slowly change shape, so the cards never look quite static.
+     Each starts at a different point in the cycle. */
+  @media (prefers-reduced-motion: no-preference) {
+    .blob {
+      animation: morph 9s ease-in-out infinite;
+      animation-delay: var(--blob-delay, 0s);
+    }
+
+    .card:hover .blob {
+      transform: scale(1.12) rotate(6deg);
+    }
+  }
+
+  h3 {
+    font-size: 21px;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-top: 18px;
+  }
+
+  p {
+    font-size: 14.5px;
+    line-height: 1.64;
+    color: var(--muted);
+    margin-top: 9px;
+  }
+
+  @media (max-width: 900px) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover {
+      transform: none;
+    }
+  }
+</style>

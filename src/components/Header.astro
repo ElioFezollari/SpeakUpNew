@@ -1,0 +1,373 @@
+---
+import Logo from './Logo.astro';
+import { useCopy, localePath, routePath, mirrorPath, type RouteKey } from '../i18n/utils';
+
+interface Props {
+  /**
+   * The URL of this page in the other language. Pages whose counterpart
+   * cannot be derived from the path — blog posts, which exist in one
+   * language only — pass it explicitly. Defaults to the mirrored path.
+   */
+  altPath?: string;
+}
+
+const { locale, t } = useCopy(Astro.currentLocale);
+
+const home = localePath(locale, '/');
+const isHome = Astro.url.pathname === home;
+
+/**
+ * Nav entries are either an in-page anchor or a named route. Anchors only
+ * resolve on the home page, so elsewhere they point back at it first; named
+ * routes go through ROUTES, which carries a localised slug per language.
+ */
+const navItems = t.nav.items.map((item) => {
+  if ('route' in item) {
+    return { label: item.label, href: routePath(item.route as RouteKey, locale) };
+  }
+  return {
+    label: item.label,
+    href: item.href.startsWith('#')
+      ? isHome
+        ? item.href
+        : `${home}${item.href}`
+      : localePath(locale, item.href),
+  };
+});
+
+// The header CTA books; the nav still carries a plain Contact link.
+const contactHref = routePath('booking', locale);
+
+// The language switch is a plain link to the counterpart URL — no client-side
+// routing. The hash is re-attached by the script below when JS is available.
+const otherHref = Astro.props.altPath ?? mirrorPath(Astro.url.pathname, locale);
+
+const LANG_LABELS = { sq: 'SQ', en: 'EN' } as const;
+const LANG_TAGS = { sq: 'sq-AL', en: 'en' } as const;
+---
+
+<header class="site-header">
+  <div class="inner bar">
+    <a class="brand" href={home}>
+      <Logo />
+      <span class="wordmark">Speak&nbsp;Up</span>
+    </a>
+
+    <nav class="nav" aria-label={t.nav.items.length ? 'Main' : undefined}>
+      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <div class="controls">
+      <div class="lang" role="group" aria-label={t.nav.languageLabel}>
+        <a
+          class:list={['lang-btn', { on: locale === 'sq' }]}
+          href={locale === 'sq' ? Astro.url.pathname : otherHref}
+          hreflang={LANG_TAGS.sq}
+          lang="sq"
+          aria-current={locale === 'sq' ? 'true' : undefined}
+          data-lang-link={locale === 'sq' ? undefined : 'true'}>{LANG_LABELS.sq}</a
+        >
+        <a
+          class:list={['lang-btn', { on: locale === 'en' }]}
+          href={locale === 'en' ? Astro.url.pathname : otherHref}
+          hreflang={LANG_TAGS.en}
+          lang="en"
+          aria-current={locale === 'en' ? 'true' : undefined}
+          data-lang-link={locale === 'en' ? undefined : 'true'}>{LANG_LABELS.en}</a
+        >
+      </div>
+
+      <a class="head-cta" href={contactHref}>{t.book}</a>
+
+      <details class="menu">
+        <summary aria-label={t.nav.openMenu}>
+          <span class="bars" aria-hidden="true"></span>
+        </summary>
+        <div class="menu-panel">
+          {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Progressive enhancement only — the switch already works without this.
+  const syncHash = () => {
+    const hash = window.location.hash;
+    for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]')) {
+      const url = new URL(link.href, window.location.origin);
+      url.hash = hash;
+      link.href = url.pathname + url.hash;
+    }
+  };
+  syncHash();
+  window.addEventListener('hashchange', syncHash);
+
+  // Close the mobile disclosure once a destination is chosen, and on Escape.
+  const menu = document.querySelector<HTMLDetailsElement>('.menu');
+  if (menu) {
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('.menu-panel a')) menu.open = false;
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(255, 248, 232, 0.93);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(12px, 2vw, 26px);
+    padding-top: 13px;
+    padding-bottom: 13px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+    text-decoration: none;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+    /* The wordmark must never wrap. */
+    white-space: nowrap;
+    letter-spacing: -0.015em;
+  }
+
+  .nav {
+    display: flex;
+    gap: clamp(10px, 1.6vw, 22px);
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+  }
+
+  .nav a {
+    flex: none;
+    font-weight: 600;
+    font-size: clamp(12.5px, 1.3vw, 14px);
+    line-height: 1.4;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.14s ease;
+  }
+
+  .nav a:hover {
+    color: var(--ink);
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex: none;
+  }
+
+  .lang {
+    display: flex;
+    padding: 3px;
+    border-radius: var(--r-pill);
+    background: rgba(59, 47, 28, 0.07);
+  }
+
+  .lang-btn {
+    /* 44px minimum tap target, met via padding + min-height. */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 38px;
+    padding: 6px 11px;
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 12.5px;
+    line-height: 1.3;
+    text-decoration: none;
+    color: rgba(59, 47, 28, 0.5);
+    transition: background 0.14s ease, color 0.14s ease;
+  }
+
+  .lang-btn.on {
+    background: var(--deep);
+    color: var(--paper);
+  }
+
+  .lang-btn:not(.on):hover {
+    color: var(--ink);
+  }
+
+  .head-cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    min-height: 40px;
+    border-radius: var(--r-pill);
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 13.5px;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: var(--shadow-btn-gold);
+    transition: transform 0.14s ease;
+  }
+
+  .head-cta:hover {
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+
+  /* ── Mobile disclosure ───────────────────────────────────
+     A <details> element, so the menu works with no JavaScript. */
+
+  .menu {
+    display: none;
+    position: relative;
+  }
+
+  .menu summary {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: rgba(59, 47, 28, 0.07);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .bars,
+  .bars::before,
+  .bars::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ink);
+  }
+
+  .bars {
+    position: relative;
+  }
+
+  .bars::before,
+  .bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .bars::before {
+    top: -6px;
+  }
+  .bars::after {
+    top: 6px;
+  }
+
+  .menu[open] .bars {
+    background: transparent;
+  }
+
+  .menu[open] .bars::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .menu[open] .bars::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
+  .menu-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+    padding: 8px;
+    border-radius: var(--r-sound);
+    background: var(--card);
+    border: var(--border-w) solid var(--line-strong);
+    box-shadow: 0 18px 36px -20px rgba(59, 47, 28, 0.5);
+  }
+
+  .menu-panel a {
+    padding: 12px 14px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .menu-panel a:hover {
+    background: rgba(59, 47, 28, 0.06);
+  }
+
+  @media (max-width: 860px) {
+    .nav {
+      display: none;
+    }
+    .menu {
+      display: block;
+    }
+  }
+
+  /* The booking CTA, the language switch and the menu all stay visible at
+     every width, as the handoff requires — the CTA just tightens up. */
+  @media (max-width: 460px) {
+    .bar {
+      gap: 8px;
+    }
+    .head-cta {
+      padding: 10px 13px;
+      font-size: 12.5px;
+    }
+    .lang-btn {
+      min-width: 40px;
+      padding: 6px 9px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .wordmark {
+      display: none;
+    }
+  }
+</style>

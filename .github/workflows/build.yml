@@ -1,0 +1,36 @@
+name: Build
+
+# Verifies that the site type-checks and builds on every push and PR.
+# Uses bundled fixtures rather than the live admin API, so the check never
+# depends on the admin being up.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npm run check
+        env:
+          BLOG_ALLOW_FIXTURES: '1'
+
+      - name: Build
+        run: npm run build
+        env:
+          BLOG_ALLOW_FIXTURES: '1'
+          SITE_URL: https://speakup.al
+          PUBLIC_CONTACT_API_URL: https://admin.speakup.al/api/enquiries
+          PUBLIC_BOOKING_API_URL: https://admin.speakup.al/api/booking

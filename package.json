@@ -1,0 +1,23 @@
+{
+  "name": "speak-up",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Speak Up — bilingual marketing site for a speech & language therapy clinic in Tirana",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/nunito-sans": "^5.3.0",
+    "@fontsource/fredoka": "^5.3.0",
+    "astro": "^7.2.9",
+    "typescript": "^6.0.3"
+  }
+}

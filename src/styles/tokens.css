@@ -1,0 +1,71 @@
+/*
+ * Speak Up design tokens.
+ * Values are final and come from the design handoff — do not tune by eye.
+ */
+:root {
+  /* Colour */
+  --gold: #f0b01f;
+  --deep: #4a3b22;
+  --ink: #3b2f1c;
+  --muted: #6f6249;
+  --paper: #fff8e8;
+  --card: #fffdf5;
+  --sky: #8fb9c9;
+  --mint: #9dc08b;
+  --coral: #e58f6f;
+  --eyebrow: #a9700b;
+
+  /* Sticker ink — each tint needs its own dark text colour */
+  --on-sky: #1f3742;
+  --on-mint: #2a3a21;
+  --on-coral: #40190c;
+
+  /* Hairlines and borders */
+  --line: rgba(59, 47, 28, 0.1);
+  --line-strong: rgba(59, 47, 28, 0.14);
+  --border-w: 1.5px;
+
+  /* Shadows */
+  --shadow-press: 0 5px 0 rgba(59, 47, 28, 0.07);
+  --shadow-btn-dark: 0 4px 0 rgba(59, 47, 28, 0.28);
+  --shadow-btn-gold: 0 3px 0 rgba(59, 47, 28, 0.22);
+  --shadow-sticker: 0 6px 0 rgba(59, 47, 28, 0.15);
+  --shadow-cta: 0 6px 0 rgba(59, 47, 28, 0.14);
+  --shadow-mascot: inset 0 -12px 0 rgba(59, 47, 28, 0.09),
+    0 20px 40px -24px rgba(59, 47, 28, 0.55);
+
+  /* Radii */
+  --r-pill: 999px;
+  --r-panel: 34px;
+  --r-cta: 32px;
+  --r-toy: 30px;
+  --r-card: 28px;
+  --r-photo: 26px;
+  --r-fact: 22px;
+  --r-art: 20px;
+  --r-sound: 18px;
+  --r-bubble: 50% 50% 50% 10% / 50% 50% 50% 32%;
+  --r-toy-bubble: 44px 44px 12px 44px;
+
+  /* Type */
+  --font-display: 'Fredoka', system-ui, sans-serif;
+  --font-body: 'Nunito Sans', system-ui, sans-serif;
+
+  /* Layout
+     The container grows with the viewport instead of stopping at 1140px, so
+     large screens get more of the page. The floor keeps every layout below
+     ~1300px identical to the original design. */
+  --container: clamp(1140px, 88vw, 1500px);
+  /* Unchanged from the handoff — widening the gutter as well would have eaten
+     back the content width the larger container is there to give. */
+  --gutter: clamp(20px, 4vw, 44px);
+  --section-pt: clamp(44px, 5.5vw, 76px);
+  --section-pb: clamp(8px, 1.5vw, 16px);
+  /* Upper bounds raised alongside --container so the wider layout breathes
+     instead of just stretching. Identical below ~1300px. */
+  --gap-cards: clamp(14px, 2vw, 26px);
+  --gap-split: clamp(22px, 4vw, 64px);
+
+  /* Page texture */
+  --texture: radial-gradient(rgba(59, 47, 28, 0.045) 1px, transparent 1px);
+}

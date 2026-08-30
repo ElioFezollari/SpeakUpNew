@@ -1,0 +1,480 @@
+---
+import { useCopy, routePath, type Locale } from '../i18n/utils';
+import { SITE } from '../site.config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useCopy(locale);
+const f = t.contact.form;
+
+/**
+ * The admin site's enquiry endpoint. Because the site is static the form is
+ * submitted from the visitor's browser, so this URL is necessarily visible in
+ * the page source — hence the PUBLIC_ prefix. The endpoint must do its own
+ * abuse protection; there is no secret to send with the request.
+ *
+ * See docs/CONTACT-API.md for the contract.
+ */
+const endpoint = import.meta.env.PUBLIC_CONTACT_API_URL ?? '';
+
+if (!endpoint) {
+  console.warn(
+    '[contact] PUBLIC_CONTACT_API_URL is not set — the contact form will render ' +
+      'but cannot send. Set it before deploying (see docs/CONTACT-API.md).',
+  );
+}
+
+// Where the endpoint should redirect a no-JavaScript submission.
+const thanksPath = routePath('thanks', locale);
+---
+
+<div class="form-card" data-reveal>
+  <h2 class="form-title">{t.contact.formTitle}</h2>
+  <p class="form-lede">{t.contact.formLede}</p>
+
+  {/* `action` is omitted when no endpoint is configured, so a misconfigured
+      build cannot POST the form back to the page it is on. */}
+  <form
+    class="form"
+    method="post"
+    action={endpoint || undefined}
+    data-contact-form
+    data-thanks={thanksPath}
+    data-configured={endpoint ? 'true' : 'false'}
+    novalidate
+  >
+    {/* Lets the endpoint send a no-JS visitor somewhere sensible afterwards. */}
+    <input type="hidden" name="locale" value={locale} />
+    <input type="hidden" name="redirectTo" value={thanksPath} />
+    {/* Bots fill hidden fields; people never see this one. */}
+    <div class="pot" aria-hidden="true">
+      <label>
+        Fax
+        <input type="text" name="fax" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+    {/* Filled in by JS on load; a submission that arrives implausibly fast is
+        almost certainly automated. */}
+    <input type="hidden" name="renderedAt" value="" data-rendered-at />
+
+    <div class="grid">
+      <p class="field">
+        <label for="cf-name">
+          {f.name} <span class="req">({f.required})</span>
+        </label>
+        <input
+          id="cf-name"
+          name="name"
+          type="text"
+          required
+          autocomplete="name"
+          placeholder={f.namePlaceholder}
+        />
+        <span class="error" data-error-for="name" hidden></span>
+      </p>
+
+      <p class="field">
+        <label for="cf-phone">
+          {f.phone} <span class="req">({f.required})</span>
+        </label>
+        <input
+          id="cf-phone"
+          name="phone"
+          type="tel"
+          required
+          inputmode="tel"
+          autocomplete="tel"
+          placeholder={f.phonePlaceholder}
+        />
+        <span class="help">{f.phoneHelp}</span>
+        <span class="error" data-error-for="phone" hidden></span>
+      </p>
+
+      <p class="field">
+        <label for="cf-email">{f.email}</label>
+        <input id="cf-email" name="email" type="email" autocomplete="email" />
+        <span class="error" data-error-for="email" hidden></span>
+      </p>
+
+      <p class="field">
+        <label for="cf-age">{f.childAge}</label>
+        <input id="cf-age" name="childAge" type="text" placeholder={f.childAgePlaceholder} />
+      </p>
+
+      <p class="field field-wide">
+        <label for="cf-topic">{f.topic}</label>
+        <select id="cf-topic" name="topic">
+          {f.topicOptions.map((option) => <option value={option}>{option}</option>)}
+        </select>
+      </p>
+
+      <p class="field field-wide">
+        <label for="cf-message">
+          {f.message} <span class="req">({f.required})</span>
+        </label>
+        <textarea
+          id="cf-message"
+          name="message"
+          rows="5"
+          required
+          placeholder={f.messagePlaceholder}></textarea>
+        <span class="error" data-error-for="message" hidden></span>
+      </p>
+    </div>
+
+    <label class="consent">
+      <input type="checkbox" name="consent" value="yes" required />
+      <span>{f.consent}</span>
+    </label>
+    <span class="error" data-error-for="consent" hidden></span>
+
+    <div class="actions">
+      <button class="btn btn-dark" type="submit" data-submit>{f.submit}</button>
+      <a class="call" href={SITE.phone.href}>{SITE.phone.display}</a>
+    </div>
+
+    <p class="nojs-note">
+      {f.noJsNote}{' '}
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </p>
+  </form>
+
+  {/* Swapped in by JS after a successful send; the no-JS path lands on the
+      thank-you page instead. */}
+  <div class="result" data-result hidden role="status" aria-live="polite">
+    <div class="result-mark" aria-hidden="true">★</div>
+    <h3 data-result-title></h3>
+    <p data-result-body></p>
+  </div>
+</div>
+
+{/* `define:vars` passes the localised strings in, which makes this an inline
+    script — hence plain JS rather than TypeScript. */}
+<script
+  is:inline
+  define:vars={{
+    strings: {
+      sending: f.sending,
+      submit: f.submit,
+      successTitle: f.successTitle,
+      successBody: f.successBody,
+      errorTitle: f.errorTitle,
+      errorBody: f.errorBody,
+    },
+  }}
+>
+  const form = document.querySelector('[data-contact-form]');
+
+  if (form) {
+    const button = form.querySelector('[data-submit]');
+    const result = document.querySelector('[data-result]');
+    const stamp = form.querySelector('[data-rendered-at]');
+    if (stamp) stamp.value = String(Date.now());
+
+    const showError = (name, message) => {
+      const node = form.querySelector(`[data-error-for="${name}"]`);
+      if (!node) return;
+      node.textContent = message;
+      node.hidden = !message;
+    };
+
+    /** Native constraint validation, surfaced inline instead of as a tooltip. */
+    const validate = () => {
+      let firstInvalid = null;
+      for (const field of form.querySelectorAll('input[name], textarea[name], select[name]')) {
+        if (field.type === 'hidden' || field.name === 'fax') continue;
+        const ok = field.checkValidity();
+        showError(field.name, ok ? '' : field.validationMessage);
+        field.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        if (!ok && !firstInvalid) firstInvalid = field;
+      }
+      if (firstInvalid) firstInvalid.focus();
+      return !firstInvalid;
+    };
+
+    const finish = (ok) => {
+      if (!result) return;
+      result.querySelector('[data-result-title]').textContent = ok
+        ? strings.successTitle
+        : strings.errorTitle;
+      result.querySelector('[data-result-body]').textContent = ok
+        ? strings.successBody
+        : strings.errorBody;
+      result.classList.toggle('is-error', !ok);
+      result.hidden = false;
+      if (ok) form.hidden = true;
+      else result.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // A build with no PUBLIC_CONTACT_API_URL has nowhere to send to. Say so
+      // loudly rather than appearing to succeed.
+      if (form.dataset.configured !== 'true') {
+        console.error(
+          '[contact] PUBLIC_CONTACT_API_URL is not set — cannot submit. See docs/CONTACT-API.md.',
+        );
+        finish(false);
+        return;
+      }
+
+      if (!validate()) return;
+
+      button.disabled = true;
+      button.textContent = strings.sending;
+
+      try {
+        const payload = Object.fromEntries(new FormData(form).entries());
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        finish(true);
+      } catch (error) {
+        console.error('Contact form submit failed:', error);
+        finish(false);
+        button.disabled = false;
+        button.textContent = strings.submit;
+      }
+    });
+
+    // Clear an error as soon as the visitor fixes it.
+    form.addEventListener('input', (event) => {
+      const field = event.target;
+      if (field.name && field.checkValidity()) {
+        showError(field.name, '');
+        field.setAttribute('aria-invalid', 'false');
+      }
+    });
+  }
+</script>
+
+<style>
+  .form-card {
+    padding: clamp(22px, 3vw, 34px);
+    border-radius: var(--r-toy);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+  }
+
+  .form-title {
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.12;
+    color: var(--ink);
+  }
+
+  .form-lede {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.66;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
+  .form {
+    margin-top: 22px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+  }
+
+  .field-wide {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  .req {
+    font-weight: 600;
+    color: rgba(59, 47, 28, 0.45);
+  }
+
+  input[type='text'],
+  input[type='tel'],
+  input[type='email'],
+  select,
+  textarea {
+    width: 100%;
+    /* 46px tall: clears the 44px minimum tap target. */
+    min-height: 46px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: var(--border-w) solid var(--line-strong);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    transition:
+      border-color 0.16s ease,
+      box-shadow 0.16s ease;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(240, 176, 31, 0.35);
+  }
+
+  input[aria-invalid='true'],
+  textarea[aria-invalid='true'] {
+    border-color: var(--coral);
+  }
+
+  .help {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .error {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #a33b16;
+  }
+
+  /* Honeypot: off-screen rather than display:none, which some bots skip. */
+  .pot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 18px;
+    font-weight: 600;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .consent input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    accent-color: var(--deep);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  .call {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .call:hover {
+    text-decoration: underline;
+  }
+
+  button[disabled] {
+    opacity: 0.65;
+    cursor: progress;
+  }
+
+  .nojs-note {
+    margin-top: 16px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: rgba(59, 47, 28, 0.5);
+  }
+
+  /* ── Result panel ──────────────────────────────────────── */
+
+  .result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    padding: clamp(26px, 4vw, 44px) 20px;
+  }
+
+  .result-mark {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--deep);
+    font-size: 26px;
+  }
+
+  .result.is-error .result-mark {
+    background: var(--coral);
+    color: var(--on-coral);
+  }
+
+  .result h3 {
+    font-size: clamp(21px, 2.2vw, 26px);
+    color: var(--ink);
+  }
+
+  .result p {
+    max-width: 44ch;
+    font-size: 15px;
+    line-height: 1.66;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .result:not([hidden]) .result-mark {
+      animation: pop-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+  }
+</style>

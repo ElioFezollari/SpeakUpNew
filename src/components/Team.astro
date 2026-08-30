@@ -1,0 +1,123 @@
+---
+import PhotoSlot from './PhotoSlot.astro';
+import { useCopy, routePath } from '../i18n/utils';
+
+const { locale, t } = useCopy(Astro.currentLocale);
+const team = t.team;
+---
+
+<section class="section">
+  <div class="inner">
+    <div class="head" data-reveal>
+      <span class="eyebrow">{team.eyebrow}</span>
+      <h2 class="h2">{team.title}</h2>
+      <p class="lede">{team.lede}</p>
+    </div>
+
+    <ul class="people" data-reveal-stagger>
+      {
+        team.members.map((member) => (
+          <li class="person">
+            {/* PLACEHOLDER: staff portraits still to be supplied. */}
+            <PhotoSlot
+              name={member.photo}
+              alt={member.alt}
+              ratio="1 / 1"
+              sizes="(max-width: 700px) 100vw, 30vw"
+            />
+            <div class="who">
+              {member.credential && <span class="credential">{member.credential}</span>}
+              <h3>{member.name}</h3>
+              <p class="role">{member.role}</p>
+              {member.summary && <p class="summary">{member.summary}</p>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a class="more" href={routePath('about', locale)} data-reveal>{team.more} →</a>
+  </div>
+</section>
+
+<style>
+  .head {
+    margin-bottom: clamp(24px, 3.5vw, 36px);
+  }
+
+  .head .lede {
+    margin-top: 12px;
+  }
+
+  .people {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-cards);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: 820px;
+  }
+
+  .person {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: clamp(18px, 2.4vw, 24px);
+    border-radius: var(--r-card);
+    background: var(--card);
+    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
+    box-shadow: var(--shadow-press);
+  }
+
+  .credential {
+    display: block;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--eyebrow);
+  }
+
+  h3 {
+    font-size: 21px;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-top: 6px;
+  }
+
+  .role {
+    margin-top: 5px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .summary {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+  }
+
+  .more:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 700px) {
+    .people {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

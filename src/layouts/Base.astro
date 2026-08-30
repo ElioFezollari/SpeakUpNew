@@ -1,0 +1,148 @@
+---
+import '@fontsource/fredoka/400.css';
+import '@fontsource/fredoka/500.css';
+import '@fontsource/fredoka/600.css';
+import '@fontsource/fredoka/700.css';
+import '@fontsource-variable/nunito-sans';
+import '../styles/global.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { useCopy, otherLocale, mirrorPath, DEFAULT_LOCALE } from '../i18n/utils';
+
+interface Props {
+  /** Overrides the locale's default <title>. */
+  title?: string;
+  description?: string;
+  /** Absolute URL of a social preview image. */
+  ogImage?: string;
+  /** `article` on blog posts, `website` elsewhere. */
+  ogType?: 'website' | 'article';
+  /** Emitted as <meta name="robots"> when set. */
+  robots?: string;
+  /**
+   * The URL of this page in the other language. Named routes are resolved
+   * automatically through ROUTES; pages with no true counterpart — a blog
+   * post that exists in one language only — pass their own.
+   */
+  altPath?: string;
+}
+
+const { title, description, ogImage, ogType = 'website', robots, altPath } = Astro.props;
+
+const { locale, t } = useCopy(Astro.currentLocale);
+
+const pageTitle = title ? `${title} · Speak Up` : t.meta.title;
+const pageDescription = description ?? t.meta.description;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// hreflang alternates are derived rather than hand-maintained: this page's own
+// URL, plus its counterpart in the other language.
+const other = otherLocale(locale);
+const counterpart = altPath ?? mirrorPath(Astro.url.pathname, locale);
+
+const selfHref = new URL(Astro.url.pathname, Astro.site).href;
+const otherHref = new URL(counterpart, Astro.site).href;
+
+const alternates = [
+  { hreflang: locale, href: selfHref },
+  { hreflang: other, href: otherHref },
+  {
+    hreflang: 'x-default',
+    href: locale === DEFAULT_LOCALE ? selfHref : otherHref,
+  },
+];
+---
+
+<!doctype html>
+<html lang={t.meta.localeTag}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    {robots && <meta name="robots" content={robots} />}
+
+    <link rel="canonical" href={canonical.href} />
+    {
+      alternates.map((alt) => (
+        <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+      ))
+    }
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Speak Up" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:locale" content={t.meta.ogLocale} />
+    <meta
+      property="og:locale:alternate"
+      content={other === 'en' ? 'en_GB' : 'sq_AL'}
+    />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+    {/* Generated from the client's logo — see README. */}
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#FFF8E8" />
+
+    {/* Sets the `js` flag before first paint, so reveal targets start hidden
+        without a flash. With JS off the class is never added and everything
+        renders visible. */}
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">{t.nav.skipToContent}</a>
+    <Header altPath={counterpart} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Reveal-on-scroll for anything marked [data-reveal] or
+      // [data-reveal-stagger]. Each element is unobserved once it has played,
+      // so nothing re-animates on the way back up.
+      const targets = document.querySelectorAll<HTMLElement>(
+        '[data-reveal], [data-reveal-stagger]',
+      );
+
+      if (targets.length > 0) {
+        // Index children of a staggered group so CSS can space them out.
+        for (const group of document.querySelectorAll<HTMLElement>('[data-reveal-stagger]')) {
+          [...group.children].forEach((child, i) => {
+            (child as HTMLElement).style.setProperty('--i', String(i));
+          });
+        }
+
+        if (!('IntersectionObserver' in window)) {
+          // No observer support: show everything rather than leave it hidden.
+          for (const target of targets) target.classList.add('is-in');
+        } else {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (!entry.isIntersecting) continue;
+                entry.target.classList.add('is-in');
+                observer.unobserve(entry.target);
+              }
+            },
+            // Fire a little before the element reaches the viewport edge.
+            { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+          );
+
+          for (const target of targets) observer.observe(target);
+        }
+      }
+    </script>
+  </body>
+</html>
