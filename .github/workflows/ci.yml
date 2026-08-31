@@ -59,6 +59,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
+    # The SSH secrets live on this environment. A job that does not name it
+    # cannot see environment secrets at all — they arrive empty, which is
+    # indistinguishable from never having been set.
+    #
+    # Naming it costs nothing if the secrets are repository-level instead:
+    # those stay visible either way, and an environment secret of the same
+    # name simply wins. It also buys a deployment history, and a place to
+    # require a reviewer before anything reaches production.
+    environment: prod
+
     steps:
       - name: Deploy over SSH
         env:
@@ -69,8 +79,20 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_PRIVATE_KEY" ] || [ -z "$SSH_KNOWN_HOSTS" ]; then
-            echo "::error::Set SSH_HOST, SSH_USER, SSH_PRIVATE_KEY and SSH_KNOWN_HOSTS as repository secrets. See SpeakUpAdmin/docs/DEPLOY-DROPLET.md."
+          # Name the ones that are actually missing. An empty value and an
+          # absent secret look identical here, so "one of these four" sends you
+          # to re-check all four.
+          missing=""
+          [ -n "$SSH_HOST" ]        || missing="$missing SSH_HOST"
+          [ -n "$SSH_USER" ]        || missing="$missing SSH_USER"
+          [ -n "$SSH_PRIVATE_KEY" ] || missing="$missing SSH_PRIVATE_KEY"
+          [ -n "$SSH_KNOWN_HOSTS" ] || missing="$missing SSH_KNOWN_HOSTS"
+
+          if [ -n "$missing" ]; then
+            echo "::error::Empty or missing repository secrets:$missing"
+            echo "Set them under Settings -> Secrets and variables -> Actions -> Secrets"
+            echo "(the *Secrets* tab, not Variables; a Repository secret, not an Environment one)."
+            echo "Names are case-sensitive. This repository is ${{ github.repository }}."
             exit 1
           fi
 
