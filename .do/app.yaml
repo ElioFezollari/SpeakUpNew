@@ -15,7 +15,7 @@ static_sites:
   - name: web
     # Point this at the repository holding this project.
     github:
-      repo: YOUR_GITHUB_ORG/speakup-site
+      repo: ElioFezollari/SpeakUpNew
       branch: main
       # App Platform rebuilds on every push to `branch`. Publishing a blog
       # post does not push, so the admin triggers a rebuild through the API
@@ -30,35 +30,37 @@ static_sites:
     envs:
       - key: BLOG_API_URL
         scope: BUILD_TIME
-        value: https://admin.speakup.al/api/posts
+        value: https://admin.klinikelogopedie.com/api/posts
 
-      - key: BLOG_API_TOKEN
-        scope: BUILD_TIME
-        type: SECRET
-        # Replace with the encrypted value; never commit the plaintext token.
-        value: EV[1:REPLACE_ME]
+      # BLOG_API_TOKEN is optional and left unset on purpose: the posts
+      # endpoint only ever returns published content, so an open read is
+      # defensible and one fewer thing to get wrong on a first deploy.
+      # If you do set it, set the SAME value on the admin, or every build
+      # fails with a 401. Add it in the UI as an encrypted secret rather
+      # than committing the plaintext:
+      #   Settings -> web -> Environment Variables -> Encrypt
 
       # Public by design: the contact form is submitted from the browser, so
       # this URL is emitted into the page HTML. Not a secret.
       - key: PUBLIC_CONTACT_API_URL
         scope: BUILD_TIME
-        value: https://admin.speakup.al/api/enquiries
+        value: https://admin.klinikelogopedie.com/api/enquiries
 
       # Also public by design: the booking calendar is read and written from
       # the browser at runtime.
       - key: PUBLIC_BOOKING_API_URL
         scope: BUILD_TIME
-        value: https://admin.speakup.al/api/booking
+        value: https://admin.klinikelogopedie.com/api/booking
 
       - key: SITE_URL
         scope: BUILD_TIME
-        value: https://speakup.al
+        value: https://klinikelogopedie.com
 
     routes:
       - path: /
 
 domains:
-  - domain: speakup.al
+  - domain: klinikelogopedie.com
     type: PRIMARY
-  - domain: www.speakup.al
+  - domain: www.klinikelogopedie.com
     type: ALIAS

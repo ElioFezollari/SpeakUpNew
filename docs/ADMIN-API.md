@@ -134,7 +134,7 @@ To ease integration, several common namings are accepted:
   "author": { "name": "Elira Hoxha", "role": "Logopede" },
   "tags": ["në shtëpi", "prindërit"],
   "coverImage": {
-    "url": "https://cdn.speakup.al/blog/dhjete-minuta.jpg",
+    "url": "https://cdn.klinikelogopedie.com/blog/dhjete-minuta.jpg",
     "alt": "Nënë dhe fëmijë duke luajtur me karta"
   },
   "status": "published",
@@ -200,7 +200,7 @@ Practical consequences:
 Point the site at your admin and build:
 
 ```bash
-BLOG_API_URL="https://admin.speakup.al/api/posts" \
+BLOG_API_URL="https://admin.klinikelogopedie.com/api/posts" \
 BLOG_API_TOKEN="…" \
 npm run build
 ```
@@ -208,7 +208,7 @@ npm run build
 The loader logs what it found:
 
 ```
-[speakup-blog-api] Fetching blog posts from https://admin.speakup.al...
+[speakup-blog-api] Fetching blog posts from https://admin.klinikelogopedie.com...
 [speakup-blog-api] Loaded 12 blog posts (3 draft/scheduled/invalid skipped).
 ```
 

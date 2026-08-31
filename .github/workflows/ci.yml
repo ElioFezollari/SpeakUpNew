@@ -1,0 +1,94 @@
+name: CI
+
+# Verifies the site type-checks and builds on every push and pull request,
+# then deploys a push to main.
+#
+# The check builds against bundled fixtures rather than the live admin API, so
+# a pull request never fails because the admin happens to be down. The build
+# that actually ships is the one on the Droplet, against the real API over
+# loopback — see SpeakUpAdmin/docs/DEPLOY-DROPLET.md.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deploy at a time. Queued rather than cancelled: a skipped deploy would
+# leave main unpublished with nothing to say so.
+concurrency:
+  group: deploy-site
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npm run check
+        env:
+          BLOG_ALLOW_FIXTURES: '1'
+
+      - name: Build
+        run: npm run build
+        env:
+          BLOG_ALLOW_FIXTURES: '1'
+          SITE_URL: https://klinikelogopedie.com
+          PUBLIC_CONTACT_API_URL: https://admin.klinikelogopedie.com/api/enquiries
+          PUBLIC_BOOKING_API_URL: https://admin.klinikelogopedie.com/api/booking
+
+  deploy:
+    name: Deploy
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Deploy over SSH
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_PRIVATE_KEY" ] || [ -z "$SSH_KNOWN_HOSTS" ]; then
+            echo "::error::Set SSH_HOST, SSH_USER, SSH_PRIVATE_KEY and SSH_KNOWN_HOSTS as repository secrets. See SpeakUpAdmin/docs/DEPLOY-DROPLET.md."
+            exit 1
+          fi
+
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ci
+          chmod 600 ~/.ssh/id_ci
+          # Pinned, not discovered. `ssh-keyscan` at deploy time would trust
+          # whatever answers, which is the whole thing host keys exist to stop.
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+          # The word "deploy" is discarded: this key is installed on the server
+          # with a forced command, so the session can run deploy-site.sh and
+          # nothing else. That script pulls, installs, rebuilds into a new
+          # release directory and moves the symlink only if the build worked.
+          ssh -i ~/.ssh/id_ci -o IdentitiesOnly=yes "$SSH_USER@$SSH_HOST" deploy
+
+      - name: Say what shipped
+        if: always()
+        run: |
+          echo "### Site deploy" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`${GITHUB_SHA:0:7}\` — ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"

@@ -29,7 +29,7 @@ export const SITE = {
     display: '',
     href: '',
   },
-  email: 'pershendetje@speakup.al',
+  email: 'pershendetje@klinikelogopedie.com',
   address: {
     street: 'Rr. Myslym Shyri 24',
     city: 'Tiranë',

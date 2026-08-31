@@ -9,6 +9,10 @@ node_modules/
 .env
 .env.production
 .env.local
+# Hand-made copies of the above. `.env` does not match these, and one of them
+# committed by a `git add -A` is a secret in the history.
+.env.backup*
+.env.bak
 
 # logs
 npm-debug.log*

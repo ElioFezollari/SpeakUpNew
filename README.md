@@ -60,7 +60,7 @@ remains outstanding:
 |---|---|---|
 | **Phone number** | `src/site.config.ts` → `phone` | placeholder `069 000 0000` |
 | **Griselda Çela's number** | `src/site.config.ts` → `phone2` | empty — requested, never supplied; hidden until filled |
-| **Email** | `src/site.config.ts` | placeholder `pershendetje@speakup.al` |
+| **Email** | `src/site.config.ts` | placeholder `pershendetje@klinikelogopedie.com` |
 | **Address** | `src/site.config.ts` | placeholder `Rr. Myslym Shyri 24` |
 | **Opening hours** | `src/i18n/*.json` → `foot_hours` | placeholder |
 | **Licence number** | `src/i18n/*.json` → `facts[3]` | placeholder `Nr. 4821`, shown in the footer |
@@ -72,7 +72,7 @@ remains outstanding:
 | **Contact endpoint** | `PUBLIC_CONTACT_API_URL` env var | unset — form cannot send |
 | **Booking endpoint** | `PUBLIC_BOOKING_API_URL` env var | unset — calendar runs in demo mode |
 | Bookable services | `src/i18n/*.json` → `booking.services` | drafted from the therapy list, confirm with the clinic |
-| **Canonical domain** | `SITE_URL` env var | `https://speakup.al` |
+| **Canonical domain** | `SITE_URL` env var | `https://klinikelogopedie.com` |
 | Practical details on the clinic page | `src/i18n/*.json` → `clinic.practical` | parking, prams, siblings — invented for layout |
 | Building entrance note | `src/i18n/*.json` → `contact.mapNote` | invented for layout |
 

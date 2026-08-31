@@ -1,8 +1,15 @@
 # Deploying to DigitalOcean
 
-The site is static HTML in `dist/`. The recommended host is **App Platform**
-as a static site, which is free for the first three static sites and builds
-straight from GitHub.
+> **This is not how the clinic is deployed.** The site, the admin and the
+> database all run on a single Droplet, and the runbook for it lives in the
+> admin repository: `SpeakUpAdmin/docs/DEPLOY-DROPLET.md`. There, this repo is
+> a checkout at `/srv/speakup/site`, nginx serves its `dist/`, and publishing a
+> post in the admin rebuilds it in place — no App Platform app and no
+> `DO_API_TOKEN`. `.github/workflows/ci.yml` deploys to that Droplet over SSH;
+> the App Platform and scheduled-rebuild workflows that used to be here have
+> been removed, the latter replaced by a systemd timer on the machine.
+>
+> What follows is the App Platform alternative, kept because it still works.
 
 ---
 
@@ -116,11 +123,11 @@ Set these as **build-time** variables on the App Platform component:
 
 | Variable | Example | Encrypted |
 |---|---|---|
-| `BLOG_API_URL` | `https://admin.speakup.al/api/posts` | no |
+| `BLOG_API_URL` | `https://admin.klinikelogopedie.com/api/posts` | no |
 | `BLOG_API_TOKEN` | your admin's read token | **yes** |
-| `PUBLIC_CONTACT_API_URL` | `https://admin.speakup.al/api/enquiries` | no — public by design |
-| `PUBLIC_BOOKING_API_URL` | `https://admin.speakup.al/api/booking` | no — public by design |
-| `SITE_URL` | `https://speakup.al` | no |
+| `PUBLIC_CONTACT_API_URL` | `https://admin.klinikelogopedie.com/api/enquiries` | no — public by design |
+| `PUBLIC_BOOKING_API_URL` | `https://admin.klinikelogopedie.com/api/booking` | no — public by design |
+| `SITE_URL` | `https://klinikelogopedie.com` | no |
 
 `SITE_URL` must be the real origin before launch — canonical URLs, `hreflang`
 alternates and the sitemap are all built from it.
@@ -142,7 +149,7 @@ Serve `dist/` with nginx:
 ```nginx
 server {
     listen 443 ssl http2;
-    server_name speakup.al www.speakup.al;
+    server_name klinikelogopedie.com www.klinikelogopedie.com;
 
     root /var/www/speakup;
     index index.html;

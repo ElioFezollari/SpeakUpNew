@@ -92,7 +92,7 @@ browser performs a normal submission with
 
 ```
 HTTP/1.1 303 See Other
-Location: https://speakup.al/kontakt/faleminderit/
+Location: https://klinikelogopedie.com/kontakt/faleminderit/
 ```
 
 Build that URL from the site origin plus the submitted `redirectTo`.
@@ -112,7 +112,7 @@ The browser sends `Content-Type: application/json`, which makes this a
 preflight *and* set the headers on the POST response:
 
 ```http
-Access-Control-Allow-Origin: https://speakup.al
+Access-Control-Allow-Origin: https://klinikelogopedie.com
 Access-Control-Allow-Methods: POST, OPTIONS
 Access-Control-Allow-Headers: Content-Type
 Access-Control-Max-Age: 86400
@@ -157,7 +157,7 @@ enough, and they cost the parent nothing.
 ## Configuration
 
 ```bash
-PUBLIC_CONTACT_API_URL=https://admin.speakup.al/api/enquiries
+PUBLIC_CONTACT_API_URL=https://admin.klinikelogopedie.com/api/enquiries
 ```
 
 Set it as a **build-time** variable on DigitalOcean, like the blog variables.
@@ -173,7 +173,7 @@ page it is on. **Set it before launch** — it is on the checklist in the README
 ## Testing
 
 ```bash
-PUBLIC_CONTACT_API_URL="https://admin.speakup.al/api/enquiries" npm run build
+PUBLIC_CONTACT_API_URL="https://admin.klinikelogopedie.com/api/enquiries" npm run build
 npm run preview
 ```
 

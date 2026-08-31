@@ -10,7 +10,7 @@ import sitemap from '@astrojs/sitemap';
  * switch in the header is a plain <a> to the mirrored URL — no client JS.
  */
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://speakup.al',
+  site: process.env.SITE_URL ?? 'https://klinikelogopedie.com',
   output: 'static',
   trailingSlash: 'always',
 

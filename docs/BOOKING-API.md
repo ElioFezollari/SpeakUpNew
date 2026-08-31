@@ -153,7 +153,7 @@ Both requests are cross-origin, and the POST sends
 `OPTIONS` preflight and set the headers on the real responses:
 
 ```http
-Access-Control-Allow-Origin: https://speakup.al
+Access-Control-Allow-Origin: https://klinikelogopedie.com
 Access-Control-Allow-Methods: GET, POST, OPTIONS
 Access-Control-Allow-Headers: Content-Type
 Access-Control-Max-Age: 86400
@@ -189,7 +189,7 @@ that will get hammered — it is called on every month change.
 ## Configuration
 
 ```bash
-PUBLIC_BOOKING_API_URL=https://admin.speakup.al/api/booking
+PUBLIC_BOOKING_API_URL=https://admin.klinikelogopedie.com/api/booking
 ```
 
 Set as a **build-time** variable on DigitalOcean, like the others. Not a
@@ -227,7 +227,7 @@ when you do:
 ## Testing
 
 ```bash
-PUBLIC_BOOKING_API_URL="https://admin.speakup.al/api/booking" npm run build
+PUBLIC_BOOKING_API_URL="https://admin.klinikelogopedie.com/api/booking" npm run build
 npm run preview
 ```
 

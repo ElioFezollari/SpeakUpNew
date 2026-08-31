@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://speakup.al/sitemap-index.xml
+Sitemap: https://klinikelogopedie.com/sitemap-index.xml
