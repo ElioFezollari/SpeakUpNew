@@ -289,6 +289,17 @@ if (!endpoint) {
 
     const todayKey = keyOf(new Date());
 
+    /**
+     * The clinic works Monday to Friday, as the opening hours on the contact
+     * page say. Weekends are never bookable — not in demo mode, and not even
+     * if the API hands back slots for one, because the grid is the last word
+     * on what a visitor can pick and it has to agree with those hours.
+     */
+    const isWorkday = (key) => {
+      const day = parseKey(key).getDay();
+      return day >= 1 && day <= 5;
+    };
+
     /*
      * Month and weekday names come from the copy files, not Intl: a browser
      * without Albanian locale data silently falls back to English month names,
@@ -318,23 +329,19 @@ if (!endpoint) {
 
     // ── Availability ─────────────────────────────────────────
 
-    /** Demo generator: weekdays only, a fixed slot pattern, some days full. */
+    /** Demo generator: Monday-Friday, a fixed slot pattern, some days full. */
     const demoAvailability = (from, to) => {
       const out = new Map();
       const cursor = new Date(from);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       while (cursor <= to) {
-        const day = cursor.getDay();
         const key = keyOf(cursor);
-        // Weekdays plus Saturday morning; nothing in the past.
-        if (cursor >= today && day !== 0) {
+        // Open days only, and nothing in the past.
+        if (cursor >= today && isWorkday(key)) {
           const seed = cursor.getDate();
           if (seed < 12 || seed > 16) {
-            const slots =
-              day === 6
-                ? ['09:00', '09:45', '10:30', '11:15']
-                : ['09:00', '09:45', '10:30', '11:15', '14:00', '14:45', '15:30', '16:15'];
+            const slots = ['09:00', '09:45', '10:30', '11:15', '14:00', '14:45', '15:30', '16:15'];
             out.set(key, slots.filter((_, i) => (seed + i) % 5 !== 0));
           }
         }
@@ -415,7 +422,9 @@ if (!endpoint) {
         const data = await res.json();
 
         state.availability = new Map(
-          (data.days || []).map((d) => [d.date, Array.isArray(d.slots) ? d.slots : []]),
+          (data.days || [])
+            .filter((d) => isWorkday(d.date))
+            .map((d) => [d.date, Array.isArray(d.slots) ? d.slots : []]),
         );
         calMsg.hidden = true;
         state.loading = false;
@@ -465,7 +474,7 @@ if (!endpoint) {
         const slots = state.availability.get(key) || [];
         const isPast = key < todayKey;
         const isToday = key === todayKey;
-        const free = slots.length > 0 && !isPast;
+        const free = slots.length > 0 && !isPast && isWorkday(key);
 
         const cell = document.createElement('button');
         cell.type = 'button';
