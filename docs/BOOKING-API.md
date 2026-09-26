@@ -101,7 +101,7 @@ Accept: application/json
   "date": "2026-09-14",
   "time": "14:30",
   "name": "Ana Hoxha",
-  "phone": "069 123 4567",
+  "phone": "0676802760",
   "email": "ana@example.com",
   "childAge": "4 vjeç",
   "notes": "Djali im ka vështirësi me tingullin R…",

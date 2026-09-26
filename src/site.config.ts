@@ -14,7 +14,7 @@ export const SITE = {
   legalName: 'Klinikë Logopedie “Speak Up”',
   phone: {
     /** Formatted for reading. */
-    display: '069 000 0000',
+    display: '067 680 27607',
     /** E.164 for the tel: link. */
     href: 'tel:+355690000000',
   },
@@ -29,9 +29,9 @@ export const SITE = {
     display: '',
     href: '',
   },
-  email: 'pershendetje@klinikelogopedie.com',
+  email: 'logopedispeakup@gmail.com',
   address: {
-    street: 'Rr. Myslym Shyri 24',
+    street: 'Rr. Kongresi i Manastirit , Tirane',
     city: 'Tiranë',
     country: 'AL',
   },

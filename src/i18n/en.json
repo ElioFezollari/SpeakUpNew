@@ -121,10 +121,11 @@
   "room_h2": "A space patients want to come back to",
   "room_photo_alt": "The Speak Up playroom, with a large window and toys on open shelves",
   "roomList": [
-    "A big window, no hospital lighting",
-    "Toys cleaned after every session",
-    "The parent sits inside, not in the corridor",
-    "45-minute sessions, with a break if needed"
+"Warm and safe environments",
+"Child-friendly spaces",
+"Therapeutic materials and tools",
+"Calm and welcoming atmosphere",
+"Focus on the development and progress of every child"
   ],
   "room_link": "See the whole clinic",
   "eyebrow_parents": "For parents",
@@ -147,7 +148,7 @@
     },
     {
       "k": "Licence",
-      "v": "No. 4821",
+      "v": "No. 17286",
       "note": "Albanian Order of Health Professionals · MSc SLT, UT"
     }
   ],
@@ -191,7 +192,7 @@
       "name": "Your name",
       "namePlaceholder": "What should we call you",
       "phone": "Phone",
-      "phonePlaceholder": "069 ...",
+      "phonePlaceholder": "067 680 27607",
       "phoneHelp": "The fastest way for us to get back to you.",
       "email": "Email (optional)",
       "childAge": "Child's age (optional)",
@@ -278,7 +279,7 @@
     "practical": [
       {
         "k": "Address",
-        "v": "Rr. Myslym Shyri 24",
+        "v": "Rr. Kongresi i Manastirit , Tirane",
         "note": "First floor, lift available"
       },
       {

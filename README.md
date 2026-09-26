@@ -58,7 +58,7 @@ remains outstanding:
 
 | What | Where | Status |
 |---|---|---|
-| **Phone number** | `src/site.config.ts` → `phone` | placeholder `069 000 0000` |
+| **Phone number** | `src/site.config.ts` → `phone` | placeholder `067 680 27607` |
 | **Griselda Çela's number** | `src/site.config.ts` → `phone2` | empty — requested, never supplied; hidden until filled |
 | **Email** | `src/site.config.ts` | placeholder `pershendetje@klinikelogopedie.com` |
 | **Address** | `src/site.config.ts` | placeholder `Rr. Myslym Shyri 24` |

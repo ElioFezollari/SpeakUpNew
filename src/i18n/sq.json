@@ -121,10 +121,11 @@
   "room_h2": "Një ambient ku pacientët duan të kthehen",
   "room_photo_alt": "Dhoma e lojës e klinikës Speak Up, me dritare të madhe dhe lodra në rafte",
   "roomList": [
-    "Dritare e madhe, pa ndriçim spitalor",
-    "Lodra të pastruara pas çdo seance",
-    "Prindi ulet brenda, jo në korridor",
-    "Seanca 45 minuta, me pushim nëse duhet"
+"Ambiente të ngrohta dhe të sigurta",
+"Hapësira të përshtatura për fëmijët",
+"Materiale dhe mjete terapeutike",
+"Atmosferë e qetë dhe mikpritëse",
+"Fokus te zhvillimi dhe progresi i çdo fëmije"
   ],
   "room_link": "Shiko të gjithë klinikën",
   "eyebrow_parents": "Për prindërit",
@@ -147,7 +148,7 @@
     },
     {
       "k": "Licenca",
-      "v": "Nr. 4821",
+      "v": "Nr. 17286",
       "note": "Urdhri i Profesionistëve të Shëndetit · MSc Logopedi, UT"
     }
   ],
@@ -191,7 +192,7 @@
       "name": "Emri juaj",
       "namePlaceholder": "Si t’ju drejtohemi",
       "phone": "Telefoni",
-      "phonePlaceholder": "069 ...",
+      "phonePlaceholder": "067 680 27607",
       "phoneHelp": "Mënyra më e shpejtë për t’ju kthyer përgjigje.",
       "email": "Email (jo i detyrueshëm)",
       "childAge": "Mosha e fëmijës (jo e detyrueshme)",
@@ -278,7 +279,7 @@
     "practical": [
       {
         "k": "Adresa",
-        "v": "Rr. Myslym Shyri 24",
+        "v": "Rr. Kongresi i Manastirit , Tirane",
         "note": "Kati i parë, me ashensor"
       },
       {
