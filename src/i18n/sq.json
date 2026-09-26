@@ -484,6 +484,14 @@
     "title": "Specialistët pranë Speak Up Clinic",
     "lede": "Njihuni me stafin tonë.",
     "members": [
+            {
+        "name": "Dea Fezollari",
+        "role": "Logopede / Terapiste ABA",
+        "credential": "",
+        "photo": "team-dea",
+        "alt": "Dea Fezollari, logopede dhe terapiste ABA",
+                "summary": "Bashkëthemeluese e Klinikës së Neurozhvillimit “Speak Up”."
+      },
       {
         "name": "Griselda Çela",
         "role": "Logopede / Terapiste ABA",
@@ -491,15 +499,8 @@
         "photo": "team-griselda",
         "alt": "Griselda Çela, logopede dhe terapiste ABA",
         "summary": "Bashkëthemeluese e Klinikës së Neurozhvillimit “Speak Up”."
-      },
-      {
-        "name": "Dea Fezollari",
-        "role": "Logopede / Terapiste ABA",
-        "credential": "",
-        "photo": "team-dea",
-        "alt": "Dea Fezollari, logopede dhe terapiste ABA",
-        "summary": ""
       }
+
     ],
     "more": "Lexo më shumë për stafin"
   },
@@ -546,6 +547,55 @@
     "staffTitle": "Stafi ynë",
     "staffLede": "Njihuni me stafin tonë.",
     "staff": [
+            {
+        "name": "Dea Fezollari",
+        "credential": "",
+        "role": "Logopede / Terapiste ABA",
+        "photo": "team-dea",
+        "alt": "Dea Fezollari, logopede dhe terapiste ABA",
+        "summary": "",
+        "groups": [
+          {
+            "title": "Arsimi",
+            "items": [
+              "Bachelor në Logopedi",
+              "Master i Shkencave, “Logopedi”",
+              "PhD Candidate, LMU Muenchen University",
+              "Certifikuar për ushtrimin e Terapisë ABA"
+            ]
+          },
+          {
+            "title": "Trajnuar në",
+            "items": [
+              "Fundamentals of Neuroscience — Harvard Medical School",
+              "Clinical Competence in Audiology — American Speech-Language-Hearing Association",
+              "Safe Swallowing Dysphagia Management — Safe Swallowing Education"
+            ]
+          },
+          {
+            "title": "Veprimtari",
+            "items": [
+              "Lektore në trajnimin “Stimulimi i fëmijëve nga mosha 1–5 vjeç”, Klinikë Neurozhvillimi “Speak Up”.",
+              "Pjesë e ekipit multidisiplinar në vlerësimin dhe diagnostikimin e vështirësive gjuhësore dhe të neurozhvillimit.",
+              "Pjesë e stafit multidisiplinar: Klinika “Speak Up”, Klinika “Neuron”."
+            ]
+          },
+          {
+            "title": "Eksperiencë në diagnoza",
+            "items": [
+              "Vonesa në të folur",
+              "Belbëzim",
+              "Çrregullim i Spektrit të Autizmit",
+              "Sindroma Down",
+              "ADHD",
+              "Vonesa fonologjike",
+              "Vështirësi në të nxënë",
+              "Çrregullime të sjelljes",
+              "Vështirësi gjuhësore të neurozhvillimit"
+            ]
+          }
+        ]
+      },
       {
         "name": "Griselda Çela",
         "credential": "PhD Cand. MSc.",
@@ -594,15 +644,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "Dea Fezollari",
-        "credential": "",
-        "role": "Logopede / Terapiste ABA",
-        "photo": "team-dea",
-        "alt": "Dea Fezollari, logopede dhe terapiste ABA",
-        "summary": "",
-        "groups": []
       }
     ]
   },

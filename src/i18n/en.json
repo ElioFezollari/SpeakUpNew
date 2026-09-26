@@ -485,20 +485,20 @@
     "lede": "Meet our staff.",
     "members": [
       {
+        "name": "Dea Fezollari",
+        "role": "Speech therapist / ABA therapist",
+        "credential": "PhD Cand. MSc.",
+        "photo": "team-dea",
+        "alt": "Dea Fezollari, speech and ABA therapist",
+        "summary": "Co-founder of the “Speak Up” Neurodevelopment Clinic."
+      },
+      {
         "name": "Griselda Çela",
         "role": "Speech therapist / ABA therapist",
         "credential": "PhD Cand. MSc.",
         "photo": "team-griselda",
         "alt": "Griselda Çela, speech and ABA therapist",
         "summary": "Co-founder of the “Speak Up” Neurodevelopment Clinic."
-      },
-      {
-        "name": "Dea Fezollari",
-        "role": "Speech therapist / ABA therapist",
-        "credential": "",
-        "photo": "team-dea",
-        "alt": "Dea Fezollari, speech and ABA therapist",
-        "summary": ""
       }
     ],
     "more": "Read more about the team"
@@ -546,6 +546,55 @@
     "staffTitle": "Our staff",
     "staffLede": "Meet the team.",
     "staff": [
+            {
+        "name": "Dea Fezollari",
+        "credential": "",
+        "role": "Speech therapist / ABA therapist",
+        "photo": "team-dea",
+        "alt": "Dea Fezollari, speech and ABA therapist",
+        "summary": "",
+        "groups": [
+          {
+            "title": "Education",
+            "items": [
+              "BA in Speech and Language Therapy",
+              "MSc in Speech and Language Therapy",
+              "PhD Candidate, LMU Muenchen University",
+              "Certified to practise ABA therapy"
+            ]
+          },
+          {
+            "title": "Trained at",
+            "items": [
+              "Fundamentals of Neuroscience — Harvard Medical School",
+              "Clinical Competence in Audiology — American Speech-Language-Hearing Association",
+              "Safe Swallowing Dysphagia Management — Safe Swallowing Education"
+            ]
+          },
+          {
+            "title": "Professional activity",
+            "items": [
+              "Lecturer on the training course “Stimulating children aged 1–5”, “Speak Up” Neurodevelopment Clinic.",
+              "Member of the multidisciplinary team assessing and diagnosing language and neurodevelopmental difficulties.",
+              "Part of the multidisciplinary staff at “Speak Up” Clinic and “Neuron” Clinic."
+            ]
+          },
+          {
+            "title": "Experience across diagnoses",
+            "items": [
+              "Speech delay",
+              "Stammering",
+              "Autism spectrum disorder",
+              "Down syndrome",
+              "ADHD",
+              "Phonological delay",
+              "Learning difficulties",
+              "Behavioural disorders",
+              "Developmental language disorder"
+            ]
+          }
+        ]
+      },
       {
         "name": "Griselda Çela",
         "credential": "PhD Cand. MSc.",
@@ -594,15 +643,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "Dea Fezollari",
-        "credential": "",
-        "role": "Speech therapist / ABA therapist",
-        "photo": "team-dea",
-        "alt": "Dea Fezollari, speech and ABA therapist",
-        "summary": "",
-        "groups": []
       }
     ]
   },
