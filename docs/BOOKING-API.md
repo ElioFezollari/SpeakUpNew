@@ -209,13 +209,13 @@ secret — it is emitted into the page HTML by design.
 
 ### Demo mode
 
-If it is **unset**, the page runs a **demo calendar**: availability is
-generated in the browser and a prominent banner says so in the visitor's
-language. The build also logs a warning. Submitting in demo mode sends nothing
-and tells the visitor to call instead.
+If it is **unset** in development (`astro dev`), the page runs a **demo
+calendar**: availability is generated in the browser, a prominent banner says
+so, and submitting sends nothing. It exists so the page can be worked on
+without the API running.
 
-This exists so the page can be designed and reviewed before the API is built.
-**Set the variable before launch** — it is on the checklist in the README.
+**A production build refuses to run without it** — it stops with an error
+rather than publishing the demo calendar and its "not connected yet" banner.
 
 ---
 

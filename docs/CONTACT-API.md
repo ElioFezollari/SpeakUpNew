@@ -164,9 +164,9 @@ Set it as a **build-time** variable on DigitalOcean, like the blog variables.
 Unlike `BLOG_API_TOKEN` it is not a secret — it is emitted into the page HTML
 by design.
 
-If it is unset, the build still succeeds but logs a warning, and the form
-renders with no `action` and refuses to submit rather than posting back to the
-page it is on. **Set it before launch** — it is on the checklist in the README.
+If it is unset in development, the form renders with no `action` and refuses to
+submit rather than posting back to the page it is on. **A production build
+refuses to run without it**, so a form that cannot send is never published.
 
 ---
 

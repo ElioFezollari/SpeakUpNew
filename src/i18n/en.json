@@ -213,7 +213,7 @@
       "errorBody": "Please try again, or call us — we answer straight away.",
       "successTitle": "Thank you! We have your message.",
       "successBody": "We will reply within one working day. If you need us sooner, please call.",
-      "noJsNote": "If the form will not send, email us directly or call."
+      "emailNote": "Prefer email? Write to us at"
     }
   },
   "thanks": {

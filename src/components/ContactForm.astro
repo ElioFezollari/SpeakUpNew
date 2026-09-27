@@ -21,9 +21,16 @@ const f = t.contact.form;
 const endpoint = import.meta.env.PUBLIC_CONTACT_API_URL ?? '';
 
 if (!endpoint) {
+  // A form that cannot send must never be published: a production build stops
+  // here, and on the server a failed build leaves the current site live.
+  if (import.meta.env.PROD) {
+    throw new Error(
+      '[contact] PUBLIC_CONTACT_API_URL is not set, so the contact form would be ' +
+        'published unable to send. Set it (see docs/CONTACT-API.md).',
+    );
+  }
   console.warn(
-    '[contact] PUBLIC_CONTACT_API_URL is not set — the contact form will render ' +
-      'but cannot send. Set it before deploying (see docs/CONTACT-API.md).',
+    '[contact] PUBLIC_CONTACT_API_URL is not set — the contact form renders but cannot send.',
   );
 }
 
@@ -142,9 +149,9 @@ const thanksPath = routePath('thanks', locale);
       <a class="call" href={SITE.phone.href}>{SITE.phone.display}</a>
     </div>
 
-    <p class="nojs-note">
-      {f.noJsNote}{' '}
-      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    <p class="email-note">
+      {f.emailNote}{' '}
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
     </p>
   </form>
 
@@ -429,7 +436,7 @@ const thanksPath = routePath('thanks', locale);
     cursor: progress;
   }
 
-  .nojs-note {
+  .email-note {
     margin-top: 16px;
     font-size: 12.5px;
     line-height: 1.6;

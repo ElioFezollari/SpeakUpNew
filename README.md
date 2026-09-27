@@ -66,8 +66,8 @@ remains outstanding:
 | **Testimonial wording** | `src/i18n/*.json` → `testimonials.items[].quote` | **the five names are real, the five quotes are written by me** |
 | **Dea Fezollari's bio** | `src/i18n/*.json` → `about.staff[1]` | only name and role supplied |
 | **TikTok URL** | `src/site.config.ts` → `SOCIALS` | found by search, **unconfirmed** |
-| **Contact endpoint** | `PUBLIC_CONTACT_API_URL` env var | unset — form cannot send |
-| **Booking endpoint** | `PUBLIC_BOOKING_API_URL` env var | unset — calendar runs in demo mode |
+| **Contact endpoint** | `PUBLIC_CONTACT_API_URL` env var | required — a production build fails without it |
+| **Booking endpoint** | `PUBLIC_BOOKING_API_URL` env var | required — a production build fails without it |
 | Bookable services | `src/i18n/*.json` → `booking.services[].label` | drafted from the therapy list, confirm with the clinic |
 | **Canonical domain** | `SITE_URL` env var | `https://klinikelogopedie.com` |
 | Practical details on the clinic page | `src/i18n/*.json` → `clinic.practical` | parking, prams, siblings — invented for layout |
@@ -402,10 +402,13 @@ Things worth knowing about the implementation:
 
 ### Demo mode
 
-With `PUBLIC_BOOKING_API_URL` unset the calendar generates its own availability
-so the page can be designed and reviewed before the API exists. A prominent
-banner says so in the visitor's language, the build logs a warning, and
-submitting sends nothing and points at the phone number instead.
+With `PUBLIC_BOOKING_API_URL` unset, **`astro dev`** runs the calendar on
+generated availability so the page can be worked on without the API. A
+prominent banner says so, and submitting sends nothing.
+
+**A production build refuses** to run without it: it stops with an error rather
+than publishing a demonstration calendar and its "not connected yet" banner.
+On the server a failed build leaves the current site live.
 
 ---
 
@@ -431,9 +434,9 @@ Consequences worth knowing:
   `/kontakt/faleminderit/` (or `/en/contact/thank-you/`), which exist as real
   pages. With JS, submission is intercepted and the success panel replaces the
   form in place.
-- **If `PUBLIC_CONTACT_API_URL` is unset** the build still succeeds but logs a
-  warning, and the form renders with no `action` and refuses to submit — rather
-  than silently POSTing back to the page it is on.
+- **If `PUBLIC_CONTACT_API_URL` is unset**, `astro dev` warns and the form
+  renders with no `action` and refuses to submit. A production build stops with
+  an error instead, so a form that cannot send is never published.
 
 Validation is native constraint validation surfaced inline (not as browser
 tooltips), errors clear as the visitor fixes them, and a failed send keeps
@@ -602,7 +605,7 @@ Environment variables needed at build time:
 | `BLOG_API_URL` | yes in production | The admin's posts endpoint |
 | `BLOG_API_TOKEN` | if the API is authenticated | Sent as `Authorization: Bearer …` |
 | `PUBLIC_CONTACT_API_URL` | yes in production | Contact form endpoint. Public by design — appears in page source |
-| `PUBLIC_BOOKING_API_URL` | yes in production | Booking API base. Public by design; unset means demo mode |
+| `PUBLIC_BOOKING_API_URL` | yes in production | Booking API base. Public by design; a production build fails without it (demo calendar in `astro dev` only) |
 | `SITE_URL` | yes | Canonical URLs, hreflang, sitemap |
 | `BLOG_ALLOW_FIXTURES` | dev/CI only | Build from fixtures if the API is down |
 

@@ -213,7 +213,7 @@
       "errorBody": "Provoni edhe një herë, ose na merrni në telefon — përgjigjemi menjëherë.",
       "successTitle": "Faleminderit! E morëm mesazhin.",
       "successBody": "Ju kthejmë përgjigje brenda një dite pune. Nëse ju duhet më shpejt, na telefononi.",
-      "noJsNote": "Nëse formulari nuk funksionon, na shkruani drejtpërdrejt në email ose telefononi."
+      "emailNote": "Preferoni emailin? Na shkruani në"
     }
   },
   "thanks": {

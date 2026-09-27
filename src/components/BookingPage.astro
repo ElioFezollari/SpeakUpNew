@@ -28,10 +28,19 @@ const b = t.booking;
 const endpoint = import.meta.env.PUBLIC_BOOKING_API_URL ?? '';
 
 if (!endpoint) {
+  // Without the API the page falls back to a demonstration calendar, labelled
+  // as such. That is useful while developing and must never be published: a
+  // production build stops here instead, and on the server a failed build
+  // leaves the current site live.
+  if (import.meta.env.PROD) {
+    throw new Error(
+      '[booking] PUBLIC_BOOKING_API_URL is not set, so the booking page would be ' +
+        'published as a demonstration calendar. Set it (see docs/BOOKING-API.md).',
+    );
+  }
   console.warn(
-    '[booking] PUBLIC_BOOKING_API_URL is not set — the calendar will run in ' +
-      'demo mode with generated availability, clearly labelled on the page. ' +
-      'Set it before deploying (see docs/BOOKING-API.md).',
+    '[booking] PUBLIC_BOOKING_API_URL is not set — the calendar runs in demo mode ' +
+      'with generated availability, clearly labelled on the page.',
   );
 }
 
