@@ -14,9 +14,9 @@ export const SITE = {
   legalName: 'Klinikë Logopedie “Speak Up”',
   phone: {
     /** Formatted for reading. */
-    display: '067 680 27607',
+    display: '067 680 2760',
     /** E.164 for the tel: link. */
-    href: 'tel:+355690000000',
+    href: 'tel:+355676802760',
   },
   /**
    * PLACEHOLDER: the client asked for Griselda's number to be shown alongside
