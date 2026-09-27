@@ -1,6 +1,6 @@
 ---
-import { render } from 'astro:content';
 import { useCopy, formatDate, isoDate, localePath, type Locale } from '../i18n/utils';
+import { optimiseBodyImages, postCover } from '../lib/blog-images';
 
 interface Props {
   post: any;
@@ -11,7 +11,11 @@ const { post, locale } = Astro.props;
 const { t } = useCopy(locale);
 const { data } = post;
 
-const { Content } = await render(post);
+// The body is HTML — from the admin's renderer, or Markdown rendered by the
+// loader. Its images are rewritten to optimised copies on this domain, which is
+// why it is emitted directly here rather than through <Content />.
+const html = await optimiseBodyImages(post.rendered?.html ?? '');
+const cover = data.coverImage ? await postCover(data.coverImage.url) : undefined;
 const backHref = localePath(locale, '/blog/');
 ---
 
@@ -43,21 +47,25 @@ const backHref = localePath(locale, '/blog/');
     </header>
 
     {
-      data.coverImage && (
+      cover && (
         <figure class="cover">
+          {/* Usually the largest thing on the page, so it is fetched first. */}
           <img
-            src={data.coverImage.url}
+            src={cover.src}
+            srcset={cover.srcset}
+            sizes={cover.sizes}
+            width={cover.width}
+            height={cover.height}
             alt={data.coverImage.alt}
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           />
         </figure>
       )
     }
 
-    <div class="prose">
-      <Content />
-    </div>
+    <div class="prose" set:html={html} />
 
     {
       data.tags.length > 0 && (

@@ -185,14 +185,14 @@
     "addressLabel": "Adresa",
     "hoursLabel": "Orari",
     "directions": "Shiko në hartë",
-    "mapNote": "Hyrja është nga rruga, kati i parë. Ka ashensor.",
+    "mapNote": "ASL 1, kati 3, hyrja 9. Ka ashensor.",
     "formTitle": "Lini një mesazh",
     "formLede": "Plotësoni sa më shumë që dini. Asnjë fushë nuk është kurth — nëse nuk e dini moshën e saktë ose çfarë të shkruani, lëreni bosh.",
     "form": {
       "name": "Emri juaj",
       "namePlaceholder": "Si t’ju drejtohemi",
       "phone": "Telefoni",
-      "phonePlaceholder": "067 680 27607",
+      "phonePlaceholder": "p.sh. 06X XXX XXXX",
       "phoneHelp": "Mënyra më e shpejtë për t’ju kthyer përgjigje.",
       "email": "Email (jo i detyrueshëm)",
       "childAge": "Mosha e fëmijës (jo e detyrueshme)",
@@ -221,6 +221,98 @@
     "body": "E morëm mesazhin tuaj dhe ju kthejmë përgjigje brenda një dite pune. Nëse ju duhet më shpejt, na telefononi.",
     "back": "Kthehu në faqen kryesore"
   },
+  "privacy": {
+    "eyebrow": "Privatësia",
+    "title": "Si i përdorim të dhënat tuaja",
+    "description": "Çfarë të dhënash mbledh Speak Up kur rezervoni ose na shkruani, pse, kush i sheh dhe si mund të kërkoni t’i fshijmë.",
+    "lede": "Kur rezervoni ose na shkruani, na besoni të dhëna për veten dhe për fëmijën tuaj. Këtu shpjegojmë çfarë mbledhim, pse, kush i sheh dhe si mund të na kërkoni t’i fshijmë.",
+    "updatedLabel": "Përditësuar më",
+    "updated": "27 shtator 2026",
+    "sections": [
+      {
+        "title": "Kush jemi",
+        "body": [
+          "Të dhënat i përpunon {clinic}, në Tiranë. Për çdo pyetje rreth tyre, na kontaktoni në adresat në fund të kësaj faqeje."
+        ],
+        "items": []
+      },
+      {
+        "title": "Çfarë mbledhim",
+        "body": [
+          "Vetëm atë që na jepni vetë në formularët e faqes:"
+        ],
+        "items": [
+          "Kur rezervoni: shërbimin, ditën dhe orën që zgjidhni, emrin, telefonin dhe emailin tuaj, dhe — nëse i shkruani — moshën e fëmijës dhe shënimet tuaja.",
+          "Kur na shkruani nga faqja e kontaktit: emrin, telefonin, emailin nëse e jepni, moshën e fëmijës, temën dhe mesazhin.",
+          "Adresën IP nga e cila u dërgua formulari, për t’u mbrojtur nga mesazhet e padëshiruara."
+        ]
+      },
+      {
+        "title": "Të dhënat për shëndetin e fëmijës",
+        "body": [
+          "Shënimet dhe mesazhet mund të përmbajnë informacion për të folurit, zhvillimin ose shëndetin e fëmijës. I trajtojmë si të dhëna të ndjeshme: i lexon vetëm stafi i klinikës, dhe përdoren vetëm për t’u përgatitur për takimin.",
+          "Shkruani vetëm atë që dëshironi të dimë para takimit. Pjesën tjetër mund ta flasim ballë për ballë."
+        ],
+        "items": []
+      },
+      {
+        "title": "Pse i përdorim",
+        "body": [
+          "Për të organizuar dhe konfirmuar takimin që kërkoni, për t’ju kthyer përgjigje, dhe për t’ju dërguar me email një kopje të rezervimit dhe çdo ndryshim të tij. Nuk i përdorim për reklama dhe nuk ia shesim askujt.",
+          "I përpunojmë me pëlqimin tuaj, të cilin e jepni duke shënuar kutinë në formular. Mund ta tërhiqni në çdo kohë duke na kontaktuar."
+        ],
+        "items": []
+      },
+      {
+        "title": "Kush tjetër i përpunon",
+        "body": [
+          "Brenda klinikës, vetëm stafi që merret me rezervimet dhe terapitë. Jashtë saj, vetëm shërbimet teknike pa të cilat faqja nuk funksionon:"
+        ],
+        "items": [
+          "DigitalOcean — serveri ku ruhen rezervimet dhe mesazhet, në Frankfurt (Gjermani).",
+          "Cloudflare — rrjeti përmes të cilit hapet faqja dhe që e mbron nga sulmet.",
+          "Postmark — shërbimi që dërgon emailet e rezervimit. Ndodhet në SHBA, kështu që emri, emaili dhe të dhënat e rezervimit kalojnë atje për t’u dërguar."
+        ]
+      },
+      {
+        "title": "Sa kohë i ruajmë",
+        "body": [
+          "Për aq kohë sa nevojitet për t’ju ofruar shërbimin dhe për të përmbushur detyrimet ligjore të klinikës. Pas kësaj i fshijmë. Mund të na kërkoni t’i fshijmë më herët, në çdo kohë."
+        ],
+        "items": []
+      },
+      {
+        "title": "Cookies",
+        "body": [
+          "Kjo faqe nuk përdor cookies dhe nuk ju gjurmon: nuk ka analitikë, reklama apo shërbime të jashtme që ndjekin vizitat tuaja."
+        ],
+        "items": []
+      },
+      {
+        "title": "Të drejtat tuaja",
+        "body": [
+          "Mund të na kërkoni në çdo kohë:"
+        ],
+        "items": [
+          "të shihni çfarë të dhënash kemi për ju dhe për fëmijën tuaj;",
+          "t’i korrigjoni nëse janë të pasakta;",
+          "t’i fshijmë;",
+          "të tërhiqni pëlqimin që keni dhënë."
+        ]
+      },
+      {
+        "title": "Nëse nuk jeni të kënaqur",
+        "body": [
+          "Na shkruani fillimisht, dhe do ta zgjidhim bashkë. Keni gjithashtu të drejtë të ankoheni te Komisioneri për të Drejtën e Informimit dhe Mbrojtjen e të Dhënave Personale (idp.al)."
+        ],
+        "items": []
+      }
+    ],
+    "contactTitle": "Kërkesat për të dhënat tuaja",
+    "contactBody": "Për të parë, korrigjuar ose fshirë të dhënat tuaja, na shkruani ose na telefononi:",
+    "linkText": "Si i përdorim të dhënat",
+    "footerLink": "Privatësia"
+  },
   "footer": {
     "tagline": "Klinikë logopedie për fëmijë dhe të rritur në Tiranë. Vlerësim, terapi dhe këshilla praktike për prindërit.",
     "exploreTitle": "Faqja",
@@ -240,52 +332,51 @@
     "photos": [
       {
         "name": "entrance",
+        "caption": "Ndërtesa",
+        "alt": "Pamje nga lart e kompleksit të banimit ku ndodhet klinika, me kopsht në oborr",
+        "note": "Rr. Kongresi i Manastirit, Tiranë."
+      },
+      {
+        "name": "room",
+        "caption": "Zyra",
+        "alt": "Zyra, me shkronjat e alfabetit dhe lodra në rafte, dhe një tavolinë pranë ballkonit",
+        "note": "Me shumë dritë natyrale dhe ballkon."
+      },
+      {
+        "name": "entry-inside",
         "caption": "Hyrja",
-        "alt": "Hyrja e klinikës Speak Up nga rruga",
-        "note": "Hyrja është nga rruga, kati i parë. Ka ashensor."
+        "alt": "Menjëherë pas derës së klinikës: recepsioni, certifikatat në mur dhe një bimë",
+        "note": "Recepsioni është menjëherë pas derës."
       },
       {
         "name": "waiting-area",
         "caption": "Salla e pritjes",
-        "alt": "Salla e pritjes me kolltukë dhe libra për fëmijë",
-        "note": "Libra dhe lodra për pritjen, dhe ujë për prindërit."
+        "alt": "Salla e pritjes me karrige të bardha, certifikatat e stafit në mur dhe recepsioni",
+        "note": "Karrige për pritjen dhe certifikatat e stafit në mur."
       },
       {
-        "name": "therapy-room",
-        "caption": "Dhoma e terapisë",
-        "alt": "Dhoma e terapisë me dritare të madhe dhe tavolinë të ulët",
-        "note": "Dritare e madhe, pa ndriçim spitalor."
+        "name": "small-room",
+        "caption": "Dhoma e vogël e terapisë",
+        "alt": "Dhomë terapie me re të pikturuara në mur, tavolinë për fëmijë, qilim me yje dhe dritare të madhe",
+        "note": "Dritare e madhe dhe shumë dritë natyrale."
       },
       {
-        "name": "mirror-corner",
-        "caption": "Pasqyra",
-        "alt": "Këndi me pasqyrë ku fëmija sheh gjuhën dhe buzët e veta",
-        "note": "Këtu fëmija sheh gjuhën dhe buzët e veta."
-      },
-      {
-        "name": "toy-shelves",
-        "caption": "Rafti i lodrave",
-        "alt": "Rafte të hapura me lodra të renditura",
-        "note": "Fëmija zgjedh vetë. Pastrohen pas çdo seance."
-      },
-      {
-        "name": "parent-seat",
-        "caption": "Vendi i prindit",
-        "alt": "Karrigia e prindit brenda dhomës së terapisë",
-        "note": "Brenda dhomës, jo në korridor."
+        "name": "room2",
+        "caption": "Dhoma me ylber",
+        "alt": "Dhomë terapie me ylber të pikturuar në mur, arushë pelushi në rafte të ulëta dhe qilim me Winnie the Pooh",
+        "note": "Lodrat janë në lartësinë e fëmijës."
       }
     ],
     "practicalTitle": "Për ta ditur para se të vini",
     "practical": [
       {
         "k": "Adresa",
-        "v": "Rr. Kongresi i Manastirit , Tirane",
-        "note": "Kati i parë, me ashensor"
+        "v": "Rr. Kongresi i Manastirit, Tiranë",
+        "note": "ASL 1, kati 3, hyrja 9 — me ashensor"
       },
       {
         "k": "Parkimi",
-        "v": "Në rrugë",
-        "note": "Zakonisht ka vend përballë hyrjes"
+        "v": "Parkimi i kompleksit ASL, parkim IJA"
       },
       {
         "k": "Karroca",
@@ -293,14 +384,13 @@
         "note": "Ashensori nxë karrocë fëmijësh"
       },
       {
-        "k": "Motrat e vëllezërit",
+        "k": "Familjaret",
         "v": "Të mirëpritur",
-        "note": "Presin në sallë me një të rritur"
+        "note": "Presin në sallë"
       }
     ],
     "ctaTitle": "Doni ta shihni nga afër?",
-    "ctaBody": "Rezervoni një vlerësim, ose na telefononi nëse doni thjesht të pyesni diçka më parë.",
-    "photoNote": "Fotot e ambienteve do të zëvendësohen me foto reale të klinikës."
+    "ctaBody": "Rezervoni një vlerësim, ose na telefononi nëse doni thjesht të pyesni diçka më parë."
   },
   "services": {
     "eyebrow": "Shërbimet",
@@ -403,12 +493,14 @@
     "items": [
       {
         "name": "Terapia Logopedike",
+        "icon": "speech",
         "points": [
           "I vjen në ndihmë të gjithë personave me deficite të të folurit, të gjuhës dhe të komunikimit, në mosha të ndryshme dhe diagnoza të ndryshme."
         ]
       },
       {
         "name": "Terapia e Zhvillimit",
+        "icon": "sprout",
         "points": [
           "Aplikohet në rastet e prapambetjes mendore.",
           "Ndihmon në rritjen e aftësive dhe kompetencave në pavarësinë e individit."
@@ -416,18 +508,21 @@
       },
       {
         "name": "Terapia Oro-Mio-Faciale",
+        "icon": "mouth",
         "points": [
           "Aplikohet në rastet e dëmtimit të muskujve përgjegjës të fytyrës dhe të gojës."
         ]
       },
       {
         "name": "Terapia e Përtypjes-Gëlltitjes",
+        "icon": "utensils",
         "points": [
           "Stërvitje e bashkëveprimtarisë së muskujve për pacientët të cilët hasin vështirësi në procesin e ushqyerjes."
         ]
       },
       {
         "name": "Terapia ABA",
+        "icon": "shapes",
         "points": [
           "Më e përdorura në rastet e Çrregullimit të Spektrit të Autizmit.",
           "Staf i kualifikuar në aplikimin e terapisë ABA dhe terapive të tjera ndërthurëse në këtë diagnozë."
@@ -435,6 +530,7 @@
       },
       {
         "name": "Terapia e Sjelljes",
+        "icon": "heart-handshake",
         "points": [
           "Ndihmon në mësimin dhe forcimin e sjelljeve pozitive dhe në uljen e sjelljeve të padëshiruara ose problematike."
         ]
@@ -488,7 +584,7 @@
             {
         "name": "Dea Fezollari",
         "role": "Logopede / Terapiste ABA",
-        "credential": "",
+        "credential": "PhD Cand. MSc.",
         "photo": "team-dea",
         "alt": "Dea Fezollari, logopede dhe terapiste ABA",
                 "summary": "Bashkëthemeluese e Klinikës së Neurozhvillimit “Speak Up”."
@@ -651,7 +747,7 @@
   "booking": {
     "eyebrow": "Rezervo",
     "title": "Rezervo një konsultë",
-    "lede": "Zgjidhni shërbimin, ditën dhe orën. Ju konfirmojmë me telefon brenda një dite pune.",
+    "lede": "Zgjidhni shërbimin, ditën dhe orën. Do t’ju dërgojmë me email një kopje të rezervimit, dhe dikush nga ekipi ynë do t’ju kontaktojë për ta konfirmuar.",
     "demoTitle": "Kalendar demonstrimi",
     "demoBody": "Oraret e mëposhtme janë shembull, jo disponueshmëri reale. Lidhja me sistemin e rezervimeve nuk është konfiguruar ende.",
     "step1": "Shërbimi",
@@ -660,14 +756,14 @@
     "step4": "Të dhënat tuaja",
     "serviceLabel": "Për çfarë shërbimi?",
     "services": [
-      "Vlerësim i parë",
-      "Terapi logopedike",
-      "Terapi ABA",
-      "Terapi e zhvillimit",
-      "Terapi oro-mio-faciale",
-      "Terapi e përtypjes-gëlltitjes",
-      "Terapi e sjelljes",
-      "Konsultë / pyetje"
+      { "label": "Vlerësim i parë", "icon": "clipboard-list" },
+      { "label": "Terapi logopedike", "icon": "speech" },
+      { "label": "Terapi ABA", "icon": "shapes" },
+      { "label": "Terapi e zhvillimit", "icon": "sprout" },
+      { "label": "Terapi oro-mio-faciale", "icon": "mouth" },
+      { "label": "Terapi e përtypjes-gëlltitjes", "icon": "utensils" },
+      { "label": "Terapi e sjelljes", "icon": "heart-handshake" },
+      { "label": "Konsultë / pyetje", "icon": "message-circle-question-mark" }
     ],
     "prevMonth": "Muaji i mëparshëm",
     "nextMonth": "Muaji tjetër",
@@ -720,20 +816,37 @@
     "form": {
       "name": "Emri juaj",
       "phone": "Telefoni",
-      "phoneHelp": "Ju kontaktojmë në këtë numër për konfirmim.",
-      "email": "Email (jo i detyrueshëm)",
+      "phoneHelp": "Dikush nga ekipi ynë do t’ju telefonojë në këtë numër për konfirmim.",
+      "email": "Email",
+      "emailHelp": "Këtu do t’ju dërgojmë një kopje të rezervimit.",
       "childAge": "Mosha e fëmijës (jo e detyrueshme)",
       "childAgePlaceholder": "p.sh. 4 vjeç",
       "notes": "Shënime (jo të detyrueshme)",
       "notesPlaceholder": "Çfarë keni vënë re, ose çfarë doni të pyesni.",
       "consent": "Jam dakord që Speak Up t’i përdorë këto të dhëna për të kryer dhe konfirmuar rezervimin.",
       "required": "e detyrueshme",
-      "submit": "Konfirmo rezervimin",
-      "sending": "Po dërgohet…"
+      "submit": "Dërgo rezervimin",
+      "sending": "Po dërgohet…",
+      "errors": {
+        "required": "Ju lutemi plotësoni këtë fushë.",
+        "email": "Shkruani një adresë email të vlefshme, p.sh. emri@shembull.com.",
+        "phone": "Shkruani një numër telefoni të vlefshëm.",
+        "consent": "Ju lutemi shënojeni këtë kuti që të mund ta pranojmë rezervimin."
+      }
     },
-    "successTitle": "Rezervimi u regjistrua!",
-    "successBody": "Ju kontaktojmë për konfirmim brenda një dite pune.",
-    "referenceLabel": "Kodi i rezervimit",
+    "recap": {
+      "name": "Emri",
+      "phone": "Telefoni",
+      "email": "Email",
+      "childAge": "Mosha e fëmijës",
+      "notes": "Shënime"
+    },
+    "successTitle": "Rezervimi juaj u dërgua!",
+    "successBody": "Ju dërguam një email në {email} me të dhënat e rezervimit tuaj.",
+    "successDetailsTitle": "Të dhënat e rezervimit",
+    "successNextTitle": "Çfarë ndodh tani?",
+    "successNext": "Dikush nga ekipi ynë do t’ju kontaktojë brenda një dite pune për të konfirmuar seancën.",
+    "successNoEmail": "Nuk e gjeni emailin? Kontrolloni dosjen e spam-it, ose na telefononi në",
     "errorTitle": "Rezervimi nuk u krye",
     "errorBody": "Provoni përsëri, ose na telefononi dhe e rregullojmë bashkë.",
     "takenTitle": "Ky orar sapo u zu",

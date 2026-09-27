@@ -105,13 +105,34 @@ function toStringArray(value: unknown): string[] {
   return [];
 }
 
-function normaliseImage(value: RawPost['coverImage']): { url: string; alt: string } | undefined {
+/**
+ * Images uploaded in the admin arrive as paths on its API (`/api/uploads/…`).
+ * Resolved against the API the posts came from — loopback, on the server — so
+ * the build can fetch them and copy them onto this site (src/lib/blog-images.ts).
+ */
+function absolutise(url: string, origin: string | undefined): string {
+  if (!origin || !url.startsWith('/') || url.startsWith('//')) return url;
+  return `${origin}${url}`;
+}
+
+function absolutiseImages(html: string, origin: string | undefined): string {
+  if (!origin) return html;
+  return html.replace(
+    /(<img\b[^>]*\ssrc=")(\/(?!\/)[^"]*)"/gi,
+    (_whole, head: string, path: string) => `${head}${origin}${path}"`,
+  );
+}
+
+function normaliseImage(
+  value: RawPost['coverImage'],
+  origin: string | undefined,
+): { url: string; alt: string } | undefined {
   if (!value) return undefined;
   if (typeof value === 'string') {
-    return value.trim() ? { url: value.trim(), alt: '' } : undefined;
+    return value.trim() ? { url: absolutise(value.trim(), origin), alt: '' } : undefined;
   }
   const url = value.url?.trim();
-  return url ? { url, alt: value.alt?.trim() ?? '' } : undefined;
+  return url ? { url: absolutise(url, origin), alt: value.alt?.trim() ?? '' } : undefined;
 }
 
 function normaliseAuthor(value: RawPost['author']): { name: string; role?: string } | undefined {
@@ -159,7 +180,7 @@ interface NormalisedPost {
   sourceId: string;
 }
 
-function normalise(raw: RawPost, index: number): NormalisedPost | null {
+function normalise(raw: RawPost, index: number, apiOrigin?: string): NormalisedPost | null {
   const title = raw.title?.trim();
   if (!title) return null;
 
@@ -193,7 +214,7 @@ function normalise(raw: RawPost, index: number): NormalisedPost | null {
     description,
     body: rawBody,
     isHtml,
-    coverImage: normaliseImage(raw.coverImage ?? raw.cover),
+    coverImage: normaliseImage(raw.coverImage ?? raw.cover, apiOrigin),
     author: normaliseAuthor(raw.author),
     tags: toStringArray(raw.tags),
     publishedAt,
@@ -345,8 +366,10 @@ export function blogApiLoader(): Loader {
       const seen = new Set<string>();
       let stored = 0;
 
+      const apiOrigin = apiUrl ? new URL(apiUrl).origin : undefined;
+
       for (const [index, raw] of publishable.entries()) {
-        const post = normalise(raw, index);
+        const post = normalise(raw, index, apiOrigin);
         if (!post) {
           logger.warn(`Skipping a post with no title (id: ${String(raw.id ?? 'unknown')}).`);
           continue;
@@ -374,6 +397,7 @@ export function blogApiLoader(): Loader {
         }
 
         const rendered = isHtml ? { html: body, metadata: {} } : await renderMarkdown(body);
+        rendered.html = absolutiseImages(rendered.html, apiOrigin);
 
         store.set({
           id,

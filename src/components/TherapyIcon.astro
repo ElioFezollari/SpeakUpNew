@@ -1,0 +1,64 @@
+---
+/**
+ * The icon for a therapy or bookable service, from Lucide.
+ *
+ * Which icon goes with which item is set in the copy files (`icon` on each
+ * `therapies.items` and `booking.services` entry), next to the name it
+ * illustrates, so reordering or adding an item cannot shift the icons onto the
+ * wrong cards. Each icon is imported on its own: only these eight SVGs reach
+ * the build, not the whole library.
+ *
+ * Purely decorative — the name beside it says the same thing — so it is always
+ * hidden from assistive tech.
+ */
+import ClipboardList from '@lucide/astro/icons/clipboard-list';
+import HeartHandshake from '@lucide/astro/icons/heart-handshake';
+import MessageCircleQuestionMark from '@lucide/astro/icons/message-circle-question-mark';
+import Mouth from '@lucide/astro/icons/mouth';
+import Shapes from '@lucide/astro/icons/shapes';
+import Speech from '@lucide/astro/icons/speech';
+import Sprout from '@lucide/astro/icons/sprout';
+import Utensils from '@lucide/astro/icons/utensils';
+
+const ICONS = {
+  /** Speech and language therapy — a speaking head. */
+  speech: Speech,
+  /** Developmental therapy — growth and independence. */
+  sprout: Sprout,
+  /** Oro-myo-facial therapy — the muscles of the mouth and face. */
+  mouth: Mouth,
+  /** Chewing and swallowing therapy — feeding. */
+  utensils: Utensils,
+  /**
+   * ABA therapy — structured, step-by-step learning. Deliberately not the
+   * puzzle piece: many autistic people object to it as a symbol.
+   */
+  shapes: Shapes,
+  /** Behavioural therapy — support and positive reinforcement. */
+  'heart-handshake': HeartHandshake,
+  /** First assessment. */
+  'clipboard-list': ClipboardList,
+  /** Consultation / a question. */
+  'message-circle-question-mark': MessageCircleQuestionMark,
+} as const;
+
+export type TherapyIconName = keyof typeof ICONS;
+
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 24, class: className } = Astro.props;
+
+const Icon = ICONS[name as TherapyIconName];
+if (!Icon) {
+  // A typo in a copy file should fail the build, not ship a blank badge.
+  throw new Error(
+    `[TherapyIcon] Unknown icon "${name}". Use one of: ${Object.keys(ICONS).join(', ')}.`,
+  );
+}
+---
+
+<Icon size={size} stroke-width={2} class={className} aria-hidden="true" focusable="false" />

@@ -16,16 +16,16 @@ Accepted extensions: `.jpg` `.jpeg` `.png` `.webp` `.avif`
 | `portfolio-2.jpg` `portfolio-3.jpg` `portfolio-4.jpg` | home — portfolio | square |
 | `team-griselda.jpg` | home + about — staff | square |
 | `team-dea.jpg` | home + about — staff | square |
-| `room.jpg` | home — the clinic section | 4:3 |
-| `entrance.jpg` | clinic page | 16:10, wide |
-| `waiting-area.jpg` | clinic page | 16:10, wide |
-| `therapy-room.jpg` | clinic page | 4:3 |
-| `mirror-corner.jpg` | clinic page | 4:3 |
-| `toy-shelves.jpg` | clinic page | 4:3 |
-| `parent-seat.jpg` | clinic page | 4:3 |
+| `room.jpg` | home — the clinic section; clinic page — the office | 4:3; 16:10, wide |
+| `entrance.jpg` | clinic page — the building | 16:10, wide |
+| `entry-inside.jpg` | clinic page — the entrance | 3:4, tall |
+| `waiting-area.jpg` | clinic page — the waiting area | 3:4, tall |
+| `small-room.jpg` | clinic page — the small therapy room | 3:4, tall |
+| `room2.jpg` | clinic page — the rainbow room | 3:4, tall |
 
-**17 slots in total.** Any you do not supply simply keep showing a labelled
-placeholder — nothing breaks, and they can arrive one at a time.
+All of them are supplied. The clinic page's order, captions and alt text are in
+the copy files (`clinic.photos`): the first two are shown wide, the rest tall.
+A missing file shows a labelled placeholder rather than breaking anything.
 
 ## Guidance for the shoot
 

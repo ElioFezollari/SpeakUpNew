@@ -185,14 +185,14 @@
     "addressLabel": "Address",
     "hoursLabel": "Opening hours",
     "directions": "Open in maps",
-    "mapNote": "The entrance is from the street, first floor. There is a lift.",
+    "mapNote": "ASL 1, floor 3, entrance 9. There is a lift.",
     "formTitle": "Leave a message",
     "formLede": "Fill in as much as you know. Nothing here is a trap — if you are not sure of the exact age, or what to write, leave it blank.",
     "form": {
       "name": "Your name",
       "namePlaceholder": "What should we call you",
       "phone": "Phone",
-      "phonePlaceholder": "067 680 27607",
+      "phonePlaceholder": "e.g. 06X XXX XXXX",
       "phoneHelp": "The fastest way for us to get back to you.",
       "email": "Email (optional)",
       "childAge": "Child's age (optional)",
@@ -221,6 +221,98 @@
     "body": "We have your message and will reply within one working day. If you need us sooner, please call.",
     "back": "Back to the home page"
   },
+  "privacy": {
+    "eyebrow": "Privacy",
+    "title": "How we use your details",
+    "description": "What Speak Up collects when you book or write to us, why, who sees it, and how to ask us to delete it.",
+    "lede": "When you book or write to us, you trust us with details about yourself and your child. This page explains what we collect, why, who sees it, and how to ask us to delete it.",
+    "updatedLabel": "Last updated",
+    "updated": "27 September 2026",
+    "sections": [
+      {
+        "title": "Who we are",
+        "body": [
+          "Your details are handled by {clinic}, in Tirana. For any question about them, contact us at the details at the end of this page."
+        ],
+        "items": []
+      },
+      {
+        "title": "What we collect",
+        "body": [
+          "Only what you give us yourself through the forms on this site:"
+        ],
+        "items": [
+          "When you book: the service, day and time you choose, your name, phone and email, and — if you fill them in — your child's age and your notes.",
+          "When you write to us from the contact page: your name, phone, email if you give one, your child's age, the topic and your message.",
+          "The IP address the form was sent from, to protect against spam."
+        ]
+      },
+      {
+        "title": "Information about your child's health",
+        "body": [
+          "Notes and messages may include information about your child's speech, development or health. We treat it as sensitive: only the clinic's staff read it, and it is used only to prepare for the appointment.",
+          "Write only what you would like us to know before the appointment. Everything else we can talk about in person."
+        ],
+        "items": []
+      },
+      {
+        "title": "Why we use it",
+        "body": [
+          "To arrange and confirm the appointment you ask for, to reply to you, and to email you a copy of your booking and any change to it. We do not use it for advertising and we do not sell it to anyone.",
+          "We use it with your consent, which you give by ticking the box on the form. You can withdraw it at any time by contacting us."
+        ],
+        "items": []
+      },
+      {
+        "title": "Who else handles it",
+        "body": [
+          "Inside the clinic, only the staff who deal with bookings and therapy. Outside it, only the technical services the site cannot work without:"
+        ],
+        "items": [
+          "DigitalOcean — the server where bookings and messages are stored, in Frankfurt (Germany).",
+          "Cloudflare — the network the site is served through, which also protects it from attacks.",
+          "Postmark — the service that sends booking emails. It is based in the USA, so your name, email and booking details pass through it there to be delivered."
+        ]
+      },
+      {
+        "title": "How long we keep it",
+        "body": [
+          "For as long as we need it to provide the service and to meet the clinic's legal obligations. After that we delete it. You can ask us to delete it sooner, at any time."
+        ],
+        "items": []
+      },
+      {
+        "title": "Cookies",
+        "body": [
+          "This site uses no cookies and does not track you: there are no analytics, no advertising and no outside services following your visits."
+        ],
+        "items": []
+      },
+      {
+        "title": "Your rights",
+        "body": [
+          "You can ask us at any time to:"
+        ],
+        "items": [
+          "see what details we hold about you and your child;",
+          "correct them if they are wrong;",
+          "delete them;",
+          "withdraw the consent you gave."
+        ]
+      },
+      {
+        "title": "If you are not happy",
+        "body": [
+          "Please write to us first, and we will sort it out together. You also have the right to complain to Albania's Information and Data Protection Commissioner (idp.al)."
+        ],
+        "items": []
+      }
+    ],
+    "contactTitle": "Requests about your details",
+    "contactBody": "To see, correct or delete your details, write to us or call:",
+    "linkText": "How we use your details",
+    "footerLink": "Privacy"
+  },
   "footer": {
     "tagline": "A speech and language therapy clinic for children and adults in Tirana. Assessment, therapy, and practical advice for parents.",
     "exploreTitle": "Site",
@@ -239,53 +331,52 @@
     "galleryTitle": "The space",
     "photos": [
       {
+        "name": "entrance",
+        "caption": "The building",
+        "alt": "The residential complex where the clinic is, seen from above, with a garden in the courtyard",
+        "note": "Rr. Kongresi i Manastirit, Tiranë."
+      },
+      {
         "name": "room",
-        "caption": "Office",
-        "alt": "The street entrance to the Speak Up clinic",
-        "note": "Entrance from the street, first floor. There is a lift."
+        "caption": "The office",
+        "alt": "The office, with alphabet cards and toys on open shelves and a desk by the balcony",
+        "note": "Plenty of daylight, and a balcony."
+      },
+      {
+        "name": "entry-inside",
+        "caption": "The entrance",
+        "alt": "Just inside the clinic's front door: the reception desk, framed certificates and a plant",
+        "note": "Reception is right inside the door."
+      },
+      {
+        "name": "waiting-area",
+        "caption": "The waiting area",
+        "alt": "The waiting area with white chairs, the team's framed certificates and the reception desk",
+        "note": "Seats for the wait, and the team's certificates on the wall."
+      },
+      {
+        "name": "small-room",
+        "caption": "The small therapy room",
+        "alt": "A therapy room with clouds painted on the wall, a child's table, a starry rug and a big window",
+        "note": "A big window and plenty of daylight."
       },
       {
         "name": "room2",
-        "caption": "The waiting area",
-        "alt": "The waiting area with armchairs and children's books",
-        "note": "Books and toys for the wait, and water for parents."
-      },
-      {
-        "name": "therapy-room",
-        "caption": "The therapy room",
-        "alt": "The therapy room with a large window and a low table",
-        "note": "A big window, no hospital lighting."
-      },
-      {
-        "name": "mirror-corner",
-        "caption": "The mirror",
-        "alt": "The mirror corner where a child can watch their own tongue and lips",
-        "note": "Where the child watches their own tongue and lips."
-      },
-      {
-        "name": "toy-shelves",
-        "caption": "The toy shelves",
-        "alt": "Open shelves with toys arranged in rows",
-        "note": "The child picks. Cleaned after every session."
-      },
-      {
-        "name": "parent-seat",
-        "caption": "Where the parent sits",
-        "alt": "The parent's chair inside the therapy room",
-        "note": "Inside the room, not in the corridor."
+        "caption": "The rainbow room",
+        "alt": "A therapy room with a rainbow painted on the wall, teddy bears on low shelves and a Winnie the Pooh rug",
+        "note": "Toys at a child's height."
       }
     ],
     "practicalTitle": "Worth knowing before you come",
     "practical": [
       {
         "k": "Address",
-        "v": "Rr. Kongresi i Manastirit , Tirane",
-        "note": "First floor, lift available"
+        "v": "Rr. Kongresi i Manastirit, Tiranë",
+        "note": "ASL 1, floor 3, entrance 9 — lift available"
       },
       {
         "k": "Parking",
-        "v": "On the street",
-        "note": "There is usually space opposite the entrance"
+        "v": "ASL complex car park, IJA parking"
       },
       {
         "k": "Prams",
@@ -293,14 +384,13 @@
         "note": "The lift takes a pushchair"
       },
       {
-        "k": "Siblings",
+        "k": "Family members",
         "v": "Welcome",
-        "note": "They wait in the lounge with an adult"
+        "note": "They wait in the waiting area"
       }
     ],
     "ctaTitle": "Want to see it in person?",
-    "ctaBody": "Book an assessment, or call us if you would rather just ask something first.",
-    "photoNote": "These placeholders will be replaced with real photographs of the clinic."
+    "ctaBody": "Book an assessment, or call us if you would rather just ask something first."
   },
   "services": {
     "eyebrow": "Services",
@@ -403,12 +493,14 @@
     "items": [
       {
         "name": "Speech and language therapy",
+        "icon": "speech",
         "points": [
           "Helps anyone with difficulties in speech, language or communication, at any age and with any diagnosis."
         ]
       },
       {
         "name": "Developmental therapy",
+        "icon": "sprout",
         "points": [
           "Used in cases of intellectual disability.",
           "Helps build the skills and competencies behind a person's independence."
@@ -416,18 +508,21 @@
       },
       {
         "name": "Oro-myo-facial therapy",
+        "icon": "mouth",
         "points": [
           "Used where the muscles of the face and mouth have been affected."
         ]
       },
       {
         "name": "Chewing and swallowing therapy",
+        "icon": "utensils",
         "points": [
           "Training the muscles to work together, for patients who have difficulty with feeding."
         ]
       },
       {
         "name": "ABA therapy",
+        "icon": "shapes",
         "points": [
           "The most widely used approach in autism spectrum disorder.",
           "Staff qualified in ABA and in the other therapies combined with it for this diagnosis."
@@ -435,6 +530,7 @@
       },
       {
         "name": "Behavioural therapy",
+        "icon": "heart-handshake",
         "points": [
           "Helps teach and strengthen positive behaviours, and reduce unwanted or difficult ones."
         ]
@@ -650,7 +746,7 @@
   "booking": {
     "eyebrow": "Booking",
     "title": "Book a consultation",
-    "lede": "Choose the service, the day and the time. We confirm by phone within one working day.",
+    "lede": "Choose the service, the day and the time. We will email you a copy of your booking, and someone from our team will reach out to confirm it.",
     "demoTitle": "Demonstration calendar",
     "demoBody": "The times below are examples, not real availability. The booking system is not connected yet.",
     "step1": "Service",
@@ -659,14 +755,14 @@
     "step4": "Your details",
     "serviceLabel": "Which service?",
     "services": [
-      "First assessment",
-      "Speech and language therapy",
-      "ABA therapy",
-      "Developmental therapy",
-      "Oro-myo-facial therapy",
-      "Chewing and swallowing therapy",
-      "Behavioural therapy",
-      "Consultation / question"
+      { "label": "First assessment", "icon": "clipboard-list" },
+      { "label": "Speech and language therapy", "icon": "speech" },
+      { "label": "ABA therapy", "icon": "shapes" },
+      { "label": "Developmental therapy", "icon": "sprout" },
+      { "label": "Oro-myo-facial therapy", "icon": "mouth" },
+      { "label": "Chewing and swallowing therapy", "icon": "utensils" },
+      { "label": "Behavioural therapy", "icon": "heart-handshake" },
+      { "label": "Consultation / question", "icon": "message-circle-question-mark" }
     ],
     "prevMonth": "Previous month",
     "nextMonth": "Next month",
@@ -719,20 +815,37 @@
     "form": {
       "name": "Your name",
       "phone": "Phone",
-      "phoneHelp": "We will call this number to confirm.",
-      "email": "Email (optional)",
+      "phoneHelp": "Someone from our team will call this number to confirm.",
+      "email": "Email",
+      "emailHelp": "We will send a copy of your booking here.",
       "childAge": "Child's age (optional)",
       "childAgePlaceholder": "e.g. 4 years",
       "notes": "Notes (optional)",
       "notesPlaceholder": "What you have noticed, or what you would like to ask.",
       "consent": "I agree that Speak Up may use these details to make and confirm this booking.",
       "required": "required",
-      "submit": "Confirm booking",
-      "sending": "Sending…"
+      "submit": "Send booking",
+      "sending": "Sending…",
+      "errors": {
+        "required": "Please fill this in.",
+        "email": "Please enter a valid email address, e.g. name@example.com.",
+        "phone": "Please enter a valid phone number.",
+        "consent": "Please tick this box so we can take your booking."
+      }
     },
-    "successTitle": "Your booking is in!",
-    "successBody": "We will contact you to confirm within one working day.",
-    "referenceLabel": "Booking reference",
+    "recap": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "childAge": "Child's age",
+      "notes": "Notes"
+    },
+    "successTitle": "Your booking has been sent!",
+    "successBody": "We have sent an email to {email} with the details of your booking.",
+    "successDetailsTitle": "Your booking details",
+    "successNextTitle": "What happens next?",
+    "successNext": "Someone from our team will reach out to you within one working day to confirm your appointment.",
+    "successNoEmail": "Can't find the email? Check your spam folder, or call us on",
     "errorTitle": "The booking did not go through",
     "errorBody": "Please try again, or call us and we will sort it out together.",
     "takenTitle": "That time has just been taken",

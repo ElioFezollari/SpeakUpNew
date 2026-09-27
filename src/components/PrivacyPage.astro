@@ -1,0 +1,200 @@
+---
+import { useCopy, type Locale } from '../i18n/utils';
+import { SITE } from '../site.config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useCopy(locale);
+const p = t.privacy;
+
+/*
+ * The privacy notice both forms link to from their consent box.
+ *
+ * Everything it states is true of the system as built: what the forms collect,
+ * that the IP is stored for spam protection, that the site sets no cookies, and
+ * who processes what (DigitalOcean in Frankfurt, Cloudflare, Postmark in the
+ * USA). Two things are the clinic's to decide, and are flagged in README.md
+ * rather than shown as blanks: a concrete retention period (the copy says
+ * "as long as needed", which is true but vague), and a read-through by someone
+ * who knows Albanian data protection law. If the stack changes — analytics, a
+ * new email provider, a map embed — this page has to change with it.
+ */
+const withClinic = (text: string) => text.replace('{clinic}', SITE.legalName);
+const address = `${SITE.address.street}, ${SITE.address.city}`;
+---
+
+<section class="privacy section">
+  <div class="inner">
+    <header class="head" data-reveal>
+      <span class="eyebrow">{p.eyebrow}</span>
+      <h1 class="title">{p.title}</h1>
+      <p class="lede">{p.lede}</p>
+      <p class="updated">{p.updatedLabel} {p.updated}</p>
+    </header>
+
+    <div class="layout">
+      <div class="body">
+        {
+          p.sections.map((section) => (
+            <section class="block">
+              <h2>{section.title}</h2>
+              {section.body.map((paragraph) => (
+                <p>{withClinic(paragraph)}</p>
+              ))}
+              {section.items.length > 0 && (
+                <ul>
+                  {section.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))
+        }
+      </div>
+
+      {/* The one thing someone arriving here usually wants: who to ask. */}
+      <aside class="contact" aria-labelledby="privacy-contact">
+        <h2 id="privacy-contact">{p.contactTitle}</h2>
+        <p>{p.contactBody}</p>
+        <ul class="contact-list">
+          <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          <li><a href={SITE.phone.href}>{SITE.phone.display}</a></li>
+          <li>{SITE.legalName}<br />{address}</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .privacy {
+    padding-bottom: clamp(48px, 6vw, 88px);
+  }
+
+  .head {
+    max-width: 62ch;
+    margin-bottom: clamp(28px, 4vw, 48px);
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-size: clamp(32px, 4vw, 50px);
+    line-height: 1.06;
+    color: var(--ink);
+    margin-top: 12px;
+    max-width: 20ch;
+  }
+
+  .lede {
+    margin-top: 14px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .updated {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 68ch) minmax(240px, 340px);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
+  }
+
+  .block + .block {
+    margin-top: clamp(24px, 3vw, 32px);
+  }
+
+  .block h2 {
+    font-size: clamp(20px, 2.1vw, 24px);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .block p,
+  .block li {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .block p + p {
+    margin-top: 10px;
+  }
+
+  .block ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .block li::marker {
+    color: var(--gold);
+  }
+
+  .contact {
+    position: sticky;
+    top: 96px;
+    padding: clamp(18px, 2.4vw, 24px);
+    border-radius: var(--r-card);
+    background: var(--deep);
+    color: var(--paper);
+  }
+
+  .contact h2 {
+    font-size: 18px;
+    line-height: 1.25;
+    color: var(--paper);
+  }
+
+  .contact p {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 248, 232, 0.78);
+  }
+
+  .contact-list {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: rgba(255, 248, 232, 0.9);
+  }
+
+  .contact-list a {
+    color: var(--gold);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-list a:hover {
+    color: var(--paper);
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .contact {
+      position: static;
+    }
+  }
+</style>

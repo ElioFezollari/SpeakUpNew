@@ -58,6 +58,14 @@ img {
   height: auto;
 }
 
+/* `hidden` must win over any component's `display`. Without this, a panel
+   styled `display: flex` ignores the attribute and shows while it should be
+   hidden — which is exactly how the booking page's empty result panel ended up
+   on screen at load. */
+[hidden] {
+  display: none !important;
+}
+
 /* ── Shared primitives ─────────────────────────────────── */
 
 .inner {

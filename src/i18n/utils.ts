@@ -63,6 +63,7 @@ export const ROUTES = {
   booking: { sq: '/rezervo/', en: '/booking/' },
   contact: { sq: '/kontakt/', en: '/contact/' },
   thanks: { sq: '/kontakt/faleminderit/', en: '/contact/thank-you/' },
+  privacy: { sq: '/privatesia/', en: '/privacy/' },
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;

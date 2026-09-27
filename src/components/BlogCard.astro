@@ -1,6 +1,7 @@
 ---
 import { formatDate, isoDate, localePath, type Locale } from '../i18n/utils';
 import { useCopy } from '../i18n/utils';
+import { cardCover } from '../lib/blog-images';
 
 interface Props {
   post: {
@@ -25,18 +26,23 @@ const { t } = useCopy(locale);
 const { data } = post;
 
 const href = localePath(locale, `/blog/${data.slug}/`);
+
+// Copied onto this site and resized at build time — see src/lib/blog-images.ts.
+const cover = data.coverImage ? await cardCover(data.coverImage.url, featured) : undefined;
 ---
 
 <article class:list={['card', { featured }]}>
   {
-    data.coverImage && (
+    cover && (
       <a class="cover" href={href} tabindex="-1" aria-hidden="true">
-        {/* Cover images are remote URLs from the admin's media store, so they
-            are plain <img> rather than optimised astro:assets images. */}
         <img
-          src={data.coverImage.url}
-          alt={data.coverImage.alt}
-          loading="lazy"
+          src={cover.src}
+          srcset={cover.srcset}
+          sizes={cover.sizes}
+          width={cover.width}
+          height={cover.height}
+          alt={data.coverImage!.alt}
+          loading={featured ? 'eager' : 'lazy'}
           decoding="async"
         />
       </a>

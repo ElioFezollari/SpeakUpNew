@@ -38,7 +38,7 @@ Accept: application/json
 ```json
 {
   "name": "Ana Hoxha",
-  "phone": "067 680 27607",
+  "phone": "067 680 2760",
   "email": "ana@example.com",
   "childAge": "4 vjeç",
   "topic": "Dua të rezervoj një vlerësim",

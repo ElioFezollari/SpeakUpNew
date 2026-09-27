@@ -1,6 +1,9 @@
 ---
+import MailCheck from '@lucide/astro/icons/mail-check';
+import PhoneCall from '@lucide/astro/icons/phone-call';
 import { useCopy, routePath, type Locale } from '../i18n/utils';
 import { SITE } from '../site.config';
+import TherapyIcon from './TherapyIcon.astro';
 
 interface Props {
   locale: Locale;
@@ -71,9 +74,10 @@ if (!endpoint) {
                   class:list={['chip', { on: i === 0 }]}
                   aria-checked={i === 0 ? 'true' : 'false'}
                   tabindex={i === 0 ? 0 : -1}
-                  data-service={service}
+                  data-service={service.label}
                 >
-                  {service}
+                  <TherapyIcon name={service.icon} size={18} class="chip-icon" />
+                  <span>{service.label}</span>
                 </button>
               ))
             }
@@ -108,8 +112,15 @@ if (!endpoint) {
 
           {/* Times and the running summary sit beside it. */}
           <aside class="rail">
-            <section class="rail-block" aria-labelledby="times-title">
+            <section class="rail-block" aria-labelledby="times-title" data-times>
               <h2 class="rail-title" id="times-title">{b.slotsLabel}</h2>
+              {/* Shown when somebody else took the chosen time between loading
+                  the page and sending it: right where the new time is picked. */}
+              <p class="notice" role="alert" data-taken hidden>
+                <strong>{b.takenTitle}</strong>
+                <span>{b.takenBody}</span>
+              </p>
+              <p class="slots-date" data-slots-date hidden></p>
               <p class="hint" data-slots-hint>{b.pickDayFirst}</p>
               <div class="slots" role="radiogroup" aria-label={b.slotsLabel} data-slots></div>
             </section>
@@ -142,8 +153,16 @@ if (!endpoint) {
                 <label for="bk-name">
                   {b.form.name} <span class="req">({b.form.required})</span>
                 </label>
-                <input id="bk-name" name="name" type="text" required autocomplete="name" />
-                <span class="error" data-error-for="name" hidden></span>
+                <input
+                  id="bk-name"
+                  name="name"
+                  type="text"
+                  required
+                  maxlength="200"
+                  autocomplete="name"
+                  aria-describedby="bk-name-error"
+                />
+                <span class="error" id="bk-name-error" data-error-for="name" hidden></span>
               </p>
 
               <p class="field">
@@ -155,17 +174,30 @@ if (!endpoint) {
                   name="phone"
                   type="tel"
                   required
+                  maxlength="60"
                   inputmode="tel"
                   autocomplete="tel"
+                  aria-describedby="bk-phone-help bk-phone-error"
                 />
-                <span class="help">{b.form.phoneHelp}</span>
-                <span class="error" data-error-for="phone" hidden></span>
+                <span class="help" id="bk-phone-help">{b.form.phoneHelp}</span>
+                <span class="error" id="bk-phone-error" data-error-for="phone" hidden></span>
               </p>
 
               <p class="field">
-                <label for="bk-email">{b.form.email}</label>
-                <input id="bk-email" name="email" type="email" autocomplete="email" />
-                <span class="error" data-error-for="email" hidden></span>
+                <label for="bk-email">
+                  {b.form.email} <span class="req">({b.form.required})</span>
+                </label>
+                <input
+                  id="bk-email"
+                  name="email"
+                  type="email"
+                  required
+                  maxlength="254"
+                  autocomplete="email"
+                  aria-describedby="bk-email-help bk-email-error"
+                />
+                <span class="help" id="bk-email-help">{b.form.emailHelp}</span>
+                <span class="error" id="bk-email-error" data-error-for="email" hidden></span>
               </p>
 
               <p class="field">
@@ -186,10 +218,33 @@ if (!endpoint) {
             </div>
 
             <label class="consent">
-              <input type="checkbox" name="consent" value="yes" required />
-              <span>{b.form.consent}</span>
+              <input
+                type="checkbox"
+                name="consent"
+                value="yes"
+                required
+                aria-describedby="bk-consent-error"
+              />
+              <span>
+                {b.form.consent}{' '}
+                {/* A new tab, so reading it never costs anyone their chosen
+                    slot or what they have typed. */}
+                <a
+                  class="privacy-link"
+                  href={routePath('privacy', locale)}
+                  target="_blank"
+                  rel="noopener">{t.privacy.linkText}</a
+                >
+              </span>
             </label>
-            <span class="error" data-error-for="consent" hidden></span>
+            <span class="error" id="bk-consent-error" data-error-for="consent" hidden></span>
+
+            {/* Failures are reported here, beside the button that caused them,
+                so everything the visitor typed stays in view. */}
+            <div class="notice form-alert" role="alert" data-form-alert hidden>
+              <strong data-form-alert-title></strong>
+              <span data-form-alert-body></span>
+            </div>
 
             <div class="actions">
               <button class="btn btn-dark" type="submit" data-submit disabled>
@@ -201,17 +256,43 @@ if (!endpoint) {
         </section>
       </div>
 
-      {/* Result */}
-      <div class="result" data-result hidden role="status" aria-live="polite">
-        <div class="result-mark" aria-hidden="true">★</div>
-        <h2 data-result-title></h2>
-        <p data-result-body></p>
-        <p class="reference" data-reference hidden>
-          <span>{b.referenceLabel}</span><strong data-reference-value></strong>
+      {/* Success. Replaces the whole flow once the booking is in: what was
+          sent, where the copy went, and that a person will be in touch. */}
+      <div
+        class="result"
+        data-result
+        hidden
+        tabindex="-1"
+        aria-labelledby="result-title"
+      >
+        <div class="result-head">
+          <div class="result-mark" aria-hidden="true">
+            <MailCheck size={30} stroke-width={2} />
+          </div>
+          <h2 id="result-title">{b.successTitle}</h2>
+          <p class="result-lede" data-result-body></p>
+        </div>
+
+        <div class="next">
+          <span class="next-icon" aria-hidden="true">
+            <PhoneCall size={20} stroke-width={2} />
+          </span>
+          <div>
+            <h3>{b.successNextTitle}</h3>
+            <p>{b.successNext}</p>
+          </div>
+        </div>
+
+        <section class="recap" aria-labelledby="recap-title">
+          <h3 id="recap-title">{b.successDetailsTitle}</h3>
+          <dl data-recap></dl>
+        </section>
+
+        <p class="no-email">
+          {b.successNoEmail} <a href={SITE.phone.href}>{SITE.phone.display}</a>.
         </p>
-        <a class="btn btn-dark" href={routePath('home', locale)} data-result-home>
-          {t.notFound.home}
-        </a>
+
+        <a class="btn btn-dark" href={routePath('home', locale)}>{t.notFound.home}</a>
       </div>
     </div>
   </div>
@@ -232,13 +313,17 @@ if (!endpoint) {
       pickDayFirst: b.pickDayFirst,
       sending: b.form.sending,
       submit: b.form.submit,
-      successTitle: b.successTitle,
       successBody: b.successBody,
       errorTitle: b.errorTitle,
       errorBody: b.errorBody,
-      takenTitle: b.takenTitle,
-      takenBody: b.takenBody,
       notConfigured: b.notConfigured,
+      errors: b.form.errors,
+      recap: {
+        service: b.step1,
+        date: b.step2,
+        time: b.step3,
+        ...b.recap,
+      },
       weekdaysFull: b.weekdaysFull,
       months: b.months,
     },
@@ -258,7 +343,10 @@ if (!endpoint) {
     const calMsg = $('[data-cal-msg]');
     const slotsBox = $('[data-slots]');
     const slotsHint = $('[data-slots-hint]');
+    const slotsDate = $('[data-slots-date]');
+    const takenNotice = $('[data-taken]');
     const form = $('[data-form]');
+    const formAlert = $('[data-form-alert]');
     const submitBtn = $('[data-submit]');
     const result = $('[data-result]');
 
@@ -268,7 +356,10 @@ if (!endpoint) {
       month: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       date: null, // 'YYYY-MM-DD'
       time: null, // 'HH:MM'
-      availability: new Map(), // dateKey -> string[]
+      availability: new Map(), // dateKey -> string[] — the month on screen only
+      // The times for the chosen day, kept separately so browsing to another
+      // month does not empty the list the visitor is choosing from.
+      daySlots: [],
       loading: false,
       // On first load, skip forward past fully-booked months rather than
       // showing an empty grid. Zeroed as soon as the visitor navigates by
@@ -285,6 +376,15 @@ if (!endpoint) {
     const parseKey = (key) => {
       const [y, m, d] = key.split('-').map(Number);
       return new Date(y, m - 1, d);
+    };
+
+    /** `2026-09-` — every day key in that month starts with it. */
+    const monthPrefix = (d) => keyOf(d).slice(0, 8);
+
+    /** The first of the month a day key falls in. */
+    const monthStart = (key) => {
+      const d = parseKey(key);
+      return new Date(d.getFullYear(), d.getMonth(), 1);
     };
 
     const todayKey = keyOf(new Date());
@@ -358,7 +458,7 @@ if (!endpoint) {
      * (or stale past dates) must not make an empty month look populated.
      */
     function monthIsEmpty() {
-      const prefix = `${state.month.getFullYear()}-${String(state.month.getMonth() + 1).padStart(2, '0')}-`;
+      const prefix = monthPrefix(state.month);
       for (const [key, slots] of state.availability) {
         if (!key.startsWith(prefix)) continue;
         if (key < todayKey) continue;
@@ -388,7 +488,32 @@ if (!endpoint) {
       return true;
     }
 
+    /**
+     * Fresh availability has arrived for the month holding the chosen day.
+     * Drop the day or the time if it is no longer offered — a different
+     * service, or somebody else booked it — and refresh the list of times.
+     */
+    function reconcileSelection() {
+      if (!state.date || !state.date.startsWith(monthPrefix(state.month))) return;
+      const fresh = state.availability.get(state.date) || [];
+      if (fresh.length === 0) {
+        state.date = null;
+        state.time = null;
+        state.daySlots = [];
+      } else {
+        state.daySlots = fresh;
+        if (state.time && !fresh.includes(state.time)) state.time = null;
+      }
+      renderSlots();
+      renderSummary();
+    }
+
+    // Month and service changes can overlap. Only the most recent request may
+    // write to the page, or a slow reply for one month lands on the next.
+    let loadSeq = 0;
+
     async function loadMonth() {
+      const seq = ++loadSeq;
       const from = new Date(state.month.getFullYear(), state.month.getMonth(), 1);
       const to = new Date(state.month.getFullYear(), state.month.getMonth() + 1, 0);
 
@@ -402,6 +527,7 @@ if (!endpoint) {
         state.availability = demoAvailability(from, to);
         state.loading = false;
         calMsg.hidden = true;
+        reconcileSelection();
         if (await skipEmptyMonth()) return;
         renderGrid();
         return;
@@ -418,8 +544,10 @@ if (!endpoint) {
           headers: { Accept: 'application/json' },
           signal: AbortSignal.timeout(12000),
         });
+        if (seq !== loadSeq) return;
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
+        if (seq !== loadSeq) return;
 
         state.availability = new Map(
           (data.days || [])
@@ -428,8 +556,10 @@ if (!endpoint) {
         );
         calMsg.hidden = true;
         state.loading = false;
+        reconcileSelection();
         if (await skipEmptyMonth()) return;
       } catch (err) {
+        if (seq !== loadSeq) return;
         console.error('[booking] availability failed:', err);
         state.availability = new Map();
         calMsg.hidden = false;
@@ -443,8 +573,11 @@ if (!endpoint) {
         again.addEventListener('click', loadMonth);
         calMsg.append(again);
       } finally {
-        state.loading = false;
-        renderGrid();
+        // A newer request (or the auto-skip) owns the page now.
+        if (seq === loadSeq) {
+          state.loading = false;
+          renderGrid();
+        }
       }
     }
 
@@ -522,6 +655,8 @@ if (!endpoint) {
 
       state.date = key;
       state.time = null;
+      state.daySlots = state.availability.get(key) || [];
+      takenNotice.hidden = true;
       renderGrid();
       renderSlots();
       renderSummary();
@@ -574,12 +709,16 @@ if (!endpoint) {
 
     function renderSlots() {
       slotsBox.innerHTML = '';
+      // Name the day the times belong to: on a phone the calendar is out of
+      // view by the time the visitor reaches this list.
+      slotsDate.hidden = !state.date;
+      slotsDate.textContent = state.date ? fmtLong(state.date) : '';
       if (!state.date) {
         slotsHint.hidden = false;
         slotsHint.textContent = STR.pickDayFirst;
         return;
       }
-      const slots = state.availability.get(state.date) || [];
+      const slots = state.daySlots;
       if (slots.length === 0) {
         slotsHint.hidden = false;
         slotsHint.textContent = STR.noSlots;
@@ -598,8 +737,10 @@ if (!endpoint) {
         if (slot === state.time) btn.classList.add('on');
         btn.addEventListener('click', () => {
           state.time = slot;
+          takenNotice.hidden = true;
           renderSlots();
           renderSummary();
+          slotsBox.querySelector(`[data-time="${slot}"]`)?.focus();
         });
         slotsBox.append(btn);
       }
@@ -617,7 +758,10 @@ if (!endpoint) {
         });
         state.service = chip.dataset.service;
         renderSummary();
-        // Availability can differ per service, so reload the month.
+        // Availability can differ per service, so reload — the month holding
+        // the chosen day, if there is one, so that day and time are checked
+        // against the new service rather than silently kept.
+        if (state.date) state.month = monthStart(state.date);
         loadMonth();
       });
       chip.addEventListener('keydown', (e) => {
@@ -665,102 +809,175 @@ if (!endpoint) {
       node.hidden = !message;
     };
 
+    /*
+     * Validation messages come from the copy files, not the browser: a
+     * browser's built-in message is in the browser's language, which on this
+     * site is often not the page's.
+     */
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    const problemWith = (field) => {
+      if (field.type === 'checkbox') return field.required && !field.checked ? STR.errors.consent : '';
+      const value = field.value.trim();
+      if (field.required && !value) return STR.errors.required;
+      if (field.name === 'email' && value && !EMAIL_RE.test(value)) return STR.errors.email;
+      // Anything with fewer than six digits cannot be called back.
+      if (field.name === 'phone' && value && value.replace(/\D/g, '').length < 6) {
+        return STR.errors.phone;
+      }
+      return '';
+    };
+
+    const checkField = (field) => {
+      const problem = problemWith(field);
+      showError(field.name, problem);
+      field.setAttribute('aria-invalid', problem ? 'true' : 'false');
+      return !problem;
+    };
+
     const validate = () => {
       let firstBad = null;
       for (const field of form.querySelectorAll('input[name], textarea[name]')) {
         if (field.type === 'hidden' || field.name === 'fax') continue;
-        const ok = field.checkValidity();
-        showError(field.name, ok ? '' : field.validationMessage);
-        field.setAttribute('aria-invalid', ok ? 'false' : 'true');
-        if (!ok && !firstBad) firstBad = field;
+        if (!checkField(field) && !firstBad) firstBad = field;
       }
       if (firstBad) firstBad.focus();
       return !firstBad;
     };
 
-    const finish = (kind, reference) => {
-      const titles = { ok: STR.successTitle, error: STR.errorTitle, taken: STR.takenTitle };
-      const bodies = { ok: STR.successBody, error: STR.errorBody, taken: STR.takenBody };
-      $('[data-result-title]').textContent = titles[kind];
-      $('[data-result-body]').textContent = bodies[kind];
-      const refBox = $('[data-reference]');
-      if (kind === 'ok' && reference) {
-        $('[data-reference-value]').textContent = reference;
-        refBox.hidden = false;
-      } else {
-        refBox.hidden = true;
+    const showAlert = (title, body) => {
+      $('[data-form-alert-title]').textContent = title;
+      $('[data-form-alert-body]').textContent = body;
+      formAlert.hidden = false;
+      formAlert.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    };
+
+    const resetButton = () => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = STR.submit;
+    };
+
+    /** Replace the whole flow with what was sent and what happens next. */
+    const showSuccess = (sent) => {
+      // "We have sent an email to {email}…" with the address in bold, built
+      // from nodes so nothing the visitor typed is ever parsed as HTML.
+      const body = $('[data-result-body]');
+      body.textContent = '';
+      const [before, after = ''] = STR.successBody.split('{email}');
+      const strong = document.createElement('strong');
+      strong.textContent = sent.email;
+      body.append(before, strong, after);
+
+      const rows = [
+        [STR.recap.service, sent.service],
+        [STR.recap.date, fmtLong(sent.date)],
+        [STR.recap.time, fmtTime(sent.time)],
+        [STR.recap.name, sent.name],
+        [STR.recap.phone, sent.phone],
+        [STR.recap.email, sent.email],
+        [STR.recap.childAge, sent.childAge],
+        [STR.recap.notes, sent.notes],
+      ];
+      const list = $('[data-recap]');
+      list.innerHTML = '';
+      for (const [label, value] of rows) {
+        if (!value) continue;
+        const row = document.createElement('div');
+        const dt = document.createElement('dt');
+        const dd = document.createElement('dd');
+        dt.textContent = label;
+        dd.textContent = value;
+        row.append(dt, dd);
+        list.append(row);
       }
-      result.classList.toggle('is-error', kind !== 'ok');
-      $('[data-result-home]').hidden = kind !== 'ok';
+
+      root.querySelector('[data-flow]').hidden = true;
       result.hidden = false;
-      if (kind === 'ok') {
-        root.querySelector('[data-flow]').hidden = true;
-      }
-      result.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      result.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      // Move focus so a screen reader announces the outcome.
+      result.focus({ preventScroll: true });
     };
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      formAlert.hidden = true;
       if (!validate()) return;
 
       if (DEMO) {
         console.warn('[booking] PUBLIC_BOOKING_API_URL is not set — nothing was sent.');
-        $('[data-result-title]').textContent = STR.errorTitle;
-        $('[data-result-body]').textContent = STR.notConfigured;
-        result.classList.add('is-error');
-        $('[data-reference]').hidden = true;
-        $('[data-result-home]').hidden = true;
-        result.hidden = false;
-        result.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        showAlert(STR.errorTitle, STR.notConfigured);
         return;
       }
 
       submitBtn.disabled = true;
       submitBtn.textContent = STR.sending;
 
-      try {
-        const payload = Object.fromEntries(new FormData(form).entries());
-        payload.service = state.service;
-        payload.date = state.date;
-        payload.time = state.time;
-        payload.locale = locale;
+      const payload = Object.fromEntries(new FormData(form).entries());
+      for (const key of Object.keys(payload)) {
+        if (typeof payload[key] === 'string') payload[key] = payload[key].trim();
+      }
+      payload.service = state.service;
+      payload.date = state.date;
+      payload.time = state.time;
+      payload.locale = locale;
 
+      try {
         const res = await fetch(endpoint.replace(/\/+$/, '') + '/bookings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(20000),
         });
 
         if (res.status === 409) {
-          // Somebody took the slot first. Reload and let them pick again.
-          finish('taken');
+          // Somebody took the slot first. Refresh that day's times and let
+          // them pick again, with the message beside the list they pick from.
           state.time = null;
+          state.month = monthStart(state.date);
           await loadMonth();
           renderSlots();
           renderSummary();
-          submitBtn.disabled = false;
-          submitBtn.textContent = STR.submit;
+          resetButton();
+          takenNotice.hidden = false;
+          $('[data-times]').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           return;
+        }
+        if (res.status === 400) {
+          // The server's checks are stricter than the page's (its email rule
+          // refuses some addresses a browser accepts). If it names a field,
+          // point at that field instead of a vague "it did not go through".
+          const data = await res.json().catch(() => null);
+          const named = new Set((data?.issues || []).map((issue) => issue.path?.[0]));
+          const fieldErrors = { email: STR.errors.email, phone: STR.errors.phone, name: STR.errors.required };
+          const bad = Object.keys(fieldErrors).filter((name) => named.has(name));
+          if (bad.length) {
+            for (const name of bad) {
+              showError(name, fieldErrors[name]);
+              form.elements[name].setAttribute('aria-invalid', 'true');
+            }
+            form.elements[bad[0]].focus();
+            resetButton();
+            return;
+          }
         }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-        const data = await res.json().catch(() => ({}));
-        finish('ok', data.reference);
+        showSuccess(payload);
       } catch (err) {
         console.error('[booking] submit failed:', err);
-        finish('error');
-        submitBtn.disabled = false;
-        submitBtn.textContent = STR.submit;
+        resetButton();
+        showAlert(STR.errorTitle, STR.errorBody);
       }
     });
 
-    form.addEventListener('input', (e) => {
+    // Once a field has been flagged, re-check it as the visitor corrects it,
+    // so the message goes away the moment it no longer applies.
+    const recheck = (e) => {
       const field = e.target;
-      if (field.name && field.checkValidity()) {
-        showError(field.name, '');
-        field.setAttribute('aria-invalid', 'false');
-      }
-    });
+      if (field.name && field.getAttribute('aria-invalid') === 'true') checkField(field);
+    };
+    form.addEventListener('input', recheck);
+    form.addEventListener('change', recheck);
 
     // ── Go ───────────────────────────────────────────────────
     renderSummary();
@@ -844,7 +1061,10 @@ if (!endpoint) {
   }
 
   .chip {
-    padding: 9px 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 15px 9px 12px;
     min-height: 40px;
     border-radius: var(--r-pill);
     background: rgba(59, 47, 28, 0.05);
@@ -866,6 +1086,16 @@ if (!endpoint) {
     background: var(--gold);
     border-color: rgba(59, 47, 28, 0.2);
     box-shadow: 0 3px 0 rgba(59, 47, 28, 0.2);
+  }
+
+  .chip :global(.chip-icon) {
+    flex: none;
+    display: block;
+    color: var(--eyebrow);
+  }
+
+  .chip.on :global(.chip-icon) {
+    color: var(--deep);
   }
 
   /* ── Stage: calendar dominant, rail beside it ──────────── */
@@ -1066,6 +1296,43 @@ if (!endpoint) {
     font-size: 14px;
     line-height: 1.6;
     color: var(--muted);
+  }
+
+  .slots-date {
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--eyebrow);
+  }
+
+  /* Something went wrong, said beside the thing to fix: a time that was just
+     taken (in the times list) or a send that failed (above the button). */
+  .notice {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(229, 143, 111, 0.18);
+    border: var(--border-w) solid rgba(229, 143, 111, 0.45);
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .notice strong {
+    font-weight: 800;
+  }
+
+  .form-alert {
+    margin: 18px 0 0;
+  }
+
+  .rail-block,
+  .details,
+  .result {
+    scroll-margin-top: 100px;
   }
 
   .slots {
@@ -1269,6 +1536,12 @@ if (!endpoint) {
     accent-color: var(--deep);
   }
 
+  .privacy-link {
+    color: var(--eyebrow);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
   .actions {
     display: flex;
     flex-wrap: wrap;
@@ -1299,64 +1572,154 @@ if (!endpoint) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    text-align: center;
-    padding: clamp(30px, 4.5vw, 56px) 20px;
+    gap: clamp(18px, 2.4vw, 24px);
+    padding: clamp(28px, 4.5vw, 56px) clamp(18px, 4vw, 48px);
     border-radius: var(--r-toy);
     background: var(--card);
     border: var(--border-w) solid rgba(59, 47, 28, 0.12);
     box-shadow: var(--shadow-press);
   }
 
+  .result:focus {
+    outline: none;
+  }
+
+  .result-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+
   .result-mark {
     display: grid;
     place-items: center;
-    width: 64px;
-    height: 64px;
+    width: 68px;
+    height: 68px;
     border-radius: 50%;
     background: var(--gold);
     color: var(--deep);
-    font-size: 30px;
-  }
-
-  .result.is-error .result-mark {
-    background: var(--coral);
-    color: var(--on-coral);
+    box-shadow: 0 4px 0 rgba(59, 47, 28, 0.2);
   }
 
   .result h2 {
-    font-size: clamp(23px, 2.6vw, 30px);
+    font-size: clamp(24px, 2.8vw, 32px);
+    line-height: 1.15;
     color: var(--ink);
   }
 
-  .result p {
+  .result-lede {
     max-width: 46ch;
-    font-size: 15.5px;
-    line-height: 1.66;
+    font-size: 16px;
+    line-height: 1.6;
     color: var(--muted);
+    overflow-wrap: anywhere;
   }
 
-  .reference {
+  .result-lede :global(strong) {
+    color: var(--ink);
+    font-weight: 800;
+  }
+
+  /* "Someone will be in touch" — the one thing the parent must take away,
+     so it gets the gold treatment rather than another line of grey text. */
+  .next,
+  .recap {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .next {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px 22px;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
     border-radius: var(--r-fact);
-    background: rgba(59, 47, 28, 0.06);
+    background: rgba(240, 176, 31, 0.18);
+    border: var(--border-w) solid rgba(240, 176, 31, 0.45);
   }
 
-  .reference span {
+  .next-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--deep);
+  }
+
+  .next h3 {
+    font-size: 17px;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .next p {
+    margin-top: 4px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .recap h3 {
     font-weight: 700;
-    font-size: 11px;
+    font-size: 11.5px;
     letter-spacing: 0.13em;
     text-transform: uppercase;
+    font-family: var(--font-body);
+    color: var(--eyebrow);
+    margin-bottom: 8px;
+  }
+
+  .recap dl {
+    margin: 0;
+    border-radius: var(--r-fact);
+    border: var(--border-w) solid var(--line-strong);
+    background: var(--paper);
+    overflow: hidden;
+  }
+
+  .recap :global(dl > div) {
+    display: grid;
+    grid-template-columns: minmax(96px, 34%) minmax(0, 1fr);
+    gap: 12px;
+    padding: 11px 16px;
+  }
+
+  .recap :global(dl > div + div) {
+    border-top: 1px solid var(--line);
+  }
+
+  .recap :global(dt) {
+    font-size: 13px;
+    line-height: 1.5;
     color: var(--muted);
   }
 
-  .reference strong {
-    font-family: var(--font-display);
-    font-size: 22px;
+  .recap :global(dd) {
+    margin: 0;
+    font-weight: 700;
+    font-size: 14.5px;
+    line-height: 1.5;
     color: var(--ink);
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+  }
+
+  .no-email {
+    max-width: 52ch;
+    text-align: center;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .no-email a {
+    font-weight: 700;
+    white-space: nowrap;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -1394,6 +1757,19 @@ if (!endpoint) {
   }
 
   @media (max-width: 620px) {
+    /* Eight wrapping pills of uneven width became five ragged rows on a
+       phone. Two even columns read as a list and take less height. */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 100%;
+    }
+    .chip {
+      border-radius: 16px;
+      padding: 9px 10px;
+      text-align: left;
+      line-height: 1.25;
+    }
     .fields {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -1406,6 +1782,13 @@ if (!endpoint) {
     .nav {
       width: 44px;
       height: 44px;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .recap :global(dl > div) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px;
     }
   }
 </style>

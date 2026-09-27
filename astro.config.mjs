@@ -14,6 +14,17 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
 
+  // Blog images are copied onto this site at build time (src/lib/blog-images.ts).
+  // Uploads come from the admin API — over loopback on the server, localhost in
+  // development — and older posts may link to any https host.
+  image: {
+    remotePatterns: [
+      { protocol: 'https' },
+      { protocol: 'http', hostname: '127.0.0.1' },
+      { protocol: 'http', hostname: 'localhost' },
+    ],
+  },
+
   i18n: {
     defaultLocale: 'sq',
     locales: ['sq', 'en'],

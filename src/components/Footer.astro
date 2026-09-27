@@ -118,7 +118,8 @@ const licence = t.facts[3];
 
     <div class="bottom">
       <p class="copy">
-        © {year} {SITE.legalName} · {t.footer.rights}
+        © {year} {SITE.legalName} · {t.footer.rights} ·{' '}
+        <a class="legal" href={routePath('privacy', locale)}>{t.privacy.footerLink}</a>
       </p>
       <a class="top-link" href="#main">
         <span>{t.footer.backToTop}</span>
@@ -395,6 +396,16 @@ const licence = t.facts[3];
 
   .copy {
     color: rgba(255, 248, 232, 0.52);
+  }
+
+  .legal {
+    color: rgba(255, 248, 232, 0.78);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal:hover {
+    color: var(--gold);
   }
 
   /* A proper pill button, like the rest of the site's controls. */

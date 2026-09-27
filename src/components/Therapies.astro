@@ -1,5 +1,6 @@
 ---
 import { useCopy } from '../i18n/utils';
+import TherapyIcon from './TherapyIcon.astro';
 
 const { t } = useCopy(Astro.currentLocale);
 const th = t.therapies;
@@ -24,6 +25,7 @@ const TINTS = ['sky', 'mint', 'coral'] as const;
           <li class={`card tint-${TINTS[i % TINTS.length]}`}>
             <div class="badge" aria-hidden="true">
               <span class="blob" style={`--blob-delay:${(i * 1.1).toFixed(1)}s`} />
+              <TherapyIcon name={item.icon} size={28} class="icon" />
             </div>
             <h3>{item.name}</h3>
             <ul class="points">
@@ -67,30 +69,48 @@ const TINTS = ['sky', 'mint', 'coral'] as const;
     box-shadow: 0 12px 0 rgba(59, 47, 28, 0.07);
   }
 
+  /* Each tint has its own dark ink, so the icon keeps its contrast on it. */
   .tint-sky {
     --tint: var(--sky);
+    --tint-ink: var(--on-sky);
   }
   .tint-mint {
     --tint: var(--mint);
+    --tint-ink: var(--on-mint);
   }
   .tint-coral {
     --tint: var(--coral);
+    --tint-ink: var(--on-coral);
   }
 
   .badge {
     display: grid;
     place-items: center;
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     border-radius: var(--r-art);
-    background: color-mix(in srgb, var(--tint) 20%, transparent);
+    background: color-mix(in srgb, var(--tint) 18%, transparent);
+  }
+
+  /* The blob and the icon share one grid cell: the blob is a soft, slowly
+     morphing backdrop and the icon sits on top of it. */
+  .blob,
+  .badge :global(.icon) {
+    grid-area: 1 / 1;
   }
 
   .blob {
-    width: 28px;
-    height: 26px;
+    width: 46px;
+    height: 43px;
     border-radius: 52% 48% 44% 56% / 56% 50% 50% 44%;
-    background: var(--tint);
+    background: color-mix(in srgb, var(--tint) 55%, transparent);
+  }
+
+  .badge :global(.icon) {
+    position: relative;
+    display: block;
+    color: var(--tint-ink);
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -100,6 +120,9 @@ const TINTS = ['sky', 'mint', 'coral'] as const;
     }
     .card:hover .blob {
       transform: scale(1.15) rotate(8deg);
+    }
+    .card:hover .badge :global(.icon) {
+      transform: scale(1.08) rotate(-6deg);
     }
   }
 

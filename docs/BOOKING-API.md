@@ -45,7 +45,7 @@ Accept: application/json
 | Parameter | Meaning |
 |---|---|
 | `from`, `to` | Inclusive date range, `YYYY-MM-DD`. Always a whole calendar month. |
-| `service` | The selected service label, exactly as listed in `booking.services` in the copy files. |
+| `service` | The selected service label, exactly as listed in `booking.services[].label` in the copy files. |
 | `locale` | `sq` or `en`. |
 
 ### Response
@@ -115,20 +115,32 @@ Accept: application/json
 | Field | Always sent | Notes |
 |---|---|---|
 | `service`, `date`, `time` | yes | The page will not enable submit until all three are chosen. |
-| `name`, `phone` | yes | Both required by the form. |
+| `name`, `phone`, `email` | yes | All required by the form. **The family's copy of the booking is emailed to `email`** — see below. |
 | `consent` | when ticked | `"yes"`. Required by the form — treat a missing value as invalid. |
 | `locale` | yes | Reply in the language they booked in. |
-| `email`, `childAge`, `notes` | yes (may be `""`) | Optional for the visitor. |
+| `childAge`, `notes` | yes (may be `""`) | Optional for the visitor. |
 | `fax` | yes | Honeypot. **Must be empty.** |
 | `renderedAt` | yes | `Date.now()` at page load, as a string. |
+
+Every string is trimmed by the page before sending.
 
 ### Responses
 
 | Status | Meaning | What the page does |
 |---|---|---|
-| **2xx** | Booked. Body may include `{"reference": "SU-2026-0912"}` | Shows the success panel, and the reference if present. Hides the form. |
-| **409** | **That slot was taken between load and submit** | Shows "that time has just been taken", **refetches availability**, clears the chosen time and lets them pick again. |
-| any other | Failure | Shows the error panel, keeps everything they typed, re-enables the button. |
+| **2xx** | Booked | Replaces the form with the success panel: "we have emailed {email}", a recap of every detail, and "someone from our team will reach out within one working day". Any body is ignored — there is **no reference code** for the family. |
+| **409** | **That slot was taken between load and submit** | Shows "that time has just been taken" beside the list of times, **refetches availability**, clears the chosen time and lets them pick again. |
+| **400** with `issues` | Validation failed | If an issue's `path[0]` is `email`, `phone` or `name`, marks that field with the page's own message. Otherwise as below. |
+| any other | Failure | Shows an error above the send button, keeps everything they typed, re-enables the button. |
+
+### The email to the family
+
+On a 2xx the endpoint must email the family, in their `locale` — the success
+panel has already told them a copy is on its way. The message repeats what they entered (service, date, time, name, phone,
+email, and child's age and notes when given), says that someone from the
+clinic will reach out within one working day to confirm, and carries **no
+reference code**. The admin sends it as `bookingReceivedForFamily`. Send it
+after the booking is stored and never let a mail failure fail the booking.
 
 **409 is not optional.** Two parents can load the page at the same time and
 pick the same slot. Whichever `POST` lands second must get a 409 — check
@@ -141,8 +153,8 @@ to both is a double-booking.
 The page gates the submit button and validates the fields, but that is a
 convenience, not a control — anything can POST here. Re-check on arrival: the
 slot is genuinely free, `date`/`time` match a slot you actually offered for
-that `service`, `name`/`phone` non-empty, `consent === "yes"`, and cap every
-field's length.
+that `service`, `name`/`phone` non-empty, `email` a valid address,
+`consent === "yes"`, and cap every field's length.
 
 ---
 
@@ -240,3 +252,6 @@ Then check, in order:
 5. A forced `409` shows the "slot taken" message and refreshes the calendar.
 6. A `500` keeps the typed details and re-enables the button.
 7. A fully-booked month auto-advances rather than showing an empty grid.
+8. A booking without an email is a `400`; a successful one sends the family
+   their copy (with Postmark unset, the admin logs
+   `[email] not sent … [booking-acknowledged]` instead).

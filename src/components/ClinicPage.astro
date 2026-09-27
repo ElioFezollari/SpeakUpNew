@@ -11,13 +11,13 @@ const { locale } = Astro.props;
 const { t } = useCopy(locale);
 const c = t.clinic;
 
-// PLACEHOLDER: no photography has been supplied. Every slot below renders a
-// labelled placeholder naming the file it expects; drop the file into
-// src/assets/photos/ and it appears, optimised, with no code change.
+// The clinic's own photographs, from src/assets/photos/ — the order and the
+// words are in the copy files (`clinic.photos`).
 const photos = c.photos;
 
-// The first two get the wide treatment on desktop, so the gallery has a shape
-// rather than reading as a uniform grid.
+// The first two are landscape and get the wide frames on top; the rest are
+// portrait phone shots and sit in a row of tall frames, so they are shown
+// whole rather than cropped to a letterbox.
 const featured = photos.slice(0, 2);
 const rest = photos.slice(2);
 ---
@@ -28,7 +28,6 @@ const rest = photos.slice(2);
       <span class="eyebrow">{c.eyebrow}</span>
       <h1 class="title">{c.title}</h1>
       <p class="lede">{c.lede}</p>
-      <p class="photo-note">{c.photoNote}</p>
     </header>
 
     <h2 class="sr-only">{c.galleryTitle}</h2>
@@ -57,8 +56,8 @@ const rest = photos.slice(2);
             <PhotoSlot
               name={photo.name}
               alt={photo.alt}
-              ratio="4 / 3"
-              sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              ratio="3 / 4"
+              sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 25vw"
             />
             <figcaption class="cap">
               <strong>{photo.caption}</strong>
@@ -121,37 +120,24 @@ const rest = photos.slice(2);
     color: var(--muted);
   }
 
-  /* Removed once real photography lands. */
-  .photo-note {
-    display: inline-block;
-    margin-top: 18px;
-    padding: 8px 15px;
-    border-radius: var(--r-pill);
-    background: rgba(229, 143, 111, 0.18);
-    border: var(--border-w) solid rgba(59, 47, 28, 0.12);
-    font-size: 12.5px;
-    font-weight: 600;
-    line-height: 1.5;
-    color: var(--muted);
-  }
-
   /* ── Gallery ───────────────────────────────────────────── */
 
+  /* Twelve columns: two wide frames per row on top, four tall ones below. */
   .gallery {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: var(--gap-cards);
   }
 
   .cell {
-    grid-column: span 2;
+    grid-column: span 3;
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
 
   .cell.wide {
-    grid-column: span 3;
+    grid-column: span 6;
   }
 
   .cap {

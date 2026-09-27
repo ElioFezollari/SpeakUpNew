@@ -31,7 +31,8 @@ export const SITE = {
   },
   email: 'logopedispeakup@gmail.com',
   address: {
-    street: 'Rr. Kongresi i Manastirit , Tirane',
+    /** Street only — every place that shows it adds `city` itself. */
+    street: 'Rr. Kongresi i Manastirit',
     city: 'Tiranë',
     country: 'AL',
   },
@@ -54,10 +55,7 @@ export interface Social {
  *   tiktok    — found by search; the account is named Logopedi "Speak Up" and
  *               looks like the same clinic, but it is NOT confirmed. Verify it
  *               before launch, or blank the URL.
- *   instagram — NOT KNOWN. Instagram requires a login to read, so the handle
- *               could not be verified and has deliberately not been guessed:
- *               a wrong handle would send parents to a stranger's account.
- *               Paste the profile URL here and the icon appears.
+ *   instagram — confirmed, supplied by the client.
  */
 export const SOCIALS: Social[] = [
   {
@@ -68,7 +66,7 @@ export const SOCIALS: Social[] = [
   {
     key: 'instagram',
     label: 'Instagram',
-    url: '',
+    url: 'https://www.instagram.com/speakup_clinic/',
   },
   {
     key: 'tiktok',

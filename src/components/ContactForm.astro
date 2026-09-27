@@ -127,7 +127,13 @@ const thanksPath = routePath('thanks', locale);
 
     <label class="consent">
       <input type="checkbox" name="consent" value="yes" required />
-      <span>{f.consent}</span>
+      <span>
+        {f.consent}{' '}
+        {/* A new tab, so reading it never costs anyone what they have typed. */}
+        <a class="privacy-link" href={routePath('privacy', locale)} target="_blank" rel="noopener"
+          >{t.privacy.linkText}</a
+        >
+      </span>
     </label>
     <span class="error" data-error-for="consent" hidden></span>
 
@@ -387,6 +393,12 @@ const thanksPath = routePath('thanks', locale);
     height: 20px;
     margin-top: 1px;
     accent-color: var(--deep);
+  }
+
+  .privacy-link {
+    color: var(--eyebrow);
+    font-weight: 700;
+    white-space: nowrap;
   }
 
   .actions {

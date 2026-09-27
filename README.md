@@ -58,23 +58,22 @@ remains outstanding:
 
 | What | Where | Status |
 |---|---|---|
-| **Phone number** | `src/site.config.ts` → `phone` | placeholder `067 680 27607` |
+| **Phone number** | `src/site.config.ts` → `phone` | placeholder `067 680 2760` |
 | **Griselda Çela's number** | `src/site.config.ts` → `phone2` | empty — requested, never supplied; hidden until filled |
 | **Email** | `src/site.config.ts` | placeholder `pershendetje@klinikelogopedie.com` |
-| **Address** | `src/site.config.ts` | placeholder `Rr. Myslym Shyri 24` |
 | **Opening hours** | `src/i18n/*.json` → `foot_hours` | placeholder |
 | **Licence number** | `src/i18n/*.json` → `facts[3]` | placeholder `Nr. 4821`, shown in the footer |
 | **Testimonial wording** | `src/i18n/*.json` → `testimonials.items[].quote` | **the five names are real, the five quotes are written by me** |
 | **Dea Fezollari's bio** | `src/i18n/*.json` → `about.staff[1]` | only name and role supplied |
-| **Photography** | `src/assets/photos/` | **19 slots, all empty** — see that folder's README |
-| **Instagram URL** | `src/site.config.ts` → `SOCIALS` | empty — icon hidden until set |
 | **TikTok URL** | `src/site.config.ts` → `SOCIALS` | found by search, **unconfirmed** |
 | **Contact endpoint** | `PUBLIC_CONTACT_API_URL` env var | unset — form cannot send |
 | **Booking endpoint** | `PUBLIC_BOOKING_API_URL` env var | unset — calendar runs in demo mode |
-| Bookable services | `src/i18n/*.json` → `booking.services` | drafted from the therapy list, confirm with the clinic |
+| Bookable services | `src/i18n/*.json` → `booking.services[].label` | drafted from the therapy list, confirm with the clinic |
 | **Canonical domain** | `SITE_URL` env var | `https://klinikelogopedie.com` |
 | Practical details on the clinic page | `src/i18n/*.json` → `clinic.practical` | parking, prams, siblings — invented for layout |
 | Building entrance note | `src/i18n/*.json` → `contact.mapNote` | invented for layout |
+| **How long data is kept** | `src/i18n/*.json` → `privacy.sections` ("Sa kohë i ruajmë") | says "as long as needed" — the clinic should set a concrete period |
+| **Privacy notice review** | `/privatesia/`, `/en/privacy/` | written from what the system actually does; needs a read by someone who knows Albanian data protection law. Update it if the stack changes (analytics, another email provider, a map embed) |
 
 ### Needs a native speaker's review
 
@@ -152,12 +151,14 @@ src/
     rreth-nesh/          /rreth-nesh/             (sq about)
     klinika/             /klinika/                (sq clinic tour)
     kontakt/             /kontakt/                (sq contact + thank-you)
+    privatesia/          /privatesia/             (sq privacy notice)
     en/index.astro       /en/                     (en home)
     en/blog/…            /en/blog/…               (en blog)
     en/booking/          /en/booking/             (en booking)
     en/about/            /en/about/               (en about)
     en/the-clinic/       /en/the-clinic/          (en clinic tour)
     en/contact/          /en/contact/             (en contact + thank-you)
+    en/privacy/          /en/privacy/             (en privacy notice)
     404.astro
   styles/
     tokens.css      colour, radius, shadow, type and layout tokens
@@ -231,6 +232,7 @@ export const ROUTES = {
   blog:    { sq: '/blog/',                 en: '/blog/' },
   contact: { sq: '/kontakt/',              en: '/contact/' },
   thanks:  { sq: '/kontakt/faleminderit/', en: '/contact/thank-you/' },
+  privacy: { sq: '/privatesia/',           en: '/privacy/' },
 };
 ```
 
@@ -283,9 +285,10 @@ and are rendered through Astro's own Markdown pipeline at build time.
 show a child before the first visit. Intro, a six-slot gallery with captions, a
 practical strip (address, parking, prams, siblings), then a booking CTA.
 
-**Every photo is a placeholder right now** — see [Photography](#photography).
-Captions, alt text and the practical details live under `clinic` in the two copy
-files; the practical values are placeholders the client must confirm.
+The gallery shows the clinic's own photographs: the building and the office
+wide on top, then the entrance, waiting area and two therapy rooms in tall
+frames. Captions, alt text and the practical details live under `clinic` in the
+two copy files.
 
 Two links were rewired to point here: the **"Dhoma" / "The room" nav item**,
 which previously jumped to the home-page anchor, and a **"See the whole clinic"**
@@ -318,9 +321,10 @@ frames rather than a wall of grey boxes.
 shoot guidance — including that **no identifiable child should appear without
 written parental consent for web use**.
 
-Blog cover images are the exception: they are remote URLs from the admin's media
-store and render as plain `<img>`, because the build cannot import a remote file
-as a local asset.
+Blog images are uploaded in the admin rather than pasted as links, and the build
+copies each one onto this site as resized WebP with `srcset` and real
+dimensions (`src/lib/blog-images.ts`) — see
+[docs/ADMIN-API.md → Images](docs/ADMIN-API.md#images).
 
 ---
 
@@ -348,9 +352,22 @@ Things worth knowing about the implementation:
 - **Dates are built from the local calendar, never `toISOString()`.** In
   Albania (UTC+1/+2) `new Date(y, m, d).toISOString().slice(0,10)` returns the
   *previous* day. That one line would have shifted every booking by 24 hours.
+- **No reference code — the confirmation is an email.** Email is required. On
+  success the admin emails the family a copy of everything they entered and
+  says someone from the clinic will reach out to confirm; the success panel
+  says the same and repeats the details. The API still returns a `reference`
+  for the clinic's own use, and the page ignores it.
 - **409 is handled as a first-class case.** Two parents can pick the same slot
-  seconds apart. On a 409 the page says the time has just gone, refetches
-  availability and lets them choose again, keeping everything they typed.
+  seconds apart. On a 409 the page says the time has just gone — beside the
+  list of times, where the new one is picked — refetches availability and lets
+  them choose again, keeping everything they typed.
+- **Errors appear next to what caused them.** Validation messages come from
+  the copy files (a browser's own messages are in the browser's language, not
+  the page's). A 400 that names a field marks that field; any other failure
+  shows above the send button.
+- **Only the latest availability request may write to the page.** Month and
+  service changes can overlap, and a slow reply for one month must not land on
+  the next. Changing service re-checks the chosen day and time against it.
 - **A fully-booked month auto-advances**, up to three months, rather than
   presenting an empty grid with no explanation. Manual navigation switches that
   off so the visitor's own choice of month is never overridden.
@@ -374,6 +391,14 @@ Things worth knowing about the implementation:
   completely unstyled. Anchoring on a parent that *is* in the template
   (`.grid :global(.day)`) keeps them scoped in practice while actually matching.
   **Any new element the script creates needs the same treatment.**
+- **`[hidden]` always wins** (`global.css`). A component rule such as
+  `.result { display: flex }` otherwise overrides the attribute, which is how
+  an empty success panel used to show on every visit to this page and to the
+  contact page.
+- **Icons are Lucide** (`@lucide/astro`), rendered by
+  `src/components/TherapyIcon.astro`. Each therapy card and service chip names
+  its icon with an `icon` key in the copy files, beside its label; an unknown
+  name fails the build rather than shipping a blank badge.
 
 ### Demo mode
 
@@ -473,8 +498,9 @@ The year in the copyright is generated at build time rather than hardcoded.
 
 **Social links are data, not markup.** `SOCIALS` in `src/site.config.ts` lists
 Facebook, Instagram and TikTok; **an entry with an empty URL is not rendered at
-all**, so an unknown profile leaves no dead link or broken icon behind. Only
-Facebook is confirmed — see the before-launch list above for the other two.
+all**, so an unknown profile leaves no dead link or broken icon behind.
+Facebook and Instagram are confirmed; TikTok is not — see the before-launch
+list above.
 
 Brand glyphs come from [Simple Icons](https://simpleicons.org), which are CC0
 (public domain), so they are inlined in `SocialIcon.astro` with no attribution

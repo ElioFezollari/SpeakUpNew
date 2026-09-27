@@ -105,7 +105,7 @@ Everything else has a sensible fallback, but you will want most of it.
 | `updatedAt` | ISO 8601 | Rendered as "Updated …" at the foot of the post. |
 | `author` | `{ name, role? }` or string | Shown on cards and the post header. |
 | `tags` | string[] or comma-separated string | First three appear on cards. |
-| `coverImage` | `{ url, alt }` or string | **Must be an absolute URL** — see [Images](#images). |
+| `coverImage` | `{ url, alt }` or string | An upload path on the API (`/api/uploads/…`) or an absolute URL — see [Images](#images). |
 | `draft` | boolean | `true` excludes the post. |
 | `seo` | `{ title?, description? }` | Overrides the `<title>` and meta description. |
 
@@ -180,16 +180,31 @@ redirects.
 
 ## Images
 
-Cover images and any images inside the Markdown body are referenced by
-absolute URL and served from wherever the admin stores them. They are **not**
-processed by `astro:assets`, because the build cannot import a remote file as
-a local asset.
+Images are **uploaded in the admin**, not pasted as links. The admin re-encodes
+each one (upright, metadata and GPS stripped, at most 2400px, WebP) and serves
+it at a path on its own API:
 
-Practical consequences:
+```
+"coverImage": { "url": "/api/uploads/femija-ne-terapi-3f2a9c01b7de.webp", "alt": "…" }
+<img src="/api/uploads/wide-26b6827a70ed.webp" alt="…">      (inside the body)
+```
 
-- Upload at sensible dimensions (roughly 1600px wide is plenty) — nothing
-  will resize them for you.
-- Serve them from a stable, cacheable origin, ideally DigitalOcean Spaces + CDN.
+A path like that is resolved against the origin of `BLOG_API_URL` — loopback
+on the server — so the build can fetch it. Absolute `https://` URLs, from
+posts written before uploads existed, still work too.
+
+**Visitors never load those files.** During the build, `src/lib/blog-images.ts`
+fetches every cover and body image and writes resized WebP copies into
+`/_astro/` on klinikelogopedie.com, with `srcset`, `sizes`, `width` and
+`height` on every `<img>`, and a 1200px JPEG for the social preview. That is
+the SEO and speed win: the images live on the site's own domain (the admin
+domain is `noindex`), phones download phone-sized files, and nothing jumps as
+images load.
+
+- An uploaded image the build cannot fetch **fails the build** — the API is
+  broken, and a failed build on the server leaves the current site live.
+- A pasted external link that has died falls back to that link, with a warning.
+- The hosts the build may fetch from are listed in `astro.config.mjs` → `image`.
 - Always store `alt` text with the image; the site renders whatever you send,
   and empty alt on a meaningful image is an accessibility defect.
 

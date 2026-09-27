@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import BlogPost from '../../../components/BlogPost.astro';
 import { routePath, localePath } from '../../../i18n/utils';
+import { socialImage } from '../../../lib/blog-images';
 
 export async function getStaticPaths() {
   const all = await getCollection('blog');
@@ -27,12 +28,14 @@ export async function getStaticPaths() {
 
 const { post, altPath } = Astro.props;
 const { data } = post;
+// Link previews get a 1200px JPEG copy on this domain, not the admin original.
+const ogImage = data.coverImage ? await socialImage(data.coverImage.url, Astro.site) : undefined;
 ---
 
 <Base
   title={data.seoTitle ?? data.title}
   description={data.seoDescription ?? data.description}
-  ogImage={data.coverImage?.url}
+  ogImage={ogImage}
   ogType="article"
   altPath={altPath}
 >

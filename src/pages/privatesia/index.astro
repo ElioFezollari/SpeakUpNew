@@ -1,0 +1,13 @@
+---
+// Albanian privacy notice, served at `/privatesia/`.
+// Linked from the consent box on the booking and contact forms, and the footer.
+import Base from '../../layouts/Base.astro';
+import PrivacyPage from '../../components/PrivacyPage.astro';
+import { useCopy } from '../../i18n/utils';
+
+const { t } = useCopy(Astro.currentLocale);
+---
+
+<Base title={t.privacy.title} description={t.privacy.description}>
+  <PrivacyPage locale="sq" />
+</Base>
