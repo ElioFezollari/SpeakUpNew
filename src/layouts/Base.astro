@@ -67,6 +67,7 @@ const alternates = [
     {robots && <meta name="robots" content={robots} />}
 
     <link rel="canonical" href={canonical.href} />
+
     {
       alternates.map((alt) => (
         <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
@@ -83,8 +84,13 @@ const alternates = [
       property="og:locale:alternate"
       content={other === 'en' ? 'en_GB' : 'sq_AL'}
     />
+
     {ogImage && <meta property="og:image" content={ogImage} />}
-    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+    <meta
+      name="twitter:card"
+      content={ogImage ? 'summary_large_image' : 'summary'}
+    />
 
     {/* Generated from the client's logo — see README. */}
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
@@ -98,27 +104,50 @@ const alternates = [
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=AW-18479169921"
+    ></script>
+
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+
+      gtag('js', new Date());
+      gtag('config', 'AW-18479169921');
+    </script>
   </head>
 
   <body>
     <a class="skip-link" href="#main">{t.nav.skipToContent}</a>
+
     <Header altPath={counterpart} />
+
     <main id="main">
       <slot />
     </main>
+
     <Footer />
 
     <script>
       // Reveal-on-scroll for anything marked [data-reveal] or
       // [data-reveal-stagger]. Each element is unobserved once it has played,
       // so nothing re-animates on the way back up.
+
       const targets = document.querySelectorAll<HTMLElement>(
         '[data-reveal], [data-reveal-stagger]',
       );
 
       if (targets.length > 0) {
         // Index children of a staggered group so CSS can space them out.
-        for (const group of document.querySelectorAll<HTMLElement>('[data-reveal-stagger]')) {
+        for (const group of document.querySelectorAll<HTMLElement>(
+          '[data-reveal-stagger]',
+        )) {
           [...group.children].forEach((child, i) => {
             (child as HTMLElement).style.setProperty('--i', String(i));
           });
@@ -126,21 +155,29 @@ const alternates = [
 
         if (!('IntersectionObserver' in window)) {
           // No observer support: show everything rather than leave it hidden.
-          for (const target of targets) target.classList.add('is-in');
+          for (const target of targets) {
+            target.classList.add('is-in');
+          }
         } else {
           const observer = new IntersectionObserver(
             (entries) => {
               for (const entry of entries) {
                 if (!entry.isIntersecting) continue;
+
                 entry.target.classList.add('is-in');
                 observer.unobserve(entry.target);
               }
             },
-            // Fire a little before the element reaches the viewport edge.
-            { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+            {
+              // Fire a little before the element reaches the viewport edge.
+              rootMargin: '0px 0px -12% 0px',
+              threshold: 0.08,
+            },
           );
 
-          for (const target of targets) observer.observe(target);
+          for (const target of targets) {
+            observer.observe(target);
+          }
         }
       }
     </script>
